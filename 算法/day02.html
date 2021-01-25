@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        给你一个由不同字符组成的字符串 allowed 和一个字符串数组 words 。
+        如果一个字符串的每一个字符都在 allowed 中，就称这个字符串是 一致字符串 。
+        请你返回 words 数组中 一致字符串 的数目。
+
+
+        输入：allowed = "ab", words = ["ad","bd","aaab","baa","badab"]
+        输出：2
+        解释：字符串 "aaab" 和 "baa" 都是一致字符串，因为它们只包含字符 'a' 和 'b' 。
+
+        输入：allowed = "abc", words = ["a","b","c","ab","ac","bc","abc"]
+        输出：7
+        解释：所有字符串都是一致的。
+
+        输入：allowed = "cad", words = ["cc","acd","b","ba","bac","bad","ac","d"]
+        输出：4
+        解释：字符串 "cc"，"acd"，"ac" 和 "d" 是一致字符串
+
+         */
+
+      function countConsistentStrings(allowed, words) {
+        let count = 0 
+        for (let i = 0; i < words.length; i++) {
+            let flag = true
+            for (const s of words[i]) {
+                if(allowed.indexOf(s)===-1){
+                    flag = false
+                    continue;
+                }
+            }
+            if(flag){
+                count++
+            }
+        }
+       return count 
+      }
+      let allowed = "abc", words = ["a","b","c","ab","ac","bc","abc"]
+      console.log(countConsistentStrings(allowed,words));
+    </script>
+  </body>
+</html>
