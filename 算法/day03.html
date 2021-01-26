@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+        CreateDate: 2021-01-26
+
+        给你一个 m x n 的整数网格 accounts ，
+        其中 accounts[i][j] 是第 i​​​​​​​​​​​​ 位客户在第 j 家银行托管的资产数量。
+        返回最富有客户所拥有的 资产总量 。
+        客户的 资产总量 就是他们在各家银行托管的资产数量之和。
+        最富有客户就是 资产总量 最大的客户。
+
+        输入：accounts = [[1,2,3],[3,2,1]]
+        输出：6
+        解释：
+        第 1 位客户的资产总量 = 1 + 2 + 3 = 6
+        第 2 位客户的资产总量 = 3 + 2 + 1 = 6
+        两位客户都是最富有的，资产总量都是 6 ，所以返回 6 。
+
+        输入：accounts = [[1,5],[7,3],[3,5]]
+        输出：10
+        解释：
+        第 1 位客户的资产总量 = 6
+        第 2 位客户的资产总量 = 10
+        第 3 位客户的资产总量 = 8
+        第 2 位客户是最富有的，资产总量是 10
+
+        */
+      let accounts = [
+        [1, 2, 3],
+        [3, 2, 1],
+      ];
+      function maximumWealth(accounts) {
+        const arr = [];
+        accounts.forEach((item, index) => {
+          const sum = item.reduce(
+            (accumulator, currentValue) => accumulator + currentValue
+          );
+          arr.push(sum);
+        });
+        return Math.max(...arr);
+      }
+      const result = maximumWealth(accounts);
+
+      /*
+        CreateDate: 2021-01-26
+
+        给你一个字符串 s ，请你根据下面的算法重新构造字符串：
+        从 s 中选出 最小 的字符，将它 接在 结果字符串的后面。
+        从 s 剩余字符中选出 最小 的字符，且该字符比上一个添加的字符大，将它 接在 结果字符串后面。
+        重复步骤 2 ，直到你没法从 s 中选择字符。
+        从 s 中选出 最大 的字符，将它 接在 结果字符串的后面。
+        从 s 剩余字符中选出 最大 的字符，且该字符比上一个添加的字符小，将它 接在 结果字符串后面。
+        重复步骤 5 ，直到你没法从 s 中选择字符。
+        重复步骤 1 到 6 ，直到 s 中所有字符都已经被选过。
+        在任何一步中，如果最小或者最大字符不止一个 ，你可以选择其中任意一个，并将其添加到结果字符串。
+        请你返回将 s 中字符重新排序后的 结果字符串 。
+
+        输入：s = "aaaabbbbcccc"
+        输出："abccbaabccba"
+        */
+      // const numArr = ["a", "v", "c", "b", "g", "q", "a"];
+      // const newArr = numArr.sort((a, b) => {
+      //   return a > b ? 1 : -1;
+      // });
+      function sortString(s, prevValue = "") {
+        let sortArr = s.split("").sort((a, b) => (a > b ? 1 : -1));
+        let str1 = "";
+        for (let i = 0; i < sortArr.length; i++) {
+          if (str1.indexOf(sortArr[i]) === -1) {
+            str1 += sortArr[i];
+            sortArr.splice(i, 1);
+            i--;
+          }
+        }
+        let str2 = "";
+        if (sortArr.length > 0) {
+          sortArr = sortArr.sort((a, b) => (a > b ? -1 : 1));
+          for (let i = 0; i < sortArr.length; i++) {
+            if (str2.indexOf(sortArr[i]) === -1) {
+              str2 += sortArr[i];
+              sortArr.splice(i, 1);
+              i--;
+            }
+          }
+        }
+        console.log(str1, str2);
+        if (sortArr.length > 0) {
+          return sortString(sortArr.join(""), prevValue + str1 + str2);
+        } else {
+          const lastStr = prevValue + str1 + str2;
+          return lastStr;
+        }
+      }
+      const s = "ggggggg";
+      const result2 = sortString(s);
+    </script>
+  </body>
+</html>
