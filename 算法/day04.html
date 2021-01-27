@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            CreateDate: 2021-01-27
+
+            请你设计一个可以解释字符串 command 的 Goal 解析器 。
+            command 由 "G"、"()" 和/或 "(al)" 按某种顺序组成。
+            Goal 解析器会将
+            "G" 解释为字符串 "G"、
+            "()" 解释为字符串 "o" ，
+            "(al)" 解释为字符串 "al"
+             。然后按原顺序将经解释得到的字符串连接成一个字符串。
+            给你字符串 command ，返回 Goal 解析器 对 command 的解释结果。
+
+            输入：command = "G()(al)"
+            输出："Goal"
+            解释：Goal 解析器解释命令的步骤如下所示：
+            G -> G
+            () -> o
+            (al) -> al
+            最后连接得到的结果是 "Goal"
+
+            输入：command = "G()()()()(al)"
+            输出："Gooooal"
+         */
+
+      function interpret(command) {
+        let str1 = command.replaceAll('()','o')
+        let res = str1.replaceAll('(al)','al')
+        return res
+      }
+      let command = "G()()()()(al)"
+      const result1 = interpret(command)
+      console.log(result1);
+    </script>
+  </body>
+</html>

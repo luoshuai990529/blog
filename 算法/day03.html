@@ -90,7 +90,7 @@
             }
           }
         }
-        console.log(str1, str2);
+        // console.log(str1, str2);
         if (sortArr.length > 0) {
           return sortString(sortArr.join(""), prevValue + str1 + str2);
         } else {
@@ -100,6 +100,43 @@
       }
       const s = "ggggggg";
       const result2 = sortString(s);
+
+      /* 
+        CreateDate: 2021-01-27
+
+      */
+      function sortString2(s) {
+        // 1-创建一个桶 长度为26的数组 每个初始值为0
+        const num = new Array(26).fill(0);
+        // console.log(num);
+        // 2-遍历字符串 通过每个字符的
+        // charCodeAt：返回指定字符的Unicode 编码；a:97
+        for (let ch of s) {
+          // console.log(ch.charCodeAt(),"a".charCodeAt());
+          // 通过俩Unicode 编码相减 可以得出其对应字母数的索引，进行+1
+          num[ch.charCodeAt() - "a".charCodeAt()]++;
+        }
+        let ret = "";
+        // 3-先顺序再逆序遍历这个桶
+        // fromCharCode：将 Unicode 编码转为一个字符:
+        while (ret.length < s.length) {
+          for (let i = 0; i < 26; i++) {
+            if (num[i]) {
+              // 4-如果当前桶的计数值不为零，那么将当前桶对应的字符加入到答案中
+              ret += String.fromCharCode(i + "a".charCodeAt());
+              num[i]--;
+            }
+          }
+          for (let i = 25; i >= 0; i--) {
+            if (num[i]) {
+              ret += String.fromCharCode(i + "a".charCodeAt());
+              num[i]--;
+            }
+          }
+        }
+        return ret
+      }
+      sortString2("aaaabbbbcccc");
     </script>
   </body>
 </html>
