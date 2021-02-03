@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        createDate :2021-02-03
+        请实现一个函数，把字符串 s 中的每个空格替换成"%20"
+        
+        输入：s = "We are happy."
+        输出："We%20are%20happy."
+      */
+
+      function replaceSpace(s) {
+        const str = s.split(' ').join('%20')
+        console.log(str);
+      }
+      replaceSpace("We are happy.");
+    </script>
+  </body>
+</html>
