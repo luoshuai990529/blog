@@ -68,26 +68,47 @@
           }
         }
 
+        // 中序遍历按照节点上的值，以升序访问BST上的所有节点
         inOrder(node) {
           if (node != null) {
+            // 先访问左子树 再访问根节点  最后访问右子树
             this.inOrder(node.left);
             console.log(node.show() + " ");
             this.inOrder(node.right);
+          }
+        }
+        // 先序遍历先访问根节点，然后以同样方式访问左子树和右子树
+        preOder(node){
+          if(node != null){
+            console.log(node.show() + " ");
+            this.preOder(node.left);
+            this.preOder(node.right);
+          }
+        }
+        // 后序遍历先访问叶子节点，从左子树到右子树再到根节点
+        postOrder(node){
+          if(node != null){
+            this.postOrder(node.left)
+            this.postOrder(node.right)
+            console.log(node.show() + " ");
           }
         }
       }
       //
 
       let Tree = new BST(null);
-      Tree.insert(12);
-      Tree.insert(31);
+      Tree.insert(30);
+      Tree.insert(25);
       Tree.insert(65);
-      // Tree.insert(24);
-      // Tree.insert(23);
-      // Tree.insert(99);
-      // console.log("---------------当前Tree树节点：" );
+      Tree.insert(40);
+      Tree.insert(35);
+      Tree.insert(99);
+      console.log("---------------当前Tree树节点：" );
       console.log(Tree);
-      // Tree.inOrder(Tree.root)
+      Tree.inOrder(Tree.root) //中序遍历：25 -> 30 -> 35 -> 40 -> 65 ->99 
+      // Tree.preOder(Tree.root) //前序遍历：30 -> 25 -> 65 -> 40 -> 35 ->99 
+      // Tree.postOrder(Tree.root) //后序遍历：25 -> 35 -> 40 -> 99 -> 65 ->30 
     </script>
+
   </body>
 </html>
