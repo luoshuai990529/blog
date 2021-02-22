@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            {
+            id:1,
+            value:33,
+            leftNode:{
+                parentId:1
+                value:24,
+            },
+            rightNode:{
+                parentId:1,
+                value:50
+            }}
+         */
+
+      class Node {
+        constructor(data, left, right) {
+          this.data = data;
+          this.right = right;
+          this.left = left;
+        }
+        show() {
+          return this.data;
+        }
+      }
+
+      class BST {
+        constructor(root, inOrder) {
+          this.root = root;
+        }
+        // 查找二叉查找树 插入方法
+        insert(data) {
+          const n = new Node(data, null, null);
+          if (this.root === null) {
+            this.root = n;
+          } else {
+            // 如果不是根节点，遍历每一层的树节点
+            let current = this.root;
+            let parent;
+            while (true) {
+              // 每次循环设置根节点为当前节点
+              parent = current;
+              if (data < current.data) {
+                // 如果插入的值小于当前的值，并且left节点为null
+                // 就将该节点插入到 父节点的left节点中
+                current = current.left;
+                if (current == null) {
+                  parent.left = n;
+                  break;
+                }
+              } else {
+                current = current.right;
+                if (current == null) {
+                  // 否则 就将该节点插入到 父节点的right节点中
+                  parent.right = n;
+                  break;
+                }
+              }
+            }
+          }
+        }
+
+        inOrder(node) {
+          if (node != null) {
+            this.inOrder(node.left);
+            console.log(node.show() + " ");
+            this.inOrder(node.right);
+          }
+        }
+      }
+      //
+
+      let Tree = new BST(null);
+      Tree.insert(12);
+      Tree.insert(31);
+      Tree.insert(65);
+      // Tree.insert(24);
+      // Tree.insert(23);
+      // Tree.insert(99);
+      // console.log("---------------当前Tree树节点：" );
+      console.log(Tree);
+      // Tree.inOrder(Tree.root)
+    </script>
+  </body>
+</html>
