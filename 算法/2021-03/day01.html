@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            给你一个字符串 s，它由数字（'0' - '9'）和 '#' 组成。我们希望按下述规则将 s 映射为一些小写英文字符：
+            字符（'a' - 'i'）分别用（'1' - '9'）表示。
+            字符（'j' - 'z'）分别用（'10#' - '26#'）表示。 
+            返回映射之后形成的新字符串。
+
+            题目数据保证映射始终唯一。
+
+            示例 1：
+            输入：s = "10#11#12"
+            输出："jkab"
+            解释："j" -> "10#" , "k" -> "11#" , "a" -> "1" , "b" -> "2".
+
+            示例 2：
+            输入：s = "1326#"
+            输出："acz"
+
+            示例 3：
+            输入：s = "25#"
+            输出："y"
+
+        */
+      /**
+       * @param {string} s
+       * @return {string}
+       */
+      function freqAlphabets(s) {
+        const arr =['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+        let result = ''
+        result = s.replace(/\d\d#/g,(...args)=>{
+            const index = args[0][0]+args[0][1] -1
+            return arr[index]
+        })
+        for (let i = 0; i < result.length; i++) {
+        if(arr[result[i]]){
+            result = result.replace(result[i],arr[result[i]-1])
+        }
+        }
+        return result
+      }
+      const s1 = "10#11#12"
+      freqAlphabets(s1)
+    </script>
+  </body>
+</html>
