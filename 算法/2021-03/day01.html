@@ -50,6 +50,21 @@
       }
       const s1 = "10#11#12"
       freqAlphabets(s1)
+
+      let strArr = "[['a','b'],[1,2,3]]"
+      // 方法一：直接使用JSON转报错 
+      // console.log(JSON.parse(strArr)); 
+
+      // 方法二：使用Function代替eval
+      function formatStrToArray(str){
+        return Function('return'+str)()
+      }
+      let a = 1
+      if(a==1){
+        const arr = formatStrToArray(strArr)
+        console.log('转换后的数组：',arr);
+      }
+
     </script>
   </body>
 </html>
