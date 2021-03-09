@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+            无重复字符串的排列组合。编写一种方法，计算某字符串的所有排列组合，字符串每个字符均不相同。
+            示例1:
+
+            输入：S = "qwe"
+            输出：["qwe", "qew", "wqe", "weq", "ewq", "eqw"]
+            示例2:
+
+            输入：S = "ab"
+            输出：["ab", "ba"]
+        */
+
+      /**
+       * @param {string} S
+       * @return {string[]}
+       */
+      const S = "qwe";
+      permutation(S);
+      function permutation(S) {
+        let wordArr = S.split("");
+        let len = wordArr.length;
+        let newArr = [];
+        dfs(0);
+
+        function dfs(k) {
+          if (k == len) {
+            console.log(`添加的字符串：${wordArr.join("")}`);
+            newArr.push(wordArr.join(""));
+            return;
+          }
+          for (let i = k; i < len; i++) {
+            console.log(`要替换的位置--：${wordArr[i]}, ${wordArr[k]}`);
+            [wordArr[i], wordArr[k]] = [wordArr[k], wordArr[i]];
+            debugger;
+            dfs(k + 1);
+            [wordArr[i], wordArr[k]] = [wordArr[k], wordArr[i]];
+          }
+        }
+        console.log(newArr);
+        return newArr
+      }
+    </script>
+  </body>
+</html>
