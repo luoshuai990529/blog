@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        /* 
+            数组的缺点：
+                数组不总是组织数据结构的最佳数据结构，因为：
+                    1.数组的长度是固定的，当数组已被填满的时候，要再加入新的元素就会非常困难  
+                    2.在数组中添加或者删除元素也很麻烦，因为需要将数组的其他元素前移或者后移
+                    (JavaScript中的数组不存在上述问题，因为使用splice方法不需要在访问数组的其他元素了)
+
+            JavaScript中的数组与其他语言相比效率非常低
+            如果发现数组在实际使用的时候非常慢，就可以考虑链表来代替他。
+            除了对数据的随机访问，链表几乎可以用在任何可以使用一维数组的情况中，如果需要随机访问，数组仍然是最好的选择
+        */
+
+        // 定义链表：链表是由一组节点组成的集合。每个节点都使用一个对象的引用指向它的后继。指向另一个节点的引用叫做链
+        /* 
+         下面链表中的元素靠相互之间的关系进行引用。
+         例：Milk => Bread => Eggs => Bacon => null   (在这里我们说Bread跟在Milk的后面，而不说bread是链表中的第二个元素)
+         遍历链表：就是跟着链接，从链表的首元素一直走到尾元素(这里不包含头节点，头节点常常作为链表的接入点)
+        
+         然而要标识出链表的起始节点却有点麻烦，许多链表的实现都在链表最前面有一个特殊节点，叫做头节点
+         上面的例子经过改造后：Header => Milk => Bread => Eggs => Bacon => null
+         
+         向链表中插入和删除节点与元素的效率都是非常高的
+         */
+
+        // 设计一个基于对象的链表
+        /* 
+         设计的链表包含两个类：
+            1.Node类用来表示节点
+            2.LinkedList类提供了插入节点、删除节点、显示列表元素的方法
+        */
+
+        //一、 Node类包含两个属性：element用来保存节点上的数据、next用来保存指向下一个节点链接
+        function Node(element) {
+            this.element = element;
+            this.next = null;
+        }
+
+        // 二、 LinkedList类：这个类提供了对链表进行操作的方法。该类的功能包括插入删除节点、在列表中查找给定的值
+        // 链表只有一个属性，那就是使用一个Node对象来保存该链表的头节点
+        // head节点的next属性被初始化为null，当有新元素插入，next会指向新的元素，因此这里没有修改next的值
+        function LinkedList() {
+            this.head = new Node("head");
+            this.find = find;
+            this.insert = insert;
+            this.remove = remove;
+            this.findPrevious = findPrevious;
+            this.display = display;
+        }
+
+        // 01-实现insert方法：插入一个新的节点(在哪个节点的前面或者后面插入)
+        // 在一个已知节点后面插入元素时候，先要找到“后面”的节点。
+        // 为此，创建一个find()，该方法遍历链表，查找给定数据，该方法就后返回保存搞数据的节点：
+        function find(item) {
+            // 1.创建一个新节点，且将链表的头节点赋给这个新创建的节点。
+            let currNode = this.head;
+            // 2.然后在链表上进行循环：如果当前节点的element与我们要找的信息不符，就从当前节点移动到下一个节点，否则返回null
+            while (currNode.element != item) {
+                currNode = currNode.next;
+            }
+            return currNode;
+        }
+
+        // 一旦找到“后面的节点”，就将新节点插入链表。
+        // 首先，将新节点的next属性设置为“后面”节点的next属性对应的值。
+        // 然后设置“后面”节点的next属性指向新节点
+
+        function insert(newElement, item) {
+            let newNode = new Node(newElement);
+            let current = this.find(item);
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+
+        // 现在可以开始测试我们的链表实现了，测试之前，先来定义一个display()方法，显示链表中的元素
+        function display() {
+            // 1.将列表的头节点赋值给一个变量
+            let currNode = this.head;
+            // 2.循环遍历链表，当前节点的next属性为null的时候循环结束
+            while (!(currNode.next == null)) {
+                // 3.为了只显示包含数据的节点(不显示头节点)，程序只访问当前节点的下一个节点中保存的数据
+                console.log(currNode.next.element);
+                currNode = currNode.next;
+            }
+        }
+
+        /* 
+         从链表中删除一个节点
+         1.先需要找到待删除节点前面的节点。
+         2.修改它(待删除节点前面的节点)的next属性，使其不再指向待删除节点，而是指向待删除节点的下一个节点(可以定义一个findPrevious()来做这件事)
+         3.findPrevious()：遍历链表，检查每一个节点的下一个节点中是否存储着待删除数据。
+         4.如果找到了待删除数据，返回该节点(即“前一个”节点)，这样就可以修改它的next属性了
+        */
+        function findPrevious(item) {
+            let currNode = this.head;
+            while (!(currNode.next == null) && (currNode.next.element != item)) {
+                currNode = currNode.next
+            }
+            return currNode;
+        }
+
+        // 写remove方法
+        function remove(item) {
+            let prevNode = this.findPrevious(item);
+            if (!(prevNode.next == null)) {
+                // 这里跳过了待删除节点，让“前一个”节点指向了待删除节点的后一个节点
+                prevNode.next = prevNode.next.next;
+            }
+        }
+
+        let cities = new LinkedList();
+        cities.insert("Conway", "head");
+        cities.insert("Russellville", "Conway");
+        cities.insert("Alma", "Russellville");
+        cities.insert("Carlisle", "Alma");
+        console.log(cities);
+        cities.display();
+        console.log('---------------------');
+        // 删除Alma节点
+        cities.remove("Alma")
+        console.log(cities);
+        cities.display()
+    </script>
+</body>
+
+</html>
