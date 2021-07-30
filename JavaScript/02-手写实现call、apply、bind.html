@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const person = {
+        name: '李四',
+        say: function (message = '你好', ...args) {
+          const result = this.name ? `${this.name}正在说${message}` : this;
+          console.log(result, `${message}`, JSON.stringify(args));
+        },
+      };
+      //   person.say();
+      //   通过call改变this
+      //   person.say.call({ name: '张三' }, '我叫张三');
+      //   person.say.call(null, '传个null', 66, 77);
+      person.say.call(1, '传个1');
+      //   person.say.call();
+      console.log('==============手写实现===============');
+      /* 
+			手写实现call
+		*/
+      Function.prototype.myCall = function (context, ...args) {
+        // contenxt 要改变的this指向
+        // this 原函数
+        // args 参数
+        if (context === null || context === undefined) {
+          context = Window;
+        } else {
+          context = Object(context);
+        }
+        const uniquePrototype = Symbol('lewisPrototypeSymbol');
+        context[uniquePrototype] = this;
+        const result = context[uniquePrototype](...args);
+        delete context[uniquePrototype];
+        // console.log(context);
+        return result;
+      };
+      person.say.myCall({ name: '张三' }, '我叫张三', 1, 2, 3);
+      person.say.myCall(1, '传个1');
+    </script>
+  </body>
+</html>
