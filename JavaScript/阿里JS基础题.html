@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 实现一个函数 将arr 转换为树状结构的数据
+      const arr = [
+        { id: 1, name: '$1' },
+        { id: 2, name: '$2', parentId: 1 },
+        { id: 3, name: '$3', parentId: 4 },
+        { id: 4, name: '$4', parentId: 2 },
+        { id: 5, name: '$5', parentId: 3 },
+        { id: 6, name: '$5' },
+        { id: 7, name: '$6', parentId: 6 },
+      ];
+      arr2Tree(arr);
+      function arr2Tree(arr) {
+        const parentNodes = arr.filter((item) => !item.parentId); // 所有父节点
+        const childrenNodes = arr.filter((item) => item.parentId); // 所有子节点
+        // let count = 0
+        function dfs(parentNodes, childrenNodes) {
+          // 遍历父节点
+          parentNodes.forEach((pNode) => {
+            // pNode.childrens = [];
+            childrenNodes.forEach((cNode, index) => {
+              //    count++
+              if (cNode.parentId === pNode.id) {
+                let temp = JSON.parse(JSON.stringify(childrenNodes));
+                temp.splice(index, 1);
+                dfs([cNode], temp);
+                pNode.childrens && Array.isArray(pNode.childrens) ? pNode.childrens.push(cNode) : (pNode.childrens = [cNode]);
+              }
+            });
+          });
+        }
+        return parentNodes;
+        dfs(parentNodes, childrenNodes);
+      }
+
+      //   使用reduce转换下列数组结构
+      const input = [
+        { name: 'zhao', age: 20 },
+        { name: 'qian', age: 30 },
+      ];
+      const reuslt = input.reduce((prev, curv) => {
+        prev[curv.name] = curv;
+        return prev;
+      }, {});
+      console.log(reuslt);
+    </script>
+  </body>
+</html>
