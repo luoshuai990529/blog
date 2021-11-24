@@ -1,0 +1,65 @@
+<!--
+ * @Date: 2021-11-24 22:29:40
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-11-24 23:32:30
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            二分查找
+            给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，
+            写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1
+
+            输入: nums = [-1,0,3,5,9,12,14], target = 9
+            输出: 4
+            解释: 9 出现在 nums 中并且下标为 4
+
+            输入: nums = [-1,0,3,5,9,12], target = 2
+            输出: -1
+            解释: 2 不存在 nums 中因此返回 -1
+         */
+
+      /**
+       * @param {number[]} nums
+       * @param {number} target
+       * @return {number}
+       */
+      var search = function (nums, target) {
+        let startIndex = 0; // 开始索引
+        let endIndex = nums.length - 1; // 结束索引
+
+        function getIndex(startIndex, endIndex) {
+          console.log("getIndex-", startIndex, endIndex);
+          let midIndex = Math.floor((startIndex + endIndex) / 2); // 中间索引 2
+          if (startIndex === endIndex && nums[startIndex] !== target) {
+            return -1;
+          }
+          if (target === nums[midIndex]) {
+            return midIndex;
+          }
+
+          if (target > nums[midIndex]) {
+            // 比较右边的  midIndex+1 endIndex
+            return getIndex(midIndex + 1, endIndex);
+          } else {
+            // 比较左边的 0 midIndex-1
+            return getIndex(startIndex, midIndex - 1);
+          }
+        }
+        return getIndex(startIndex, endIndex);
+      };
+      const nums = [-1, 0, 3, 5, 9, 12],
+        target = 9;
+      const res = search(nums, target);
+      console.log("res-", res);
+    </script>
+  </body>
+</html>
