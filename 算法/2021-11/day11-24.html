@@ -1,7 +1,7 @@
 <!--
  * @Date: 2021-11-24 22:29:40
- * @LastEditors: Lewis
- * @LastEditTime: 2021-11-25 00:09:22
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-11-25 20:14:29
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -37,10 +37,13 @@
         let endIndex = nums.length - 1; // 结束索引
 
         function getIndex(startIndex, endIndex) {
-          console.log("getIndex-", startIndex, endIndex);
+          // console.log("getIndex-", startIndex, endIndex);
           let midIndex = Math.floor((startIndex + endIndex) / 2); // 中间索引 2
-          console.log("midIndex-", nums[midIndex]);
-          if (startIndex === endIndex && nums[startIndex] !== target || startIndex>endIndex) {
+          // console.log("midIndex-", nums[midIndex]);
+          if (
+            (startIndex === endIndex && nums[startIndex] !== target) ||
+            startIndex > endIndex
+          ) {
             return -1;
           }
           if (target === nums[midIndex]) {
@@ -57,10 +60,31 @@
         }
         return getIndex(startIndex, endIndex);
       };
-      const nums = [-1,0,3,5,9,12],
+      const nums = [-1, 0, 3, 5, 9, 12],
         target = 9;
       const res = search(nums, target);
       console.log("res-", res);
+
+      // 官方解答 用while优化代码
+      const search2 = function (nums, target) {
+        let start = 0,
+          end = nums.length - 1;
+        while (start <= end) {
+          const mid = Math.floor((end - start) / 2) + start;
+          const val = nums[mid];
+          if (val === target) {
+            return mid;
+          }
+          if (val > target) {
+            end = mid - 1;
+          } else {
+            start = mid + 1;
+          }
+        }
+        return -1;
+      };
+      const res2 = search2(nums, target);
+      console.log("res2---", res2);
     </script>
   </body>
 </html>
