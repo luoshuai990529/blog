@@ -1,0 +1,71 @@
+<!--
+ * @Date: 2021-11-25 23:28:12
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-11-26 00:33:41
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * Definition for isBadVersion()
+       *
+       * @param {integer} version number
+       * @return {boolean} whether the version is bad
+       * isBadVersion = function(version) {
+       *     ...
+       * };
+       * 
+            输入：n = 5, bad = 4
+            [1,2,3,4,5]
+            输出：4
+            解释：
+            调用 isBadVersion(3) -> false 
+            调用 isBadVersion(5) -> true 
+            调用 isBadVersion(4) -> true
+            所以，4 是第一个错误的版本。
+
+
+            输入：n = 1, bad = 1
+            输出：1
+       */
+
+      /**
+       * @param {function} isBadVersion()
+       * @return {function}
+       */
+      var solution = function (isBadVersion) {
+        /**
+         * @param {integer} n Total versions
+         * @return {integer} The first bad version
+         */
+        return function (n) {
+          let start = 1; // 左边版本
+          let end = n; // 右边版本
+          while (start < end) {
+            // 中间版本
+            let midVersion = Math.floor(start + (end - start) / 2);
+            if (isBadVersion(midVersion)) {
+              // 是的话就 缩紧右边
+              end = midVersion;
+            } else {
+              // 不是就 缩紧左边
+              start = midVersion + 1;
+            }
+          }
+          return start
+        };
+      };
+      const isBadVersion = solution(3)(2);
+      console.log("isBadVersion--", isBadVersion); // 2  [1,2,3]
+
+      //   [1,2,3,4,5]
+    </script>
+  </body>
+</html>
