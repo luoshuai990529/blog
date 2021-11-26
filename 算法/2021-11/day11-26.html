@@ -2,8 +2,8 @@
  * @Description: 
  * @Date: 2021-11-26 19:08:34
  * @Author: luoshuai
- * @LastEditors: luoshuai
- * @LastEditTime: 2021-11-26 19:14:02
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-11-26 23:07:49
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -43,11 +43,27 @@
        * @return {number}
        */
       var searchInsert = function (nums, target) {
-        
+        let startIndex = 0;
+        let endIndex = nums.length - 1;
+        while (startIndex <= endIndex) {
+          let mid = Math.floor((endIndex - startIndex) / 2) + startIndex;
+          let val = nums[mid];
+          if (target === val) {
+            return mid;
+          }
+          if (target > val) {
+            // 要插入的位置在 mid 后面
+            startIndex = mid + 1;
+          } else {
+            // 要插入的位置在 mid 前面
+            endIndex = mid - 1;
+          }
+        }
+        return startIndex;
       };
-      
+
       const nums = [1, 3, 5, 6],
-        target = 5;
+        target = 0;
       console.log("searchInsert---", searchInsert(nums, target));
     </script>
   </body>
