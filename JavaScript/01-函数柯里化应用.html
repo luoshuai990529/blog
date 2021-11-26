@@ -1,3 +1,11 @@
+<!--
+ * @Author: Lewis
+ * @Date: 2021-10-07 23:14:05
+ * @LastEditTime: 2021-11-26 14:45:40
+ * @LastEditors: luoshuai
+ * @Description: 函数柯里化
+ * @FilePath: 
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,39 +31,46 @@
         });
       };
       const result = fn(1, 2, 3, 4, 5);
-      console.log('result-', result);
+      console.log("result-", result);
 
       /**
-       * 将函数柯里化
-       * @param fn    待柯里化的原函数
-       * @param len   所需的参数个数，默认为原函数的形参个数
+       * @description: 来自 30 seconds of code 的柯里化函数
+       * @param {*}
+       * @return {*}
+       * 
        */
-      function curry(fn, len = fn.length) {
-        return _curry.call(this, fn, len);
+      const curry = (fn, arity = fn.length, ...args) => {
+        return arity <= args.length ? fn(...args) : curry.bind(null, fn, arity, ...args);
       }
+
+      // 示例
+      const res1 = curry(Math.pow)(2)(10); // 1024
+      const res2 = curry(Math.min, 3)(10)(50)(2); // 2
+      console.log("res1-", res1);
+      console.log("res2-", res2);
+      // 使用curry函数 柯里化fn
+      const curryFn = curry(fn)(1)(2)(3)(4)(5)
+      const curryFn2 = curry(fn,5)(1)(2)(3)(4)(5)
+      console.log("curryFn---",curryFn);
+      console.log("curryFn2---",curryFn2);
+
       /**
-       * 中转函数
-       * @param fn    待柯里化的原函数
-       * @param len   所需的参数个数
-       * @param args  已接收的参数列表
+       * @description: 传入一个被校验的值 和正则，通过则返回这个值 不通过则返回null
+       * @param { RegExp } 正则
+       * @param { val } 被校验的值
+       * @return {*}
+       * 
        */
-      function _curry(fn, len, ...args) {
-        return function (...params) {
-          let _args = [...args, ...params];
-
-		  if (_args.length >= len) {
-			  // 达到原函数的参数 就返回结果
-			  return fn.apply(this, _args);
-			} else {
-			  // 如果当前的参数长度，还是没有原函数接收参数的长度 那么就继续返回一个函数
-            return _curry.call(this, fn, len, ..._args);
-          }
-        };
+      const validator = (reg, val) => {
+        return reg.test(val) ? val : null
       }
-
-      const curryFn = curry(fn);
-	  const curryRes = curryFn(1, 2)(3)(4)(5)
-      console.log('curryRes---',curryRes);
+      // 将validator函数 柯里化
+      const phoneReg = /1\d{10}/
+      const val = 18374723577
+      // 将原本接收两个值的validator 变成 接收一个参数的函数
+      const validatorCurry = curry(validator)
+      const validatorResult = validatorCurry(phoneReg)(val)
+      console.log("validatorResult----", validatorResult);
     </script>
   </body>
 </html>
