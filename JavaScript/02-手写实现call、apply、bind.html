@@ -97,6 +97,22 @@
         return result; // 返回函数执行结果
       };
       person.say.myApply({ name: '张三' }, ['666', '777']);
+
+      // 实现bind ：和apply的区别其实就是返回一个函数
+      Function.prototype.myBind = function(context){
+        const [c , ...args]  = arguments
+        return ()=>this.myApply(context, args)
+      }
+      let personA = {
+        name:"大A",
+        say(name){
+          console.log(`${name}你好我叫${this.name}`)
+        }
+      }
+      // personA.say('帅哥')
+      // const newPersonA = personA.say.myCall({name:"大B"},"美女")
+      const newPersonA = personA.say.myBind({name:"大B"},"美女")
+      setTimeout(newPersonA,3000)
     </script>
   </body>
 </html>
