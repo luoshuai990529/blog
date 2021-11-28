@@ -1,0 +1,102 @@
+<!--
+ * @Date: 2021-11-28 21:18:23
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-11-28 23:38:32
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+              给你一个数组，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
+
+              输入: nums = [1,2,3,4,5,6,7], k = 3
+              输出: [5,6,7,1,2,3,4]
+              解释:
+              向右轮转 1 步: [7,1,2,3,4,5,6]
+              向右轮转 2 步: [6,7,1,2,3,4,5]
+              向右轮转 3 步: [5,6,7,1,2,3,4]
+
+              输入：nums = [-1,-100,3,99], k = 2
+              输出：[3,99,-1,-100]
+              解释:
+              向右轮转 1 步: [99,-1,-100,3]
+              向右轮转 2 步: [3,99,-1,-100]
+
+            */
+
+      /**
+       * @param {number[]} nums
+       * @param {number} k
+       * @return {void} Do not return anything, modify nums in-place instead.
+       */
+
+      let nums = [1, 2, 3, 4, 5, 6],
+        k = 11;
+
+      const reverse = (nums, start, end) => {
+        while (start < end) {
+          const temp = nums[start];
+          nums[start] = nums[end];
+          nums[end] = temp;
+          start += 1;
+          end -= 1;
+        }
+      };
+
+      function rotate(nums, k) {
+        // // 思路：看作一个循环队列   耗时太长，未通过
+        // if (k === 0 || nums.length === 0) return;
+        // let count =
+        //   k > nums.length ? (k % nums.length === 0 ? 1 : k % nums.length) : k;
+        // console.log("count-", count);
+        // for (let i = 0; i < count; i++) {
+        //   console.log("log");
+        //   const temp = nums.pop();
+        //   nums.unshift(temp);
+        // }
+
+        // 官方解法1 ：使用额外的数组
+        // 我们可以使用额外的数组来将每个元素放至正确的位置。用 nn 表示数组的长度，我们遍历原数组，将原数组下标为 ii 的元素放至新数组下标为 (i+k)\bmod n(i+k)modn 的位置，最后将新数组拷贝至原数组即可。
+        const n = nums.length;
+        const newArr = new Array(n);
+        for (let i = 0; i < n; ++i) {
+          newArr[(i + k) % n] = nums[i];
+        }
+        for (let i = 0; i < n; ++i) {
+          nums[i] = newArr[i];
+        }
+
+        // 官方解法3：数组翻转
+        /*
+              该方法基于如下的事实：当我们将数组的元素向右移动 kk 次后，尾部 k\bmod nkmodn 个元素会移动至数组头部，其余元素向后移动 k\bmod nkmodn 个位置。
+              该方法为数组的翻转：我们可以先将所有元素翻转，这样尾部的 k\bmod nkmodn 个元素就被移至数组头部，然后我们再翻转 [0, k\bmod n-1][0,kmodn−1] 区间的元素和 [k\bmod n, n-1][kmodn,n−1] 区间的元素即能得到最后的答案。
+              我们以 n=7n=7，k=3k=3 为例进行如下展示：
+
+              操作	结果
+              原始数组	1~2~3~4~5~6~71 2 3 4 5 6 7
+              翻转所有元素	7~6~5~4~3~2~17 6 5 4 3 2 1
+              翻转 [0, k\bmod n - 1][0,kmodn−1] 区间的元素	5~6~7~4~3~2~15 6 7 4 3 2 1
+              翻转 [k\bmod n, n - 1][kmodn,n−1] 区间的元素	5~6~7~1~2~3~45 6 7 1 2 3 4
+
+              */
+
+        // var rotate = function (nums, k) {
+        //   k %= nums.length;
+        //   reverse(nums, 0, nums.length - 1);
+        //   reverse(nums, 0, k - 1);
+        //   reverse(nums, k, nums.length - 1);
+        // };
+      }
+
+      rotate(nums, k);
+      console.log("result - ", nums);
+    </script>
+  </body>
+</html>
