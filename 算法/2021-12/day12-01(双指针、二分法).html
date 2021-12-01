@@ -2,8 +2,8 @@
  * @Description: 这是***页面（组件）
  * @Date: 2021-12-01 19:51:14
  * @Author: luoshuai
- * @LastEditors: luoshuai
- * @LastEditTime: 2021-12-01 20:14:18
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-01 23:06:38
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -38,30 +38,45 @@
        * @return {number[]}
        */
       var twoSum = function (numbers, target) {
-        //   思路：双指针
-        let A = 0,
-          B = 1;
-        let limit = numbers.length;
-        while (A < limit) {
-          if (numbers[B] + numbers[A] === target) {
-            return [A + 1, B + 1];
+        //   思路：暴力枚举法
+        // let A = 0,
+        //   B = 1;
+        // let limit = numbers.length;
+        // while (A < limit) {
+        //   if (numbers[B] + numbers[A] === target) {
+        //     return [A + 1, B + 1];
+        //   }
+        //   if (B === limit - 1) {
+        //     A++;
+        //     B = A + 1;
+        //   } else {
+        //     B++;
+        //   }
+        // }
+
+        // 思路：双指针 因为是升序数组
+        // 如果两个元素之和小于目标值，则将左侧指针右移一位。
+        // 如果两个元素之和大于目标值，则将右侧指针左移一位。
+        let left = 0,
+          right = numbers.length - 1;
+        while (left < right) {
+          if (numbers[left] + numbers[right] === target) {
+            return [left + 1, right + 1];
           }
-          if (B === limit - 1) {
-            A++;
-            B = A + 1;
+          if (numbers[left] + numbers[right] > target) {
+            right--;
           } else {
-            B++;
+            left++;
           }
         }
       };
-      //   let numbers = [2, 7, 11, 15],
-      //     target = 9;
-      let numbers = [5, 25, 75],
-        target = 100;
+      let numbers = [2, 7, 11, 15],
+        target = 9;
+      // let numbers = [5, 25, 75],
+      //   target = 100;
       //   let numbers = [-1, 0],
       //     target = -1;
       console.log("result---", twoSum(numbers, target));
-
     </script>
   </body>
 </html>
