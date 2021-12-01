@@ -1,0 +1,35 @@
+<!--
+ * @Description: 这是正则表达式笔记
+ * @Date: 2021-12-01 14:59:01
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-12-01 19:43:12
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /***
+       * 为什么要学习正则？
+       *    正则可以帮助我们从字符串中匹配出指定的字符，从而在很多常见中都能有所应用
+       *    比如表单校验，当我们填写 姓名、手机号、生日、身份证...等信息时 要保证其值合法，我们就可以通过正则来达到目的
+       *    除了表单校验，还有一些其他常见的场景：如筛选特定的字符串、提取一个特殊的url...
+       *    所以 学好正则表达式 吾辈义不容辞！😎😎😎
+       *
+       */
+      // 1. 构建正则的两种方法
+
+      // a. 使用一个正则表达式字面量，其由包含在斜杠之间的模式组成。当正则表达式保持不变时，使用此方法可获得更好的性能。
+      var re = /ab+c/;
+      // b. 使用构造函数创建，如果正则表达式将会改变，或者将会从用户输入动态产生就用构造函数生成正则
+      var re = new RegExp("ab+c");
+    </script>
+  </body>
+</html>
