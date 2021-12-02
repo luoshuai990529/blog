@@ -3,7 +3,7 @@
  * @Date: 2021-12-01 14:59:01
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2021-12-01 19:43:12
+ * @LastEditTime: 2021-12-02 19:12:19
 -->
 
 <!DOCTYPE html>
@@ -30,6 +30,32 @@
       var re = /ab+c/;
       // b. 使用构造函数创建，如果正则表达式将会改变，或者将会从用户输入动态产生就用构造函数生成正则
       var re = new RegExp("ab+c");
+
+      // 2. 入门
+      
+      // 如何查找一个字符串中的 "hi", 我们可以使用正则表达式 /hi/ 
+      // 释义：它可以精确的匹配到这样的字符：hi、Hi、hI、HI、甚至单词中的history的"hi"后也会找出来
+      var reg = /hi/
+      var str = 'hello Maryy! your history book is here'
+      reg.test(str) // true
+      
+      // 问题1：如何精确匹配整个 "hi" 单词？ 使用正则表达式：/\bhi\b/
+      // 解释： /b 是正则中的特殊代码（元字符），代表着单词的开头或结尾，也就是单词的分界处，但是\b并不匹配这些单词分隔字符中的任何一个，它只匹配一个位置。
+      var reg = /\bhi\b/
+      var str = 'hello Maryy! your history book is here'
+      reg.test(str) // false
+      
+      // 问题2：如何匹配到 hi后面不远处跟着一个Lucy？ 使用正则表达式： /\bhi\b.*\bLucy\b/
+      /* 
+        释义： . 是一个元字符，匹配除了换行符以外的任意单个字符。
+               * 同样是元字符，匹配前一个表达式0次或多次，等价于{0,}
+               .* 就解释为 任意个除换行符以外的任意单个字符
+      */
+      var reg = /\bhi\b.*\bLucy\b/
+      var str = 'woo ,hi Lucy,your book is here' 
+      var str1 = 'woo 1hi Lucy your book is here' 
+      reg.test(str1) // true
+      console.log("reg.test(str1)---", reg.test(str1));
     </script>
   </body>
 </html>

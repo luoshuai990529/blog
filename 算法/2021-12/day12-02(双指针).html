@@ -1,0 +1,52 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-02 19:14:17
+ * @Author: luoshuai
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-02 21:27:10
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        今天发烧了 emo了
+
+        编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
+        不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+
+        输入：s = ["h","e","l","l","o"]
+        输出：["o","l","l","e","h"]
+
+        输入：s = ["H","a","n","n","a","h"]
+        输出：["h","a","n","n","a","H"]
+        
+        */
+      /**
+       * @param {character[]} s
+       * @return {void} Do not return anything, modify s in-place instead.
+       */
+      var reverseString = function (s) {
+        let left = 0,
+          right = s.length - 1;
+        while (left < right) {
+          let temp = s[right];
+          s[right] = s[left];
+          s[left] = temp;
+          left++;
+          right--;
+        }
+      };
+      let s1 = ["h","e","l","l","o"]
+      let s2 = ["H","a","n","n","a","h"]
+      reverseString(s2)
+      console.log("s1---", s2);
+    </script>
+  </body>
+</html>
