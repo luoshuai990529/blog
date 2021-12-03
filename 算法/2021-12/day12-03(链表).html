@@ -1,0 +1,93 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-03 10:51:06
+ * @Author: luoshuai
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-03 21:44:35
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+
+          给定一个字符串，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。
+
+          输入："Let's take LeetCode contest"
+          输出："s'teL ekat edoCteeL tsetnoc"
+      */
+
+      /**
+       * @param {string} s
+       * @return {string}
+       */
+      var reverseWords = function (str) {
+        // 思路： 先切割把每个单词存入数组，再对每个单词进行翻转
+        function reverse(word) {
+          let empty = "";
+          for (let i = word.length - 1; i >= 0; i--) {
+            empty += word[i];
+          }
+          return empty;
+        }
+
+        const res = str.split(" ").reduce((prev, cur) => {
+          return prev ? prev + " " + reverse(cur) : reverse(cur);
+        }, "");
+        return res;
+      };
+      let str = "Let's take LeetCode contest";
+      console.log(reverseWords(str));
+
+      /* 
+        给定一个头结点为 head 的非空单链表，返回链表的中间结点。
+        如果有两个中间结点，则返回第二个中间结点。
+
+        输入：[1,2,3,4,5]
+        输出：此列表中的结点 3 (序列化形式：[3,4,5])
+        返回的结点值为 3 。 (测评系统对该结点序列化表述是 [3,4,5])。
+        注意，我们返回了一个 ListNode 类型的对象 ans，这样：
+        ans.val = 3, ans.next.val = 4, ans.next.next.val = 5, 以及 ans.next.next.next = NULL.
+
+        输入：[1,2,3,4,5,6]
+        输出：此列表中的结点 4 (序列化形式：[4,5,6])
+        由于该列表有两个中间结点，值分别为 3 和 4，我们返回第二个结点。
+
+
+      */
+
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val, next) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.next = (next===undefined ? null : next)
+       * }
+       */
+      /**
+       * @param {ListNode} head
+       * @return {ListNode}
+       */
+      var middleNode = function (head) {
+        // 思路：先将链表存入数组中，从而得到中间索引，最终return
+        let list = [];
+        let newHeade = head;
+        while (head) {
+          list.push(head.val);
+          head = head.next;
+        }
+        let mid = Math.ceil((list.length - 1) / 2);
+        while (mid > 0) {
+          newHeade = newHeade.next;
+          mid--;
+        }
+        return newHeade;
+      };
+    </script>
+  </body>
+</html>
