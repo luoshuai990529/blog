@@ -1,0 +1,63 @@
+<!--
+ * @Date: 2021-12-04 22:38:07
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-06 21:36:56
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+        输入：head = [1,2,3,4,5], n = 2
+        输出：[1,2,3,5]
+
+        输入：head = [1], n = 1
+        输出：[]
+
+        输入：head = [1,2], n = 1
+        输出：[1]
+                
+         */
+
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val, next) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.next = (next===undefined ? null : next)
+       * }
+       */
+      /**
+       * @param {ListNode} head
+       * @param {number} n
+       * @return {ListNode}
+       */
+      var removeNthFromEnd = function (head, n) {
+        let slow = head,
+          fast = head;
+        // 先让快指针前进n步
+        while (n > 0) {
+          fast = fast.next;
+          n--;
+        }
+        if (!fast) {
+          // 如果快指针已经超过链表，说明头结点就是倒数第n个节点
+          return head.next;
+        }
+        while (fast.next) {
+          slow = slow.next;
+          fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return head;
+      };
+    </script>
+  </body>
+</html>
