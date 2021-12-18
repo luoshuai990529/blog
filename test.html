@@ -1,0 +1,29 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-10-07 23:13:38
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-12-01 19:50:45
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 	10个以内纯汉字或20个以内纯字母或符号
+      //  中文名10个汉字内；纯英文名20个字母内；中文和字母混合按中文名算，10个字内
+      const $checkNameReg = /^[\u4E00-\u9FA5]+$|^[a-zA-Z]+[\u4E00-\u9FA5]+$|^[\u4E00-\u9FA5]+[a-zA-Z]+$|^[a-zA-Z]+$/;
+      console.log($checkNameReg.test('嘎啦阿萨德a撒'));
+      // phone_number.DATA	电话	17位以内，数字、符号	电话号码，例：+86-0766-66888866
+      const $isMob=/^1[34578]{1}\d{9}$/;// 电话 18374723577
+      const $isTel=/^([0-9]{3,4}-)?[0-9]{7,8}$/; // 座机
+      
+
+    </script>
+  </body>
+</html>
