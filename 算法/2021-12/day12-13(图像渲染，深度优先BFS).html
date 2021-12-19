@@ -3,7 +3,7 @@
  * @Date: 2021-12-13 16:18:16
  * @Author: luoshuai
  * @LastEditors: Lewis
- * @LastEditTime: 2021-12-19 01:42:27
+ * @LastEditTime: 2021-12-19 15:31:11
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -51,10 +51,11 @@
        * @return {number[][]}
        */
       var floodFill = function (image, sr, sc, newColor) {
+        // 思路：深度优先搜索
         const initValue = image[sr][sc];
         image[sr][sc] = newColor;
-        const total = [];
-        function updateQueue(sr, sc) {
+        const total = []; // 总队列 用于判断 坐标是否已经进行检查过
+        function dfs(sr, sc) {
           const queue = [];
           let position = {
             top: [sr - 1, sc],
@@ -64,7 +65,8 @@
           };
           for (const key in position) {
             const indexs = position[key];
-            if ( indexs[0] < 0 || indexs[1] < 0 || indexs[0] > image.length - 1 || indexs[1] > image[0].length - 1) {
+            if ( indexs[0] < 0 || indexs[1] < 0 || indexs[0] > image.length - 1 || indexs[1] > image[0].length - 1 ) {
+              // 该像素点已经超出范围
               continue;
             }
             const cur = image[indexs[0]][indexs[1]];
@@ -73,17 +75,18 @@
               image[indexs[0]][indexs[1]] = newColor;
             }
           }
-          console.log("queue---",queue ,total);
+          console.log("queue---", queue, total);
           for (let i = 0; i < queue.length; i++) {
             if (total.indexOf(JSON.stringify(queue[i])) !== -1) {
+              // 检查当前坐标 queue[i] 是否进行过检查
               continue;
             }
             total.push(JSON.stringify(queue[i]));
-            updateQueue(queue[i][0], queue[i][1]);
+            dfs(queue[i][0], queue[i][1]);
           }
         }
-        updateQueue(sr, sc);
-        console.log("ok");
+        dfs(sr, sc);
+
         return image;
       };
 
@@ -92,14 +95,51 @@
         [1, 1, 0],
         [1, 0, 1],
       ];
-      // const image = [
-      //   [0, 0, 0],
-      //   [0, 1, 1],
-      // ];
       const sr = 1,
         sc = 1,
         newColor = 2;
-      console.log("result---", floodFill(image, sr, sc, newColor));
+      // console.log("result---", floodFill(image, sr, sc, newColor));
+
+      // 官方解法 JavaScript  深度优先搜索
+      function floodFill2(image, sr, sc, newColor) {
+        const dx = [1, 0, 0, -1];
+        const dy = [0, 1, -1, 0];
+        const currColor = image[sr][sc]; // 初始颜色
+        if (currColor !== newColor) {
+          // 当初始颜色 和 新颜色 不相等的时候才进行dfs，否则直接返回image
+          // 因为如果相等(currColor=2,newColor=2)，则上下左右四个方向的值不等于2或者等于2，根据题意也不需要继续搜索
+          dfs(image, sr, sc, currColor, newColor);
+        }
+
+        function dfs(image, x, y, color, newColor) {
+          // console.log("dfs-", image);
+          if (image[x][y] === color) {
+            image[x][y] = newColor; //如果 当前坐标的颜色 和 新颜色不一样，则修改当前颜色
+            for (let i = 0; i < 4; i++) {
+              // 四个方向上下左右 循环
+              const mx = x + dx[i], my = y + dy[i];
+              if (mx >= 0 && mx < image.length && my >= 0 && image[0].length) {
+                dfs(image, mx, my, color, newColor);
+              }
+            }
+          }
+        }
+        return image
+      }
+
+      console.log(
+        "result---",
+        floodFill2(
+          [
+            [1, 1, 1],
+            [1, 2, 0],
+            [1, 0, 1],
+          ],
+          1,
+          1,
+          2
+        )
+      );
     </script>
   </body>
 </html>

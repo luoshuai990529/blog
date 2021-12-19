@@ -1,0 +1,130 @@
+<!--
+ * @Date: 2021-12-19 17:28:06
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-19 22:51:51
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            给定两个二叉树，想象当你将它们中的一个覆盖到另一个上时，两个二叉树的一些节点便会重叠。
+            你需要将他们合并为一个新的二叉树。
+            合并的规则是如果两个节点重叠，那么将他们的值相加作为节点合并后的新值，否则不为 NULL 的节点将直接作为新二叉树的节点。
+
+        */
+
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val, left, right) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.left = (left===undefined ? null : left)
+       *     this.right = (right===undefined ? null : right)
+       * }
+       */
+      /**
+       * @param {TreeNode} root1
+       * @param {TreeNode} root2
+       * @return {TreeNode}
+       */
+      var mergeTrees = function (root1, root2) {
+        /* 
+          深度优先搜索
+        */
+        //  如果没有 节点1 没有 则返回节点2  如果节点2没有 则返回节点1
+        if (!root1) {
+          return root2;
+        }
+        if (!root2) {
+          return root1;
+        }
+        //  都有的情况就取两者的和
+        root1.val = root1.val + root2.val;
+        // 左节点和右节点的值重复以上操作
+        root1.left = mergeTrees(root1.left, root2.left);
+        root1.right = mergeTrees(root1.right, root2.right);
+        // 返回最终处理好的 树
+        return root1;
+      };
+
+      /* 
+        link:https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/
+        给定一个 完美二叉树 ，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+      
+        struct Node {
+          int val;
+          Node *left;
+          Node *right;
+          Node *next;
+        }
+
+        填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+        初始状态下，所有 next 指针都被设置为 NULL。
+
+        输入：root = [1,2,3,4,5,6,7]
+        输出：[1,#,2,3,#,4,5,6,7,#]
+        解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。
+        序列化的输出按层序遍历排列，同一层节点由 next 指针连接，'#' 标志着每一层的结束。
+
+      */
+
+      /**
+       * // Definition for a Node.
+       * function Node(val, left, right, next) {
+       *    this.val = val === undefined ? null : val;
+       *    this.left = left === undefined ? null : left;
+       *    this.right = right === undefined ? null : right;
+       *    this.next = next === undefined ? null : next;
+       * };
+       */
+
+      /**
+       * @param {Node} root
+       * @return {Node}
+       */
+      var connect = function (root) {
+        /* 
+            思路：
+                  题目本身希望我们将二叉树的每一层节点都连接起来形成一个链表。
+                  我们可以对二叉树进行层次遍历，在层次遍历的过程中将我们将二叉树每一层的节点拿出来遍历并连接。
+
+                  层次遍历基于广度优先搜索，它与广度优先搜索不同之处在于，广度优先搜索每次只会取出一个节点来
+                  拓展，而层次遍历会每次将队列中的所有元素都拿出来拓展，这样能保证每次从队列中拿出来遍历的元素
+                  都是属于同一层的，因此我们可以再遍历每一层的时候修改每个节点的next指向，同事拓展下一层的新队列
+        */
+
+        if (!root) {
+          return root;
+        }
+
+        // 初始化 queue
+        const queue = [root];
+        while (queue.length > 0) {
+          const size = queue.length;
+          for (let i = 0; i < size; i++) {
+            // 取出队列的第一个节点
+            const node = queue.shift();
+            // 连接节点
+            if (i < size - 1) {
+              node.next = queue[0];
+            }
+
+            // 下一层级
+            if (node.left) {
+              queue.push(node.left);
+            }
+            if (node.right) {
+              queue.push(node.right);
+            }
+          }
+        }
+      };
+    </script>
+  </body>
+</html>
