@@ -1,0 +1,171 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-20 15:22:01
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-12-22 20:03:10
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            给定一个由 0 和 1 组成的矩阵 mat ，请输出一个大小相同的矩阵，其中每一个格子是 mat 中对应位置元素到最近的 0 的距离。
+            两个相邻元素间的距离为 1 。
+
+            输入：mat = [
+                [0,0,0],
+                [0,1,0],
+                [0,0,0]
+            ]
+            输出：[
+                [0,0,0],
+                [0,1,0],
+                [0,0,0]
+            ]
+
+            输入：mat = [
+                [0,0,0],
+                [0,1,0],
+                [1,1,1]
+            ]
+            输出：[
+                [0,0,0],
+                [0,1,0],
+                [1,2,1]
+            ]
+
+         */
+
+      /**
+       * @param {number[][]} mat
+       * @return {number[][]}
+       */
+      // var updateMatrix = function (mat) {
+      //   /*
+      //       思路：1-多源最短路径，在暴力枚举的基础上 用广度优先搜索来优化时间
+      //       从所有的1开始进行广度优先搜索，但是时间上不是最优解，因为这是求多源最短路径
+      //    */
+      //   console.log("mat--", mat);
+      //   let queue = [] // 队列 存上下左右四个坐标
+      //   for (let i = 0; i < mat.length; i++) {
+      //     for (let j = 0; j < mat[i].length; j++) {
+      //       // console.log();
+      //       if (mat[i][j] === 1) {
+      //         console.log("为1- x,y：", i, j);
+      //         queue = []
+      //         mat[i][j] = bfs(i, j, mat, -1);
+      //       }
+      //     }
+      //   }
+
+      //   function bfs(x, y, mat, dis) {
+      //     dis++
+      //     const init = dis
+
+      //     const dx = [-1, 1, 0, 0], dy = [0, 0, -1, 1];
+      //     for (let i = 0; i < 4; i++) {
+      //       // 上：x-1,y  下:x+1,y  左:x,y-1  右 x,y+1
+      //       const curx = x + dx[i], cury = y + dy[i];
+      //       if(curx < 0 || cury < 0 || curx > mat.length - 1 || cury > mat[curx].length - 1){
+      //         continue
+      //       }else{
+      //         queue.push([curx,cury])
+      //       }
+      //       if(mat[curx][cury] === 0){
+      //         // 最近的0
+      //         dis = dis + 1
+      //         break;
+      //       }
+      //     }
+      //     console.log(`第${dis}层`, init, JSON.parse(JSON.stringify(queue)) );
+      //     // while(queue.length > 0){
+      //     //   const position = queue.shift()
+      //     // }
+      //     // 如果上下左右都不为0 即dis 和 初始值没有变化
+      //     if(dis === init){
+      //       for (let i = 0; i < queue.length; i++) {
+      //         const curx = queue[i][0],cury = queue[i][1] // 上下左右 4个坐标的位置
+      //         return bfs(curx, cury, mat, dis)
+      //       }
+      //     }
+      //     return dis
+      //   }
+      //   return mat;
+
+      // };
+
+      function updateMatrix(mat) {
+        const xMax = mat.length, yMax = mat[0].length;
+        const dirs = [[-1, 0],[1, 0],[0, -1],[0, 1],]; // 上下左右 四个方位
+        /* 
+          tips提示: 1-下面使用fill + map 初始化一个二维数组。纯fill填充引用类型数据，填充的数据引用地址都一样 有坑
+                    2-也可以使用 Array.from({ length: rows }, () => new Array(cols)) 初始化一个二维数组
+        */
+        // dist 为一个和mat矩阵同宽高的新矩阵，每个位置初始值都为0
+        const dist = Array(xMax).fill(0).map(()=>Array(yMax).fill(0));
+        // seen 也是一个xMax * yMax 的矩阵，初始化对应mat矩阵的关系为0-true 1-undefined
+        const seen = new Array(xMax).fill(0).map(() => new Array(yMax)); 
+        const queue = [];
+
+        // 将所有的0的位置 添加到初始队列queue中，并且此时映射到seen矩阵 将该位置初始化为true，所以其余位置为undefined
+        for (let i = 0; i < xMax; i++) {
+          for (let j = 0; j < yMax; j++) {
+            if (mat[i][j] === 0) {
+              queue.push([i, j]);
+              seen[i][j] = true
+            }
+          }
+        }
+
+        // queue 存放了所有0 的位置
+        while(queue.length > 0){
+          const cell = queue.shift()
+          const i = cell[0], j = cell[1]
+          console.log(`每个0的坐标cell---${cell}`);
+          for (let index = 0; index < 4; index++) {
+            const x = i + dirs[index][0] // 横坐标
+            const y = j + dirs[index][1] // 纵坐标
+            if(x>=0 && x<xMax && y>=0 && y<yMax && !seen[x][y]){ // 如果没有超出界限，并且seen矩阵的位置不为true，即mat上不为0的位置
+              console.log(`各方位---${x},${y}----${dist[x][y]}`);
+              dist[x][y] = dist[i][j] + 1 // 此时就修改dist的这个位置 +1
+              seen[x][y] = true  // 同时让seen矩阵改为true
+              queue.push([x,y]) // 把上下左右四个方位的位置再添加到队列的尾部
+            }
+          }
+        }
+        console.log("seen---", seen);
+        console.log("dist---", dist);
+        return dist;
+      }
+
+      // const mat = [[0,0,0],[0,1,0],[1,1,1]];
+      const mat = [
+        [0],
+        [0],
+        [0],
+        [0],
+        [0]
+      ]
+      // const mat = [
+      //   [1,0,1,1,0,0,1,0,0,1],
+      //   [0,1,1,0,1,0,1,0,1,1],
+      //   [0,0,1,0,1,0,0,1,0,0],
+      //   [1,0,1,0,1,1,1,1,1,1],
+      //   [0,1,0,1,1,0,0,0,0,1],
+      //   [0,0,1,0,1,1,1,0,1,0],
+      //   [0,1,0,1,0,1,0,0,1,1],
+      //   [1,0,0,0,1,1,1,1,0,1],
+      //   [1,1,1,1,1,1,1,0,1,0],
+      //   [1,1,1,1,0,1,0,0,1,1]]
+      console.log("result----", updateMatrix(mat));
+      
+    </script>
+  </body>
+</html>
