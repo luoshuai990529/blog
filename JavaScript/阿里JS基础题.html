@@ -1,3 +1,10 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-10-07 23:14:05
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-12-23 17:43:26
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +25,7 @@
         { id: 6, name: '$5' },
         { id: 7, name: '$6', parentId: 6 },
       ];
-      arr2Tree(arr);
+
       function arr2Tree(arr) {
         const parentNodes = arr.filter((item) => !item.parentId); // 所有父节点
         const childrenNodes = arr.filter((item) => item.parentId); // 所有子节点
@@ -38,10 +45,10 @@
             });
           });
         }
-        return parentNodes;
         dfs(parentNodes, childrenNodes);
+        return parentNodes;
       }
-
+      console.log("arr---", arr2Tree(arr));
       //   使用reduce转换下列数组结构
       const input = [
         { name: 'zhao', age: 20 },

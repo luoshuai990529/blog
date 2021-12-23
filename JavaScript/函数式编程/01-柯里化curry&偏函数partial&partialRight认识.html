@@ -1,0 +1,132 @@
+<!--
+ * @Author: Lewis
+ * @Date: 2021-10-07 23:14:05
+ * @LastEditTime: 2021-12-23 15:51:10
+ * @LastEditors: luoshuai
+ * @Description: 函数柯里化
+ * @FilePath: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+			1-柯里化
+      什么是柯里化（ curry）?
+				柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术 即 fn(1,2,3,4) 转化为 fn(1)(2)(3)(4)
+
+			柯里化实际是把简答的问题复杂化了，但是复杂化的同时，我们在使用函数时拥有了更加多的自由度。
+			而这里对于函数参数的自由处理，正是柯里化的核心所在。 柯里化本质上是降低通用性，提高适用性。
+		
+		*/
+
+      const fn = function fn(a, b, c, d, e) {
+        return [a, b, c, d, e].reduce((a, b) => {
+          return a + b;
+        });
+      };
+      const result = fn(1, 2, 3, 4, 5);
+      console.log("result-", result);
+
+      /**
+       * @description: 来自 30 seconds of code 的柯里化函数
+       * @param {*}
+       * @return {*}
+       * 
+       */
+      const curry = (fn, arity = fn.length, ...args) => {
+        return arity <= args.length ? fn(...args) : curry.bind(null, fn, arity, ...args);
+      }
+
+      // 示例
+      const res1 = curry(Math.pow)(2)(10); // 1024
+      const res2 = curry(Math.min, 3)(10)(50)(2); // 2
+      console.log("res1-", res1);
+      console.log("res2-", res2);
+      // 使用curry函数 柯里化fn
+      const curryFn = curry(fn)(1)(2)(3)(4)(5)
+      const curryFn2 = curry(fn,5)(1)(2)(3)(4)(5)
+      console.log("curryFn---",curryFn);
+      console.log("curryFn2---",curryFn2);
+
+      /**
+       * @description: 传入一个被校验的值 和正则，通过则返回这个值 不通过则返回null
+       * @param { RegExp } 正则
+       * @param { val } 被校验的值
+       * @return {*}
+       * 
+       */
+      const validator = (reg, val) => {
+        return reg.test(val) ? val : null
+      }
+      // 将validator函数 柯里化
+      const phoneReg = /1\d{10}/
+      // 将原本接收两个值的validator 变成 接收一个参数的函数
+      const validatorCurry = curry(validator)
+      const validatorResult = validatorCurry(phoneReg)(18374723577)
+      console.log("validatorResult----", validatorResult);
+
+      /* 
+        2-偏函数partial
+        作用：减少函数的输入参数的个数
+      */
+      /**
+       * @description: 来自 30 seconds of code 的partial和partialRight工具函数
+       * @param {*}
+       * @return {*}
+       * 
+       */
+      const partial = (fn, ...partials) => (...args) => fn(...partials, ...args);
+      const partialRight = (fn, ...partials) => (...args) => fn(...args, ...partials);
+
+      /* 
+        通过下方代码示例来理解partial
+      */
+      /**
+       * @description: 我们封装好的ajax请求函数
+       * @param {String} url
+       * @param {Object} data
+       * @param {Function} cb
+       * @return {*}
+       */
+      function ajax(url,data,cb){
+        console.log("url-",url);
+        console.log("data-",data);
+        console.log("cb-",cb);
+      }
+
+      // 情况1：当我们已经知道了url的参数，但是data、cb还不能确定,这时我们可以创建一个新函数，固定传入一个url，接收data和cb
+      function getUserInfo(data,cb){
+        ajax('/api/getUserInfo',data,cb)
+      }
+      // 情况2：当我们先知道data和cb 但是 url还不能确定,我们也可以创建一个新的函数
+      function getUserInfo(url){
+        ajax(url, { userId: 8 }, ()=>{})
+      }
+
+      // 上面两种情况我们都可以通过partial&partialRight工具函数来进行转化
+      // 情况1 先知道url参数
+      const getUserInfoByData = partial(ajax, '/api/getUserInfo')
+      // getUserInfoByData({userId: 8}, ()=>{})
+      // 情况2 先知道后两个参数
+      const getUserInfoByUrl = partialRight(ajax,{userId:1},()=>{})
+      getUserInfoByUrl('/api/getUserAccount')
+      
+    
+      /* 
+        可以理解柯理化 sum(1)(2)(3) 是一种特殊的偏函数 partial(sum,1,2)(3)
+        小结：
+              1-偏函数或柯里化，可以将“指定分离实参”的时机和地方独立开来；
+              2-当函数只有一个形参时，我们能够比较容易地组合它们。这种单元函数，便于进行后续的组合函数；
+              3-对函数进行包装，使其成为一个高阶函数是函数式编程的精髓！
+              
+      */
+    </script>
+  </body>
+</html>

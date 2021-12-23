@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const person = {
+        name: '李四',
+        say: function (message = '你好', ...args) {
+          const result = this.name ? `${this.name}正在说${message}` : this;
+          console.log(result);
+          console.log('message-', message);
+          console.log('args-', args);
+        },
+      };
+      //   person.say();
+      //   通过call改变this
+      //   person.say.call({ name: '张三' }, '我叫张三');
+      //   person.say.call(null, '传个null', 66, 77);
+      //   person.say.call(1, '传个1');
+      //   person.say.call();
+      //   通过apply改变this
+      person.say.apply({ name: '王五' }, [1, 2, 3]);
+
+      console.log('==============手写实现call===============');
+      /*
+      			手写实现call
+      		*/
+      Function.prototype.myCall = function (context, ...args) {
+        // contenxt 要改变的this指向
+        // this 原函数
+        // args 参数
+        if (context === null || context === undefined) {
+          context = Window;
+        } else {
+          context = Object(context);
+        }
+        const uniquePrototype = Symbol('lewisPrototypeSymbol');
+        context[uniquePrototype] = this;
+        const result = context[uniquePrototype](...args);
+        delete context[uniquePrototype];
+
+        return result;
+      };
+      // person.say.myCall({ name: '张三' }, '我叫张三', 1, 2, 3);
+
+      console.log('==============手写实现apply===============');
+      /*
+      			手写实现apply
+      	  */
+      Function.prototype.myApply = function (context) {
+        if (context === null || context === undefined) {
+          context = window; // 指定为 null 和 undefined 的 this 值会自动指向全局对象(浏览器中为window)
+        } else {
+          context = Object(context); // 值为原始值（数字，字符串，布尔值）的 this 会指向该原始值的实例对象
+        }
+
+        // JavaScript权威指南判断是否为类数组对象
+        function isArrayLike(o) {
+          if (
+            o && // o不是null、undefined等
+            typeof o === 'object' && // o是对象
+            isFinite(o.length) && // o.length是有限数值
+            o.length >= 0 && // o.length为非负值
+            o.length === Math.floor(o.length) && // o.length是整数
+            o.length < 4294967296
+            // o.length < 2^32
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        const specialPrototype = Symbol('特殊属性Symbol'); // 用于临时储存函数
+        context[specialPrototype] = this; // 隐式绑定this指向到context上
+        let args = arguments[1]; // 获取参数数组
+        console.log('arguments:', args);
+        let result;
+        // 处理传进来的第二个参数
+        if (args) {
+          // 是否传递第二个参数
+          if (!Array.isArray(args) && !isArrayLike(args)) {
+            throw new TypeError('myApply 第二个参数不为数组并且不为类数组对象抛出错误');
+          } else {
+            args = Array.from(args); // 转为数组
+            result = context[specialPrototype](...args); // 执行函数并展开数组，传递函数参数
+          }
+        } else {
+          result = context[specialPrototype](); // 执行函数
+        }
+        delete context[specialPrototype]; // 删除上下文对象的属性
+        return result; // 返回函数执行结果
+      };
+      person.say.myApply({ name: '张三' }, ['666', '777']);
+
+      // 实现bind ：和apply的区别其实就是返回一个函数
+      Function.prototype.myBind = function(context){
+        const [c , ...args]  = arguments
+        return ()=>this.myApply(context, args)
+      }
+      let personA = {
+        name:"大A",
+        say(name){
+          console.log(`${name}你好我叫${this.name}`)
+        }
+      }
+      // personA.say('帅哥')
+      // const newPersonA = personA.say.myCall({name:"大B"},"美女")
+      const newPersonA = personA.say.myBind({name:"大B"},"美女")
+      setTimeout(newPersonA,3000)
+    </script>
+  </body>
+</html>

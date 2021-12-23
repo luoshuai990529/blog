@@ -1,0 +1,133 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-23 16:17:16
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-12-23 18:03:54
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        // 以下是三个不同职责的函数，都接收一个参数并返回一个结果
+        function getAppIdByUserId(userId){
+            // 根据用户Id获取appid.....
+            const appid = 'appid-'
+            return appid+userId
+        }
+        function getAccessTokenByAppId(appId){
+            // 根据appId获取accessToken....
+            const accessToken = 'accessToken-'
+            return accessToken+appId
+        }
+        function sendMsgByAccessToken(accessToken){
+            // 根据accessToken发送消息....
+            const result = { msg:'发送成功', code:200, accessToken}
+            return result
+        }
+
+        // 1.普通调用
+        const userId = 1
+        const appId = getAppIdByUserId(userId)
+        const accessToken = getAccessTokenByAppId(appId)
+        const sendResult = sendMsgByAccessToken(accessToken)
+        // console.log("结果1---", sendResult);
+
+        // 2.减少中间变量的调用封装
+        function sendMessageByUserId(userId){
+            return sendMsgByAccessToken(getAccessTokenByAppId(getAppIdByUserId(userId)))
+        }
+        // console.log("结果2-",sendMessageByUserId(userId));
+
+        /* 
+            3.使用compose函数进行组合
+            注意：
+                最后一个（最右边的）函数可以接受一个或多个参数；
+                其余的函数必须是一元的。因为其他函数都只能接收是一元的。
+        */
+        // 组合函数compose
+        const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
+        const composeRight = (...fns) => fns.reduce((f, g) => (...args) => g(f(...args)));
+
+        const sendMessageById = compose(sendMsgByAccessToken,getAccessTokenByAppId,getAppIdByUserId)
+        console.log("compose结果3-",sendMessageById(userId));
+
+        // 4.拓展：结合偏函数 partial 特性实现更多场景
+        function subscribeMsgByAccessToken(accessToken){
+            //通过accesstoken订阅消息....
+            return {msg:'订阅成功', code:200, accessToken}
+        }
+        // 偏函数
+        const partial = (fn, ...partials) => (...args) => fn(...partials, ...args);
+        const partialRight = (fn, ...partials) => (...args) => fn(...args, ...partials);
+        // getAccessTokenAfter 此时接收一个 通过accesstoken做任意事情的 函数，并返回一个函数
+        const getAccessTokenAfter = partialRight(compose,getAccessTokenByAppId,getAppIdByUserId)
+        
+        const sendMsgByUserId = getAccessTokenAfter(sendMsgByAccessToken)
+        const subscribMsgByUserId = getAccessTokenAfter(subscribeMsgByAccessToken)
+        
+        console.log("通过id发送消息---", sendMsgByUserId(userId));     // 通过id发送消息--- {msg: '发送成功', code: 200, accessToken: 'accessToken-appid-1'}
+        console.log("通过id订阅消息---", subscribMsgByUserId(userId)); // 通过id订阅消息--- {msg: '订阅成功', code: 200, accessToken: 'accessToken-appid-1'}
+
+        // 柯里化函数
+        const curry = (fn, arity = fn.length, ...args) => {
+            return arity <= args.length ? fn(...args) : curry.bind(null, fn, arity, ...args);
+        }
+
+        // 4.composePromise 上面的compose函数都是组合同步的操作，在实战中我们需要异步函数来操作
+        
+        // 例：
+        const a = async(count)=>{
+            return new Promise((resolve,reject) => {
+                setTimeout(()=>{
+                    console.log("5秒----xhr a", count + 5);
+                    resolve({result:count + 5,from:'xhr a'})
+                }, 5000)
+            })
+        }
+
+        const b = async(res)=>{
+            return new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    console.log("3秒----xhr b",res.result + 5);
+                    resolve({result:res.result + 5,from:'xhr b'})
+                },3000)
+            })
+        }
+
+        const c = async(res)=>{
+            return new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    console.log("1秒----xhr c",res.result + 5);
+                    resolve({result:res.result + 5,from:'xhr c'})
+                },1000)
+            })
+        }
+
+        /* 
+            pipeAsyncFunctions 为异步函数执行从左到右的函数组合。
+            注意：
+                1-所有函数都必须接受一个参数。
+        */
+        const pipeAsyncFunctions = (...fns) => arg => fns.reduce((p, f) => p.then(f), Promise.resolve(arg));
+
+        const newComposeFn = pipeAsyncFunctions(a,b,c)
+        newComposeFn(10).then((res)=>{
+            console.log("res---",res);
+        })
+        // 5秒----xhr a 15
+        // 3秒----xhr b 20
+        // 1秒----xhr c 25
+        // res--- {result: 25, from: 'xhr c'}
+
+    </script>
+</body>
+</html>
