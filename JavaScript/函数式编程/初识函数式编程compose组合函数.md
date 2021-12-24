@@ -98,7 +98,7 @@ const partialGetUserInfo = partial(ajax,'/api/getUserInfo')
 
 小结：
 
-   	1. 可以理解柯里化add(1)(2)(3) 是一种特殊的偏函数partial(add,1,2)(3)
+       	1. 可以理解柯里化add(1)(2)(3) 是一种特殊的偏函数partial(add,1,2)(3)
    	2. 偏函数或柯里化，可以将“指定分离实参”的时机和地方独立开来,其实都是为了后续我们进行更好的组合函数
    	3. 对函数进行包装，使其成为一个**高阶函数** 是函数式编程的精髓
 
@@ -113,7 +113,31 @@ const partialGetUserInfo = partial(ajax,'/api/getUserInfo')
 
 3.1-我们认识完函数式编程的一些基本概念以及柯里化和偏函数这类高阶包装函数，其实都是为了让这些单元函数便于后续进行组合，正是现在的**组合函数Compose(重要)** 
 
-例：
+首先我们先来通过一个最简单的代码示例来初步认识一下compose的使用，例：
+
+```javascript
+// 这是一个compose函数，通过reduce实现，也是来自于 30secondsofcode
+const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
+const a = () => console.log(1);
+const b = () => console.log(2);
+const c = () => console.log(3);
+compose(a,b,c)() // 依次打印 3、2、1
+
+// 以上展示了compose组合函数的一个很基础的案例，如果不是很理解，我们也可以把compose组合后的代码拆开来看看发生了啥：
+const K = compose(a,b) 
+// 其实就等价于
+const K = (...args) => a(b(...args));
+// ---------------------------------------------
+const X = compose(K,c) 
+// 就等价于
+const X = (...args) => K(c(...args))
+// ---------------------------------------------由此可以推断
+compose(a,b,c)
+// 就等价于
+(...args) => a(b(c(...args)))
+```
+
+实际应用中可能遇到的情况，例：
 
 ```javascript
 function getAppIdByUserId(userId){
@@ -174,7 +198,7 @@ subscribMsgByUserId(userId) // {msg: '订阅成功', code: 200, accessToken: 'ac
 
 ```
 
-**3.2composePromise：以上代码案例compose函数都是组合同步的操作，往往实战中我们都需要异步函数来操作**
+**3.2- 以上代码案例compose函数都是组合同步的操作，往往实战中我们都需要异步函数来操作，那么我们就需要一个异步的composePromise来解决**
 
 例：
 
@@ -226,6 +250,38 @@ newComposeFn(10).then((res)=>{
 
 小结：
 
- 	1. **组合 ———— 声明式数据流 ———— 是支撑函数式编程其他特性的最重要的工具之一**
- 	2. 函数组合是为了符合“声明式编程风格”，即关注“是什么”，而非具体“做什么”。
+   	1. **组合 ———— 声明式数据流 ———— 是支撑函数式编程其他特性的最重要的工具之一**
+   	2. 函数组合是为了符合“声明式编程风格”，即关注“是什么”，而非具体“做什么”。如下面ES6新增的解构语法
 
+
+```javascript
+function getData() {
+    return [1,2,3,4,5];
+}
+
+// 命令式
+var tmp = getData();
+var a = tmp[0];
+var b = tmp[3];
+
+// 声明式
+var [ a ,,, b ] = getData();
+```
+
+#### 总结
+
+以上内容算是能基本认识到函数式编程，遇到同类型写法的代码或者是一些相关的概念也不会一脸懵逼了，或许在实际应用中也可以通过这些思想来帮助我们编写更易读和易于维护的代码，当然并不是所有的人都可以理解这种写法用的不好反而会增加他人阅读的难度，因此对于不同的场景需要不同的应对。
+
+其实我们认识到这些基础概念和一些函数式编程常用的工具函数之后，如果想要更深入的学习可以学习一下 **koa、redux** 等优秀开源库的源码以及**webpack的Tapable库**，里面很多实现比如koa中间件的原理....等等都能看到同步或异步compose的身影，后期我也会做一个关于这些库源码阅读总结来提升对compose这些函数的理解，当然这上面很多也是我自己的个人理解其实也参照了许多作者的文章，或多或少会漏掉一些内容或者知识点，又或者有些地方描述的不是很清晰，如果小伙伴们想要深度了解可以自己去掘金、github等论坛查找更多相关资料，以上参考文章：
+
+https://www.30secondsofcode.org/js/s/compose：30 seconds of code
+
+https://juejin.cn/post/6968259661304692750：《01-JS函数式编程看这一篇就够了》
+
+https://juejin.cn/post/6969016132741103624：《02-JS函数式编程看这一篇就够了》
+
+https://juejin.cn/post/6971260867300032525：《03-JS函数式编程看这一篇就够了》
+
+https://juejin.cn/post/6989020415444123662：《感谢 compose 函数，让我的代码屎山💩逐渐美丽了起来》
+
+....更多可以掘金、YouTube 搜索 函数式编程、compose、柯里化、偏函数等关键词
