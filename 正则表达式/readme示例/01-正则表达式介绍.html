@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+        js内置对象 ： Math(数学对象)、Date(日期对象)、Array、Function、Object、String、Boolean、Number、Events、RegExp（正则表达式）
+
+        RegExp : (regular  expression) 正则表达式
+        */
+
+        /*学习目标 
+        
+        1.正则表达式作用 ： 对字符串进行逻辑匹配运算 的内置对象
+            内置对象 : js作者写好的，封装了一些属性和方法
+            表达式   : 对字符串进行逻辑匹配运算
+
+        2.正则表达式语法 :
+            (1)创建一个正则表达式对象
+                var reg =  new RegExp(/正则表达式/);
+            (2)调用test()方法 :  true: 符合逻辑规则  false:不符合
+                reg.test('字符串')
+        
+        */
+
+        //1.创建内置对象 RegExp
+        var reg =  new RegExp(/a/);
+        //2.调用方法  test('字符串')  对字符串做逻辑匹配运算    true:符合规则  false：不符合规则
+
+        console.log(  reg.test('123zxk') );//false   不符合逻辑规则，没有a
+        console.log(  reg.test('abc123zxk') );//true  符合逻辑规则，有a
+
+
+        //3.注意点 : 正则字面量（直接量）写法
+       // 简洁写法： /a/    标准写法： new RegExp(/a/)
+       console.log( /a/.test('ikun') );//false
+       
+        
+
+    </script>
+</body>
+
+</html>

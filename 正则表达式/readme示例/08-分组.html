@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*() 元字符 ： 有三种含义 
+
+           1. 分组 :将多个字符 分为一组 （当做一个整体）
+              * 默认量词只能用于一个字符，如果希望用于多个字符，则可以使用分组
+           2. 提升优先级 ：
+               * | 或运算
+               * 默认 |  会对两边所有的字符串生效
+               * 希望 | 只对某一个字符生效，就可以使用() 提升优先级
+           3. 反向引用 :
+            正则表达式在进行匹配的时候，会存储小括号中匹配到的数据，放入 静态成员中
+            静态成员 :  RegExp.$1  -  RegExp.$9
+        */
+
+        /* 
+        1.分组 ：将多个字符 分为一组 （当做一个整体）
+            * 默认量词只能用于一个字符，如果希望用于多个字符，则可以使用分组
+        */
+
+
+        //需求 ： 匹配连续出现3次 love 的字符串
+        //a.错误写法 ：  /love{3}/      含义是  lov  + e(出现三次)
+        //b. 正确写法 ：  /(love){3}/    含义是  (love)  出现三次
+
+        //   /love{3}/      含义是  lov  + e(出现三次)
+        console.log(/love{3}/.test('lovelovelove'));//false
+        console.log(/love{3}/.test('loveeeeee123'));//true
+
+        //   /(love){3}/      含义是  (love)  出现三次
+        console.log(/(love){3}/.test('lovelovelove'));//true
+        console.log(/(love){3}/.test('loveeeeee123'));//false
+
+
+        /* 
+        2.提升优先级
+            * | 或运算
+            * 默认 |  会对两边所有的字符串生效
+            * 希望 | 只对某一个字符生效，就可以使用() 提升优先级
+        */
+
+        //需求 ： 匹配  love  或者 live
+        //a.错误写法 ：  /lo|ive/    含义是 有 lo  或者 ive
+        //b.正确写法 :   /l(o|i)ve/  含义是  l  + i或者o + ve
+
+        //   /lo|ive/    含义是 有 lo  或者 ive
+        console.log(/lo|ive/.test('lo111'));//true
+        console.log(/lo|ive/.test('111ive'));//true
+        console.log(/lo|ive/.test('love'));//true
+
+        //   /l(o|i)ve/  含义是  l  + i或者o + ve
+        console.log(/l(o|i)ve/.test('lo111'));//false
+        console.log(/l(o|i)ve/.test('111ive'));//false
+        console.log(/l(o|i)ve/.test('love'));//true
+
+        /* 
+        3.反向引用 ： 正则表达式在进行匹配的时候，会存储小括号中匹配到的数据，放入 静态成员中
+            静态成员 :  RegExp.$1  -  RegExp.$9
+        */
+
+        // 大陆生产日期 ： 2020-03-01  香港生产日期 :  03/01/2020
+        // 需求 ： 将 yyyy-mm-dd 的字符串 变成  mm/dd/yyyy 格式
+
+        var str = '2020-03-01'.replace(/(\d{4})-(\d{2})-(\d{2})/, '$2/$3/$1');
+        console.log(str);//03/01/2020
+
+
+        console.log(RegExp.$1);//2020  
+        console.log(RegExp.$2);//03
+        console.log(RegExp.$3);//01
+
+
+
+
+    </script>
+</body>
+
+</html>

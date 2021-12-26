@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*正则表达式语法分为两种 
+            1.原义文本字符 ： 字符串原本的含义， 千万别想多了
+                /abc/ : 检测字符串中有没有 abc 这个字符串
+                    * 既不是说有a 或者 有b 或者 有c，也不是有 有a 且 有b 且 有c
+
+            2.元字符 : 修改了字符串本身的含义,有特殊含义的字符  （相当于js中的关键字）
+                []  {}  ()  + . | $ ^ \  * ?
+        */
+
+        //1.原义文本字符
+        //1.1 示例1 ： /abc/ 检测字符串有没有abc
+        console.log( /abc/.test('a123') );//false
+        console.log( /abc/.test('a1b1c1') );//false
+        console.log( /abc/.test('abc123') );//true
+
+        //1.2  /黑马/ ： 检测字符串有没有黑马
+        console.log( /黑马/.test('坤坤很黑') );//false
+        console.log( /黑马/.test('一匹黑色的马') );//false
+        console.log( /黑马/.test('我爱黑马程序员') );//true
+
+        
+    </script>
+</body>
+</html>

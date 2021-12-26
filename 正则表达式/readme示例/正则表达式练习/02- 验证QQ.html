@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+<input id="txt" type="text" placeholder="请输入qq号码">
+<script>
+    // qq号
+    // 1.不能以0开头
+    //2. 5-11位
+
+    //1.获得要操作的对象
+    var txt= document.getElementById("txt");
+    //2.给事件源注册事件
+    txt.onblur = function (){
+        var value = txt.value;// 任何语言当中，只要是用户输入的内容，都是字符串类型
+        if(/^[1-9]\d{4,10}$/.test(value)){
+            alert("输入的QQ号码正确");
+        }else {
+            alert("输入错误");
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*修饰符：影响整个正则规则的特殊符号
+        书写位置：  /pattern/modifiers(修饰符)
+        i (intensity)：大小写不敏感（不区分大小写）
+        g (global) : 全局匹配
+        m(multiple) : 检测换行符，使用较少，主要影响字符串的开始^与结束$边界
+       */
+
+       //1. 不区分大小写    /a/i
+       console.log( 'AAaaaAA'.replace(/a/,'X') );// 'AAXaaAA'   默认正则区分大小写
+       console.log( 'AAaaaAA'.replace(/a/i,'X') );// 'XAaaaAA'   i:不区分大小写
+
+       //2. 全局匹配   /a/g
+       console.log( 'AAaaaAA'.replace(/a/,'X') );// 'AAXaaAA'   默认正则只能匹配第一个
+       console.log( 'AAaaaAA'.replace(/a/g,'X') );// 'AAXXXAA'   g : 全局（所有字符）匹配
+
+       /* 注意点： 修饰符可以写多个 */
+       console.log( 'AAaaaAA'.replace(/a/ig,'X') );// XXXXXXX  g:全局匹配 i:不区分大小写
+
+       /* 3.检测换行符 /a/m
+            * 需要与边界一起使用才有结果
+       */
+
+       var str = '我爱我女儿\n我爱我女儿\n我爱我女儿';
+       console.log(str);
+
+       //需求： 把每一行的开头的我 替换成 你
+      console.log(  str.replace(/我/,'你') );// 只能替换第一个我
+      console.log(  str.replace(/我/g,'你') );// 替换所有的我
+
+      //无法实现  虽然用户看到的三个我是在开头位置，但是在字符串中每一行只是一个特殊字符\n
+      console.log(  str.replace(/^我/g,'你') );// 
+
+      // 可以实现 ：  m  检测换行符，将换行符后面的第一个字，也作为开头的位置
+      console.log(  str.replace(/^我/gm,'你') );// 
+      
+
+       
+       
+    </script>
+</body>
+
+</html>

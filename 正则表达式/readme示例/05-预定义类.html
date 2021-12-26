@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //  11个元字符(关键字) ： [] ^  {}  ()  + . | $  \  * ?   
+
+        /* 预定义类 ： 预先定义好的正则(正则表达式作者提前把一些常用的正则给写好了，开发者直接使用)
+
+        预定义类              等价类                                   含义
+            .                 [^\r\n]                         除了回车和换行之外的所有字符
+           \d                 [0-9]                           数字字符
+           \D                 [^0-9]                         非数字字符
+           \s                 [\f\n\r\t\v]                    空白字符
+           \S                 [^\f\n\r\t\v]                  非空白字符
+           \w                 [a-zA-Z_0-9]                单词字符（字母、下划线、数字）
+           \W                 [^a-zA-Z_0-9]              非单词字符
+        */
+
+        //1.    /./   :  任意字符
+        console.log(  /./.test('') );//false 空字符串
+        console.log(  /./.test('\n') );//false 换行符  用户看不到任何东西
+
+        console.log(  /./.test('safsaf') );//true
+        console.log(  /./.test(' ') );//true 空格字符串
+        console.log(  /./.test('我\n爱\n你 ') );//true 
+        
+        //2.  /\d/  : 任意数字   /[0-9]/
+        console.log( /\d/.test('abc') );//false
+        console.log( /\d/.test('abc1') );//true
+
+        //3.  /\D/  : 任意非数字  /[^0-9]/
+        console.log( /\D/.test('abc') );//true
+        console.log( /\D/.test('abc1') );//true
+        console.log( /\D/.test('123456') );//false
+
+        //4.  /\s/  : 任意空格字符（space）  [\f\n\r\t\v]
+        console.log( /\s/.test('我爱你们') );//false
+        console.log( /\s/.test('我\t爱你们') );//true
+        console.log( /\s/.test('我爱你\n们') );//true
+
+        //5.  /\S/  : 任意非空格字符（space）  [^\f\n\r\t\v]
+        console.log( /\S/.test('我爱你们') );//true
+        console.log( /\S/.test('我\t爱你们') );//true
+        console.log( /\S/.test('我爱你\n们') );//true
+        console.log( /\S/.test('\t\n\f') );//false
+
+        //6.  /\w/ :    
+        console.log( /\w/.test('_') );//true
+        console.log( /\w/.test('aA') );//true
+        console.log( /\w/.test('123') );//true
+        console.log( /\w/.test('+-*/') );//false
+        
+        // /\W/ : 非单词word字符（字母、下划线、数字） [^a-zA-Z_0-9] 
+        console.log( /\W/.test('_') );//false
+        console.log( /\W/.test('aA') );//false
+        console.log( /\W/.test('123') );//false
+        console.log( /\W/.test('+-*/') );//true
+        
+    </script>
+</body>
+
+</html>

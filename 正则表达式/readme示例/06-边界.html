@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*边界（位置）：正则表达式提供了几个常用的边界匹配字符
+            边界字符            含义
+              ^                  以xxxx开头
+              $                  以xxxx结束
+              \b                  单词边界
+              \B                  非单词边界
+        */
+
+        /* 
+        1.以xxx开头 :  /^abc/
+            注意点 ： 元字符含义不止一种
+            /[^abc]/  :  反向类    含义：不是  a或b或c 的任意字符
+            /^abc/    :  边界      含义： 以a开头  +  bc
+        */
+
+        //  /^abc/  : 含义是  以a开头，后面是bc的字符串
+        /* 
+        正确含义 ： 以a开头 + bc
+        错误含义 ： 以abc开头
+        */
+        console.log(  /^abc/.test('123abc') );// false  虽然有abc字符串，但是a位置不是开头第一个
+        console.log(  /^abc/.test('a1b1c1') );// false  
+        console.log(  /^abc/.test('abc123') );// true
+
+        /* 
+        2.以xxx结尾 :  /abc$/
+            含义 ：   ab + c(结尾值)
+        */
+
+        //  /abc$/ ： 含义是  ab + c(结尾位置)
+        /* 
+        正确含义 ：  ab + c(以c结尾)
+        错误含义 ：  以abc结尾
+        */
+        console.log(  /abc$/.test('123abc') );// true
+        console.log(  /abc$/.test('a1b1c1') );// false  
+        console.log(  /abc$/.test('abc123') );// false
+
+        /* 
+        *** 重点 ： 严格匹配  ****
+            /^abc$/  : 只有唯一的正确答案  abc
+                正确含义 ：  (开头)a + b + c(结尾)
+                错误含义 ： 以abc开头 + 以abc结尾
+        */
+
+        console.log( /^abc$/.test('abc1') );//false
+        console.log( /^abc$/.test('1abc') );//false
+        console.log( /^abc$/.test('abcabc') );//false
+        console.log( /^abc$/.test('abc') );//true
+
+
+        /* 3. 边界：限制位置   单词： 字母+数字+下划线
+        \b      单词边界
+        \B      非单词边界
+        */
+
+        //   /\bis/ : 单词边界。 替换单词is
+        console.log( 'This is a boy'.replace(/\bis/,'X') );// This X a boy
+        //  /\Bis/ : 非单词边界。 替换非单词is
+        console.log( 'This is a boy'.replace(/\Bis/,'X') );// ThX is a boy
+        
+        
+        
+
+
+
+    </script>
+</body>
+
+</html>

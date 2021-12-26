@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+<div class="container">
+  <label>姓名</label><input type="text" id="txt"><span></span><br/>
+</div>
+<script>
+  
+  // 2--6
+  var txt = document.getElementById("txt");
+  txt.onblur = function (){
+       var value = txt.value;
+       if(/^[\u4e00-\u9fa5]{2,4}$/.test(value)){
+         alert("输入正确");
+       }else {
+         alert("输入错误");
+       }
+  }
+
+</script>
+</body>
+</html>

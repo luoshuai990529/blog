@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div class="container">
+    <label>手机号</label><input type="text" id="txt"><span></span><br/>
+</div>
+<script>
+    // 手机是11位
+    // 130    012联通  3 电信 456789移动
+    // 147    145 147移动的
+    // 15     150移动  153电信  155 156 联通的  15789 移动的
+    // 17     170  177 176
+    // 18     18 0123 移动  185 186联通  187 188移动  189 电信
+    
+    
+    //1.获得要操作的对象
+    var txt= document.getElementById("txt");
+    //2.给事件源注册事件
+    txt.onblur = function (){
+      var value = txt.value;// 任何语言当中，只要是用户输入的内容，都是字符串类型
+      if(/^(13[0-9]|14[57]|15[0-9]|17[067]|18[0-9])\d{8}$/.test(value)){
+            alert("输入的手机号码正确");
+      }else {
+        alert("输入错误");
+      }
+    }
+</script>
+</body>
+</html>

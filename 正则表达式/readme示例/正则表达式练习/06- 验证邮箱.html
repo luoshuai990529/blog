@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+<div class="container">
+  <label>邮箱</label><input type="text" id="txt"><span></span><br/>
+</div>
+<script>
+  // qq  baidu
+  // liud_20ehua@163.com   .com  .cn .gov  .edu   .net
+  // *  >=0   + >=1   ? 0或1次
+
+  /* 
+  任意字符@任意字符.域名.二级域名
+  a280027@qq.com
+  adada@si.com.gov
+  */
+  //
+  var txt = document.getElementById("txt");
+  txt.onblur = function () {
+    var value = txt.value;
+    if (/^\w+[@]\w+\.\w+(\.\w+)?$/.test(value)) {
+      alert("邮箱正确");
+    } else {
+      alert("错误");
+    }
+  }
+
+</script>
+</body>
+</html>

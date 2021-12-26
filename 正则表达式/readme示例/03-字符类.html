@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 
+         11个元字符(关键字) ： [] ^  {}  ()  + . | $  \  * ?
+        */ 
+       
+        
+        /* 
+        1.字符类 :  /[abc]/    含义将a 和 b 和 c这这三类字符串归为一类(相同特征)
+            说人话 ： 有a , b , c 这三个字符任意一个即可
+        */
+
+        //    /[abc]/   含义：有任何一个字符  是 a或者b或者c 即可
+        console.log(  /[abc]/.test('a11111') );//true
+        console.log(  /[abc]/.test('b22222') );//true
+        console.log(  /[abc]/.test('c33333') );//true
+        console.log(  /[abc]/.test('123456') );//false
+        console.log(  /[abc]/.test('abc123456') );//true
+
+        /* 
+        2.负向类(反向类) ： /[^abc]/  含义将 没有a 或 没有b 或 没有c的字符串归为一类
+            说人话 ： 没有 a,b,c 这三个字符任意一个即可
+        */
+
+        //   /[^abc]/ 含义 ： 有任何一个字符  不是 a或者b或者c 即可
+        console.log(  /[^abc]/.test('a11111') );//true
+        console.log(  /[^abc]/.test('b22222') );//true
+        console.log(  /[^abc]/.test('c33333') );//true
+        console.log(  /[^abc]/.test('123456') );//true
+        console.log(  /[^abc]/.test('abc123456') );//true
+        console.log(  /[^abc]/.test('aaabbbccc') );//false   找不到不是abc的字符串
+        
+
+    </script>
+</body>
+</html>

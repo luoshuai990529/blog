@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //需求 ： 检测字符串中有没有数字字符
+        // /[0123456789]/ : 含义，检测字符串中有没有数字字符
+        // 弊端 ： 表达式有冗余，假如我要检测有没有字母， /[abcd...xyz]/,非常繁琐。
+        // 如何解决 ： 范围类
+
+
+        /*
+        1. 范围类
+            /[0-9]/ : 含义是， 0-9之间的任意字符  （数字）
+            /[a-z]/ :  含义是， a-z之间的任意字符  （小写字母）
+            /[A-Z]/ :  含义是， A-Z之间的任意字符  （大写字母）
+        
+        2.范围类注意点
+            a. 范围类是一个闭区间 :  /[0-9]/ , 包含0和9的
+            b. 范围类可以连写 :  /[0-9a-zA-Z]/ , 包含数字0-9 或者 a-z 或者A-Z 任意字符
+            c. -右边的一定要大于左边
+                例如  [5-8] , 检测有没有5678这四个数字
+                例如  [8-5] , 程序报错。这是错误的正则语法错误
+                例如  [8-90-5], 检测 8 9 0 1 2 3 4 5
+        */
+
+        //1.1    /[0-9]/ : 含义是， 0-9之间的任意字符  （数字）
+        console.log( /[0-9]/.test('abc') );//false
+        console.log( /[0-9]/.test('abc0') );//true
+        console.log( /[0-9]/.test('123456') );//true
+
+        //1.2    /[a-z]/ :  含义是， a-z之间的任意字符  （小写字母）
+        console.log( /[a-z]/.test('abc') );//true
+        console.log( /[a-z]/.test('abc1') );//true
+        console.log( /[a-z]/.test('123456') );//false
+        console.log( /[a-z]/.test('ABC123') );//false
+
+        //1.3    /[A-Z]/ :  含义是， A-Z之间的任意字符  （大写字母）
+        console.log( /[A-Z]/.test('abc') );//false
+        console.log( /[A-Z]/.test('abc1') );//false
+        console.log( /[A-Z]/.test('123456') );//false
+        console.log( /[A-Z]/.test('ABC123') );//true
+
+        //1.4  /[0-9a-zA-Z]/ : 含义是，只要有数字 或者 字母 即可
+        console.log( /[0-9a-zA-Z]/.test('a') );//true
+        console.log( /[0-9a-zA-Z]/.test('9') );//true
+        console.log( /[0-9a-zA-Z]/.test('A') );//true
+        console.log( /[0-9a-zA-Z]/.test(',.?+') );//false
+        console.log( /[0-9a-zA-Z]/.test('黑马程序员') );//false
+
+        //1.5  /[5-8]/ ： 有没有5678四个数字 任意一个
+        console.log( /[5-8]/.test('8') );//true
+        console.log( /[5-8]/.test('9') );//false
+        
+
+    </script>
+</body>
+
+</html>

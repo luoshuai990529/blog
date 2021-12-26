@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+<div class="container">
+  <label>座机</label><input type="text" id="txt"><span></span><br/>
+</div>
+<script>
+  // 03--4   8   7
+  // 010  020-63332888    021
+  // 0713  大黄冈
+  /* 座机 ：  区号 - 座机号 
+    区号： 3-4个数字
+    座机号 ： 7-8个数字
+  */
+  
+  var txt = document.getElementById("txt");
+  txt.onblur = function (){
+    var value = txt.value;
+    if(/^0\d{2,3}[-]\d{7,8}$/.test(value)){
+      alert("输入正确");
+    }else {
+      alert("输入错误");
+    }
+  }
+</script>
+</body>
+</html>

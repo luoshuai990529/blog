@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+
+    <script>
+
+        /*本小节知识点：如何验证是否包含汉字？
+        1.汉字：在js中，汉字以Unicode编码表示，汉字范围 [\u4e00-\u9fa5]
+        2.验证汉字正则：   /[\u4e00-\u9fa5]/
+         */
+
+        //1.检测字符串有没有中文
+        console.log(/[\u4e00-\u9fa5]/.test('iloveyou'));//false
+        console.log(/[\u4e00-\u9fa5]/.test('i爱you'));//true
+
+        //2.中文姓名   2-4个字
+        console.log( /^[\u4e00-\u9fa5]{2,4}$/.test('a你好') );//false
+        console.log( /^[\u4e00-\u9fa5]{2,4}$/.test('赵小飞') );//true
+        console.log( /^[\u4e00-\u9fa5]{2,4}$/.test('黑马程序员') );//false
+        
+
+
+
+    </script>
+</body>
+
+</html>
