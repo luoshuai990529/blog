@@ -1,0 +1,62 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-28 11:28:42
+ * @Author: luoshuai
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-28 22:03:49
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            题目link:https://leetcode-cn.com/problems/merge-two-sorted-lists/
+            1-将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+
+            输入：l1 = [1,2,4], l2 = [1,3,4]
+            输出：[1,1,2,3,4,4]
+
+            输入：l1 = [], l2 = []
+            输出：[]
+
+            输入：l1 = [], l2 = [0]
+            输出：[0]
+         */
+
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val, next) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.next = (next===undefined ? null : next)
+       * }
+       */
+      /**
+       * @param {ListNode} list1
+       * @param {ListNode} list2
+       * @return {ListNode}
+       */
+      var mergeTwoLists = function (list1, list2) {
+        //   思路:递归
+        if (!list1) {
+          return list2;
+        }
+        if (!list2) {
+          return list1;
+        }
+        if (list1.val > list2.val) {
+          list2.next = mergeTwoLists(list1, list2.next);
+          return list2;
+        } else {
+          list1.next = mergeTwoLists(list1.next, list2);
+          return list1;
+        }
+      };
+    </script>
+  </body>
+</html>
