@@ -9,33 +9,62 @@
 
 #### 1.函数式编程( FP ) 概述
 
-函数式编程已经不再是一个新的概念，它具有完善清晰的原则，如果我们可以理解这些原则，我们就能很方便的读懂代码和定位问题。函数式编程目的是为了数据流更加明显，从而代码更具可读性
+函数式编程已经不再是一个新的概念，你可以理解为它是一种编程风格或者编程范式，它具有完善清晰的原则，如果我们可以理解这些原则，我们就能很方便的读懂代码和定位问题。函数式编程目的是为了数据流更加明显，从而代码更具可读性。
+
+废话不多说，我们先通过两个最简单的代码示例来告诉我们什么是函数式编程风格：
+
+```javascript
+// 1.非函数式编程 
+// 命令式：先做这，再做那
+var name = 'Lewis';
+var greeting = 'Hi,I’m ';
+console.log(greeting + name); // Hi,I’m Lewis
+// 2.函数式
+function greet(name){
+  return "Hi,I’m " + name
+}
+console.log(greet('Lewis')) // Hi,I’m Lewis
+```
+
+如果你曾经因为过面向对象的JavaScript编写风格感到过头疼（如原型链、原型继承等关系），那么不妨来深入了解一下函数式编程，用函数去思考问题。
 
 思考：下面是两种不同的修改x的值的代码写法
 
 ```javascript
 let x = null;
 function foo(y){
-  x = Math.floor(Math.random()*y)
+  x = 10 * y
 }
 foo(11)
-x; 
+x; // 110
 ```
 
 ```javascript
 let x = null;
-function foo(){
-  return Math.floor(Math.random()*y)
+function foo(y){
+  return 10 * y
 }
 x = foo(11)
-x;
+x; // 110
 ```
 
-上面的案例中，第一种给x 赋值是**隐式**的输出，而第二种通过return是一个**显式**的输出
+上面的案例中，第一种给x 赋值是**隐式**的输出，而第二种通过return是一个**显式**的输出，同时第一种给x赋值的foo函数不是一个**纯函数**它是有副作用的，而第二个foo函数是一个**纯函数**
 
-何为**隐式**和**显式**？看下一段代码
+何为**隐式**和**显式** ，什么又是**纯函数**？看下面的代码案例帮助我们加深印象
 
 ```javascript
+// 代码1：
+// 下面greet1从全局状态中读取了name变量，其整个函数的运作也有可能依赖于这个变量，因此也不是一个 纯函数
+var name = 'Lewis'
+function greet1(){
+  console.log("Hi,I’m " + name)
+}
+// 而一个纯函数应该是下面的greet2，接受一个name形参，返回一个结果，它不会依赖或者改变函数以外的内容和变量
+function greet2(name){
+  return "Hi,I’m " + name
+}
+
+// 代码2：
 function sum(list){
 	const total = 0;
   	for(let i = 0; i < list.length; i++){
@@ -46,13 +75,17 @@ function sum(list){
 }
 let nums = [1,2,3,null,5]
 sum(nums) // 11
+nums // 此时的nums为 [1,2,3,0,5] 被修改了，因此nums是一个有副作用的函数，也不属于纯函数
 ```
 
-上面的代码中，函数**sum**除了return输出，其实还是有其他的操作修改到了外部参数nums, 即便是我们无意的修改了nums中的值，在JS中对数组、对象、函数都是用引用和引用复制，我们可以很容易地从函数中创建输出，即使是无心的。(拓展：理解**可变数据的副作用** ，以及**不可变数据** 的解决方案：浅复制、深克隆、**Immer.js**、**immutability-helper** 等库帮助编写可读性高的代码，并且不会失去immutability-不可变性带来的好处)
+代码1中，我们可以感受到greet1的函数好像更关注于我们想去"做什么"，而greet2函数我们更关注于它返回的结果"是什么"。
 
-这个隐式函数输出在函数式编程中有一个特殊的名称：**副作用**
+代码2中，函数**sum**除了return输出，其实还是有其他的操作修改到了外部参数nums, 即便是我们无意的修改了nums中的值，在JS中对数组、对象、函数都是用引用和引用复制，我们可以很容易地从函数中创建输出，即使是无心的。(拓展：理解**可变数据的副作用** ，以及**不可变数据** 的好处和解决方案：浅复制、深克隆、**Immer.js**、**immutability-helper** 等库帮助编写可读性高的代码，并且不会失去immutability-不可变性带来的好处)。
 
-而没有副作用的函数也有一个特殊的名称：**纯函数**
+小结：
+
+- 这个隐式函数输出在函数式编程中有一个特殊的名称：**副作用**
+- 而没有副作用的函数也有一个特殊的名称：**纯函数**
 
 #### 2-理解柯里化curry&偏函数partial
 
@@ -252,22 +285,8 @@ newComposeFn(10).then((res)=>{
 小结：
 
 1. **组合 ———— 声明式数据流 ———— 是支撑函数式编程其他特性的最重要的工具之一**
-2. 函数组合是为了符合“声明式编程风格”，即关注“是什么”，而非具体“做什么”。如下面ES6新增的解构语法
+2. 函数组合是为了符合“声明式编程风格”，这点可以看到最开始提及不同风格的代码区别。
 
-
-```javascript
-function getData() {
-    return [1,2,3,4,5];
-}
-
-// 命令式
-var tmp = getData();
-var a = tmp[0];
-var b = tmp[3];
-
-// 声明式
-var [ a ,,, b ] = getData();
-```
 
 #### 总结
 
@@ -284,5 +303,7 @@ https://juejin.cn/post/6969016132741103624：《02-JS函数式编程看这一篇
 https://juejin.cn/post/6971260867300032525：《03-JS函数式编程看这一篇就够了》
 
 https://juejin.cn/post/6989020415444123662：《感谢 compose 函数，让我的代码屎山💩逐渐美丽了起来》
+
+[Learning Functional Programming with JavaScript - Anjana Vakil - JSUnconf - YouTube](https://www.youtube.com/watch?v=e-5obm1G_FY)：《学习JavaScript函数式编程 - JSUnconf 2016 演讲》 非常值得观看（需翻墙）
 
 ....更多可以掘金、YouTube 搜索 函数式编程、compose、柯里化、偏函数等关键词
