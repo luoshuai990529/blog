@@ -1,0 +1,65 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-29 16:13:51
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-12-29 18:55:14
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            link:https://leetcode-cn.com/problems/reverse-linked-list/submissions/
+            
+            给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+            
+            输入：head = [1,2,3,4,5]
+            输出：[5,4,3,2,1]
+
+            输入：head = [1,2,3,4,5]
+            输出：[5,4,3,2,1]
+
+            输入：head = []
+            输出：[]
+        */
+
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val, next) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.next = (next===undefined ? null : next)
+       * }
+       */
+      /**
+       * @param {ListNode} head
+       * @return {ListNode}
+       */
+      var reverseList = function (head) {
+        if (!head) {
+          return head;
+        }
+        let prev = null;
+        let curv = head;
+        while (curv) {
+          // 1- 保存当前节点的后面的所有节点
+          const next = curv.next;
+          // 2- 将当前节点的next指向前一个节点，第一次prev是null 第二次是[1]，所以此时的curv是[1],第二次遍历的curv则是[2,1]
+          curv.next = prev;
+          // console.log('next----',next,'prev----',prev,'curv----',curv)
+          // 3- 更改curv引用之前 储存该节点，用于下次遍历时将当前节点的next指向prev，即指向前一个节点
+          prev = curv;
+          // 4- 更改引用 curv -> [2,3,4,5] -> [3,4,5] -> ...
+          curv = next;
+        }
+        return prev;
+      };
+    </script>
+  </body>
+</html>
