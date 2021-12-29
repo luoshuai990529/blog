@@ -1,0 +1,79 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-28 15:34:39
+ * @Author: luoshuai
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-28 23:23:14
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @description: Node类
+       * val 用来保存节点上的数据
+       * next 用来保存指向下一个节点的链接
+       *
+       */
+      function Node(val) {
+        this.val = val;
+        this.next = null;
+      }
+
+      /**
+       * @description: LinkedList类
+       * 这个类有删除节点、插入节点、查找给定的值、以及一个用Node对象来保存链表的头结点head属性
+       *
+       */
+      function LinkedList() {
+        this.head = new Node("head");
+        this.find = find;
+        this.insert = insert;
+        // this.remove = remove;
+        this.display = display;
+      }
+
+      /**
+       * @description: find方法
+       * 该方法遍历链表，查找给定的数据，找到对应数据就返回保存当前数据的节点，其实是用于辅助插入方法insert的辅助方法
+       *
+       */
+      function find(item) {
+        var currNode = this.head;
+        while (currNode.val != item) {
+          currNode = currNode.next;
+        }
+        return currNode;
+      }
+
+      /**
+       * @description: insert方法,在已知节点的后面插入新节点
+       * 通过find方法找到指定节点，将新节点的next指向 指定节点 的next，再将指定节点的next指向新节点即可
+       *
+       */
+      function insert(newVal, item) {
+        var newNode = new Node(newVal);
+        var current = this.find(item);
+        newNode.next = current.next;
+        current.next = newNode;
+      }
+
+      /**
+       * @description: 该方法用来显示链表中的元素：
+       */
+      function display() {
+        var currNode = this.head;
+        while (!(currNode.next == null)) {
+          print(currNode.next.element);
+          currNode = currNode.next;
+        }
+      }
+    </script>
+  </body>
+</html>
