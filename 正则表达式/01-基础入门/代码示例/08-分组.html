@@ -1,3 +1,10 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-27 00:33:51
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2021-12-30 18:25:27
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,24 +71,65 @@
         console.log(/l(o|i)ve/.test('love'));//true
 
         /* 
-        3.反向引用 ： 正则表达式在进行匹配的时候，会存储小括号中匹配到的数据，放入 静态成员中
+        3.反向引用 ： 
+            3.1-正则表达式在进行匹配的时候，会存储小括号中匹配到的数据，放入 静态成员中
+            3.2-我们也可以在正则中通过\1、\2 ....来引用前面已经匹配到的子符串,\2标识引用第二个子表达式，以此类推则\0表示整个正则表达式
             静态成员 :  RegExp.$1  -  RegExp.$9
         */
 
         // 大陆生产日期 ： 2020-03-01  香港生产日期 :  03/01/2020
-        // 需求 ： 将 yyyy-mm-dd 的字符串 变成  mm/dd/yyyy 格式
-
+        // 需求1 ： 将 yyyy-mm-dd 的字符串 变成  mm/dd/yyyy 格式
+        // 使用$1,$2...来引用要被替换的字符串，$1表示第一个子表达式匹配的内容,$2表示第二个子表达式匹配的内容....
         var str = '2020-03-01'.replace(/(\d{4})-(\d{2})-(\d{2})/, '$2/$3/$1');
         console.log(str);//03/01/2020
+
 
 
         console.log(RegExp.$1);//2020  
         console.log(RegExp.$2);//03
         console.log(RegExp.$3);//01
 
+        // 需求2：匹配连续相同的单词
+        var str = 'Hello what what is the first thing, and I am am scq000.'
+        const reg = /\b(\w+)\s\1/g // 释义：\b 单词边界 ,(\w+) 最少一个单词 ,\s 空格 ,\1 引用第一个子表达式 
+        console.log(str.replace(reg,'AAA'));
 
+        /* 
+            非捕获括号(?:regex)
+                例：(?:x) 释义：匹配 'x' 但是不记住匹配项
+                作用：使得你能够定义与正则表达式运算符一起使用的子表达式
+                举例说明：
+                    现有正则 /(?:foo){1,2}/，如果把该正则换成 /foo{1,2}/，则这里的{1,2} 将只应用于 'foo' 的最后一个字符 'o'
+                    而如果你用了非捕获括号，则 {1,2} 会应用于整个 'foo' 单词。
+        */
+        var str = 'scq000'
+        // 释义：第一个子表达式匹配scq00，并且对应引用$1,第二个子表达式用了非捕获括号，匹配0但是不会被记在$2
+        console.log(str.replace(/(scq00)(?:0)/,'$1,$2')) // scq00,$2 
 
+        /* 
+            先行断言(?=regex)：
+                例：x(?=y) 释义：匹配'x'仅仅当'x'后面跟着'y'	
+            正向否定查找(?!regex)：
+                例：x(?!y) 释义：仅仅当'x'后面不跟着'y'时匹配'x'
+        */
+       var str = 'happy happily' 
+       //  例：如果我们想获取 happ 开头的副词，就可以采用 先行断言
+       console.log(str.replace(/happ(?=ily)/,'Q')) // happy Qily 释义：匹配happ仅仅当后面跟着ily
+       //  例：如果我们想过滤所有以 happ 开头的副词，就可以采用 正向否定查找
+       console.log(str.replace(/happ(?!ily)/,'Q')) // Qy happily 释义：匹配happ仅仅当它后面不跟着ily
 
+       /* 
+            后行断言(?<=regex)：
+                例：(?<=y)x 释义：匹配'x'仅当'x'前面是'y'
+            反向否定查找(?<!regex)
+                例：(?<!y)x 释义：仅仅当'x'前面不是'y'时匹配'x'
+       */
+       var str = 'apple people'
+       //  例：只找到apple的ple 
+       console.log(str.replace(/(?<=ap)ple/,'Z')) // apZ people
+       console.log(str.replace(/(?<!peo)ple/,'Z')) // apZ people 通过反向否定查找 找出 apple的ple 
+       //  例：只想找到people的ple
+       console.log(str.replace(/(?<=peo)ple/,'Z')) // apple peoZ  
     </script>
 </body>
 
