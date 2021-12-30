@@ -1,0 +1,77 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-30 19:22:24
+ * @Author: luoshuai
+ * @LastEditors: Lewis
+ * @LastEditTime: 2021-12-31 00:07:59
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        1- RegExp.prototype.test()
+        解释：test()方法执行一个检索，用来查看正则表达式与指定的字符串是否匹配。返回 true 或 false。
+
+        注意：test()方法多次执行于全局的某一个正则，它会改变正则的lastIndex属性
+        连续的执行test()方法，后续的执行将会从 lastIndex 处开始匹配字符串，同exec方法
+      */
+      var regex = /foo/g;
+      // regex.lastIndex is at 0
+      console.log(regex.test("foo")); // true
+      // regex.lastIndex is now at 3
+      console.log(regex.test("foo")); // false
+
+      /* 
+        2- RegExp.prototype.exec()
+        解释：exec() 方法在一个指定字符串中执行一个搜索匹配。返回一个结果数组或 null。
+
+        注意：每次匹配成功都会更新正则表达式对象的 lastIndex 属性
+        如果匹配失败，则返回null，并将lastIndex属性重置为0
+      */
+      var reg = /foo*/g;
+      console.log("reg--", reg);
+      var res1 = reg.exec("table football, foosball");
+      console.log("res1--", res1); // ['foo', index: 6, input: 'table football, foosball', groups: undefined]
+      var res2 = reg.exec("table football, foosball");
+      console.log("res2--", res2); // ['foo', index: 16, input: 'table football, foosball', groups: undefined]
+      var res3 = reg.exec("table football, foosball");
+      console.log("res3--", res3); // null
+
+      /* 
+        3- String.prototype.search()
+        解释：方法执行正则表达式和 String 对象之间的一个搜索匹配。
+        和RegExp.prototype.test() 不同的是，search方法返回的是首次匹配到的索引，没找到则返回-1
+
+        注意：如果传入一个非正则表达式对象 regexp，则会使用 new RegExp(regexp) 隐式地将其转换为正则表达式对象。
+      */
+      var str = "hey JudE";
+      var re = /[A-Z]/g;
+      var re2 = /[.]/g;
+      console.log(str.search(re)); // return 4 找到 “J” 符合要求，索引为4
+      console.log(str.search(re2)); // return -1
+
+      /* 
+        4- String.prototype.match()
+        解释：match() 方法检索返回一个字符串匹配正则表达式的结果。
+
+        注意：如果传入一个非正则表达式对象 regexp，则会使用 new RegExp(regexp) 隐式地将其转换为正则表达式对象。
+      */
+      var paragraph = "The quick brown fox jumps over the lazy dog. It barked.";
+      //  使用g标志，则将返回与完整正则表达式匹配的所有结果，但不会返回捕获组（下面res2的 groups 即为捕获组）。
+      var regex = /[A-Z]/g;
+      var res1 = paragraph.match(regex);
+      console.log("res1--", res1); //  ['T', 'I']
+      //  不带 g 标志，str.match() 将返回与 RegExp.exec(). 相同的结果。
+      var regex = /[A-Z]/;
+      var res2 = paragraph.match(regex);
+      console.log("res2--", res2); //  ['T', index: 0, input: 'The quick brown fox jumps over the lazy dog. It barked.', groups: undefined]
+    </script>
+  </body>
+</html>
