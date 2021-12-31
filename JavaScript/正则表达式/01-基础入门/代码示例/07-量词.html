@@ -40,11 +40,14 @@
        console.log( str.replace(/\d*/,'X') );//  能力：任意次    'X'
        console.log( 'a123456789'.replace(/\d*/,'X') );//  能力：任意次    'Xa123456789'
        // 量词使用最多的是 {} 
-       console.log( str.replace(/\d{5}/,'X') );// 能力：5次      'X6789'
-       console.log( str.replace(/\d{5,8}/,'X') );// 能力 ： 5-8（尽力而为）   'X9'
-       console.log( str.replace(/\d{5,}/,'X') ); //能力 ： >=5  'X'
+       // 贪婪匹配 如：{m,n} {m,} 都是尽可能匹配多的
+       console.log( str.replace(/\d{5}/,'X') ); // 'X6789' 能力：5次      
+       console.log( str.replace(/\d{5,8}/,'X') ); // 'X9' 能力 ： 5-8（尽力而为）   
+       console.log( str.replace(/\d{5,}/,'X') ); // 'X' 能力 ： >=5  
+       // 惰性匹配 如：{m,n}? +? *? 都是尽可能匹配少的
+       console.log( str.replace(/\d{5,8}?/,'X')); // X6789 虽然5个到8个数都可以 但是 当5个就够时就不会再继续往下匹配了
+       console.log( str.replace(/\d+?/,'X')); // X23456789 匹配1个以上，但是后面加了? 因此匹配到1个就够了 不会再往下匹配了 
        
-        
         
     </script>
 </body>

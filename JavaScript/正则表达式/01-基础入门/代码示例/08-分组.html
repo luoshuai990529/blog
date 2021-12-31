@@ -3,7 +3,7 @@
  * @Date: 2021-12-27 00:33:51
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2021-12-30 18:25:27
+ * @LastEditTime: 2021-12-31 10:10:08
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -51,9 +51,10 @@
 
         /* 
         2.提升优先级
-            * | 或运算
+            * 管道符：| 或运算 表示其中任何之一
             * 默认 |  会对两边所有的字符串生效
             * 希望 | 只对某一个字符生效，就可以使用() 提升优先级
+        注意：| 管道符也是惰性匹配，即匹配到了左边的就不会再往右边继续匹配了
         */
 
         //需求 ： 匹配  love  或者 live
@@ -69,6 +70,10 @@
         console.log(/l(o|i)ve/.test('lo111'));//false
         console.log(/l(o|i)ve/.test('111ive'));//false
         console.log(/l(o|i)ve/.test('love'));//true
+
+        // 这里测试惰性匹配 需要通过match方法来观察，可以先行了解
+        console.log("goodbye".match(/good|goodbye/)); // ['good']
+        console.log("goodbye".match(/goodbye|good/)); // ['goodbye']
 
         /* 
         3.反向引用 ： 
