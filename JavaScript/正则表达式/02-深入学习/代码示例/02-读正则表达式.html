@@ -1,0 +1,116 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2021-12-30 18:54:51
+ * @Author: luoshuai
+ * @LastEditors: Lewis
+ * @LastEditTime: 2022-01-01 22:20:13
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 需求1：匹配一个十六进制的颜色字符串，如：#Fc01DF、#ffE、#FFF、#ffbbad
+      var str = "#ffbbad #FFF #eeee #Fc01DF #ffE";
+      // 错误写法：
+      console.log(str.match(/#([a-fA-f0-9]){3,6}/g)); //['#ffbbad', '#FFF', '#eeee', '#Fc01DF', '#ffE']
+      // 正确写法
+      console.log(str.match(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g)); // ['#ffbbad', '#FFF', '#eee', '#Fc01DF', '#ffE'] 释义：匹配#号后面跟着3位或者6位数字或者a-f、A-F 的字符
+
+      // 需求2：校验一个字符串是否为时间格式即符合24小时制 HH:mm:ss 或者 HH:mm
+      // 分析基本规则：小时数 0<=h<24  分钟数 0<=m<60  秒数 0<=s<60
+      var reg =
+        /^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
+      var time1 = "23:59:30";
+      var time2 = "04:42";
+      var time3 = "00:15";
+      console.log(time1, reg.test(time1)); // true
+      console.log(time2, reg.test(time2)); // true
+      console.log(time3, reg.test(time3)); // true
+      var time4 = "24:50";
+      var time5 = "12:60";
+      var time6 = "1213";
+      console.log(time4, reg.test(time4)); // false
+      console.log(time5, reg.test(time5)); // false
+      console.log(time5, reg.test(time6)); // false
+
+      // 需求3：匹配一个日期格式的字符串，如：2017-06-10
+      var str = "2017-06-10";
+      // 分析：年用四位数字即可：[0-9]{4} , 月份一共12个月：(0[1-9]|1[0-2]) , 日 最多31天：(0[1-9]|[12][0-9]|3[01])
+      var reg = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+      console.log(str, reg.test(str)); // true
+
+      // 需求4：匹配window操作系统文件路径如：F:\study\javascript\demo.js F:\study\javascript F:\
+      // 分析： 整体模式其实是：盘符:\文件夹\文件夹\文件夹\
+      // 提示： 文件名不能包含下列字符：\/:*?"<>|
+      var reg = /^[a-zA-Z]:\\([^\\:*<>|"?\r\n/]+\\)*([^\\:*<>|"?\r\n/]+)?$/g;
+      /* 
+           拆分来看：
+                1- ^[a-zA-Z]:\\ 即 以字母开头 匹配 F:\\
+                2- [^\\:*<>|"?\r\n/] 即 不为 \/:*?"<>| 的字符
+                   因此([^\\:*<>|"?\r\n/]+\\) 就表示 除了\/:*?"<>| 以外的字符最少出现1次 并后面跟着\
+                   连着 *号 一起再看一下([^\\:*<>|"?\r\n/]+\\)* 即表示 (除了\/:*?"<>| 以外的任意1个或多个字符且后面跟着\) 出现0次或多次
+                3- 再往后看最后一个子表达式和第一个相似，即 以除了\/:*?"<>| 以外的任意1个或多个字符 出现0次或1次 结尾
+        */
+      // 注意：字符串中 \ 符号需要转义
+      var str1 = "F:\\study";
+      console.log(str1, reg.test(str1), str1.match(reg)); // true
+      var str2 = "F:\\study\\javascript\\";
+      console.log(str2, reg.test(str2), str2.match(reg)); // true
+      var str3 = "F:\\study\\javascript\\node.js";
+      console.log(str3, reg.test(str3), str3.match(reg)); // true
+      var str4 = 'F:\\study\\javas"<cript\\demo.js';
+      console.log(str4, reg.test(str4), str4.match(reg)); // false 因为字符串中包含了"<等特殊字符
+
+      // 需求5：匹配下列标签中的id
+      var str = '<div id="container" class="main"></div>'; // 目标：提取出 id="container"
+      // 错误写法
+      var reg = /id=".*"/gi;
+      console.log(str, str.match(reg)); // ['id="container" class="main"'] class也被匹配进来了，因为.通配符本身匹配引号，而*又是贪婪匹配，所以遇到container" 也不会停下
+      // 正确写法：我们可以加一个 ? 即使用惰性匹配，符合要求即返回
+      var reg = /id=".*?"/gi;
+      console.log(str, str.match(reg)); // ['id="container"']
+      // 优化写法：因为匹配原理会涉及到 回溯 算法，可以优化如下
+      var reg = /id="[^('")]*"/gi;
+      console.log(str, str.match(reg)); // ['id="container"']
+
+      // 需求6：用一个正则来处理数字千分位
+      var str = "123456789";
+      // 写法1：有问题，如果是在三位数的前面添加逗号，那么下方的字符串开头位置也会加上逗号
+      var reg = /(?=(\d{3})+$)/g;
+      console.log(str.replace(reg, ",")); // ,123,456,789 错误
+      // 解决：我们知道^可以匹配开头，那么我们想要这个位置不是开头 其实可以用 (?!^)  改写后即：
+      var reg = /(?!^)(?=(\d{3})+$)/g;
+      console.log(str.replace(reg, ",")); // 123,456,789
+
+      // 写法2：匹配1个数字，这个数字后面跟着3个数字 出现一次或者多次，并且都是以3个数结尾。
+      // 即 匹配一个后面刚好跟着n组3位数的数（n为正整数）
+      /* 
+           拆分来看：
+            1-首先匹配到 1 ，1后面跟着 234 567 8 很明显后面跟着2组三位数 并且还跟了个8
+            2-再匹配到   2 ，2后面跟着 345 678 恰好跟着 2组三位数 不多不少，因此2符合要求，进行替换 => 12,345678
+            3-依次类推发现 5 也符合要求，因此最终就是 12,345,678
+        */
+      var reg = /(\d)(?=(\d{3})+$)/g;
+      console.log(str.replace(reg, "$1,")); // 123,456,789
+
+      // 需求7：上面需求的变体 其他形式, 把123456789 12345678 变成=> 123,456,789 12,345,678
+      var str = "123456789 12345678";
+      // 分析：其实我们需要过滤掉中间空格的位置，那么我们可以通过 (?!\b) 来达到目的，释义：不是单词前面的位置
+      // 不是单词前面的位置 在该字符串中就两个位置  一个是开头，一个是中间的空余部分
+      // 最后我们发现对比需求6中 把$换成了\b 因为\b 在上述字符串中即可以匹配中间的空格 也可以匹配最后字符串结尾
+      reg = /(?!\b)(?=(\d{3})+\b)/g;
+      console.log(str.replace(reg, ",")); // 123,456,789 12,345,678
+      // 通过分析(?!\b)我们可以知道其实可以用 \B 来代替这一段，即非单词边界 改造后如下：
+      reg = /\B(?=(\d{3})+\b)/g;
+      console.log(str.replace(reg, ",")); // 123,456,789 12,345,678
+
+      // 。。。。未完待续
+    </script>
+  </body>
+</html>
