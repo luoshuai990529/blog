@@ -1,0 +1,60 @@
+<!--
+ * @Date: 2021-12-30 19:18:18
+ * @LastEditors: Lewis
+ * @LastEditTime: 2022-01-03 22:37:07
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" class="val" /><button class="btn">验证</button>
+    <script>
+      const verifyRegex = () => {
+        document.querySelector(".btn").addEventListener("click", () => {
+          const input = document.querySelector(".val");
+          // var reg = /^[\u4e00-\u9fa5a-zA-Z0-9\/\!\$\|\^\*\(\)\+=&%！`:：》《‘’“”",，。·~@#-_]{1,20}$/g; // thing.DATA
+          // var reg = /^([0-9]+(\.?[0-9]+)?){1,32}$/g; // number.DATA
+          // var reg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/  //car_number.DATA
+          // var reg = /^[\u4e00-\u9fa5]{1,5}$/ // phrase.DATA
+          console.log(input.value, "----", reg.test(input.value));
+        });
+      };
+      verifyRegex();
+      /*    
+            https://developers.weixin.qq.com/doc/offiaccount/Subscription_Messages/api.html#send%E5%8F%91%E9%80%81%E8%AE%A2%E9%98%85%E9%80%9A%E7%9F%A5
+            微信订阅通知参数内容限制：
+            
+                参数类别	                参数说明	参数值限制	                                                            说明
+                thing.DATA	                事物	   20个以内字符	                                                           可汉字、数字、字母或符号组合
+                number.DATA	                数字	   32位以内数字	                                                           只能数字，可带小数
+                letter.DATA	                字母	   32位以内字母	                                                           只能字母
+                symbol.DATA	                符号	   5位以内符号	                                                           只能符号
+                character_string.DATA	   字符串	   32位以内数字、字母或符号	                                                可数字、字母或符号组合
+                time.DATA	                时间	   24小时制时间格式（支持+年月日），支持填时间段，两个时间点之间用“~”符号连接	例如：15:01，或：2019年10月1日 15:01
+                date.DATA	                日期	   年月日格式（支持+24小时制时间），支持填时间段，两个时间点之间用“~”符号连接	例如：2019年10月1日，或：2019年10月1日 15:01
+                amount.DATA	                金额	   1个币种符号+10位以内纯数字，可带小数，结尾可带“元”	                      可带小数
+                phone_number.DATA	        电话	   17位以内，数字、符号	                                                    电话号码，例：+86-0766-66888866
+                car_number.DATA	            车牌	   8位以内，第一位与最后一位可为汉字，其余为字母或数字	                       车牌号码：粤A8Z888挂
+                name.DATA	                姓名	   10个以内纯汉字或20个以内纯字母或符号	                                     中文名10个汉字内；纯英文名20个字母内；中文和字母混合按中文名算，10个字内
+                phrase.DATA	                汉字	   5个以内汉字	                                                           5个以内纯汉字，例如：配送中
+
+        */
+
+      // 01- thing.DATA  规则：20个以内字符，可汉字、数字、字母或符号组合 [\u4e00-\u9fa5]
+      //   var reg = '^[\u4e00-\u9fa5a-zA-Z0-9\/\!\$\|\^\*\(\)\+=&%！`:：》《‘’“”",，。·~@#-_]{1,20}$';
+      // 02- number.DATA  规则：32位以内数字 只能数字，可带小数
+      //   var reg = "^([0-9]+(\.?[0-9]+)?){1,32}$";
+      // 03- letter.DATA  规则：32位以内字母 只能字母
+      //   var reg = "^[a-zA-Z]{1,32}$";
+      // 04- symbol.DATA  规则：5位以内符号 只能符号
+      //   var reg = "^[\\D]{1,5}$";
+
+      //   未完待补充............
+    </script>
+  </body>
+</html>

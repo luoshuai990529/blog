@@ -2,8 +2,8 @@
  * @Description: 这是***页面（组件）
  * @Date: 2021-12-27 00:33:51
  * @Author: luoshuai
- * @LastEditors: luoshuai
- * @LastEditTime: 2021-12-31 10:10:08
+ * @LastEditors: Lewis
+ * @LastEditTime: 2022-01-03 13:14:37
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -88,11 +88,28 @@
         var str = '2020-03-01'.replace(/(\d{4})-(\d{2})-(\d{2})/, '$2/$3/$1');
         console.log(str);//03/01/2020
 
-
-
         console.log(RegExp.$1);//2020  
         console.log(RegExp.$2);//03
         console.log(RegExp.$3);//01
+
+        // 情况2：括号嵌套
+        var regex = /^((\d)(\d(\d)))\1\2\3\4$/;
+        var str = '1231231233'
+        console.log( regex.test(str) ); // true
+        /* 
+            分析：
+                第一个字符是数字，比如说1，
+                第二个字符是数字，比如说2，
+                第三个字符是数字，比如说3，
+                接下来的是\1，是第一个分组内容，那么看第一个开括号对应的分组是什么，是123，
+                接下来的是\2，找到第2个开括号，对应的分组，匹配的内容是1，
+                接下来的是\3，找到第3个开括号，对应的分组，匹配的内容是23，
+                最后的是\4，找到第3个开括号，对应的分组，匹配的内容是3。
+        */
+        console.log( RegExp.$1 ); // 123
+        console.log( RegExp.$2 ); // 1
+        console.log( RegExp.$3 ); // 23
+        console.log( RegExp.$4 ); // 3
 
         // 需求2：匹配连续相同的单词
         var str = 'Hello what what is the first thing, and I am am scq000.'

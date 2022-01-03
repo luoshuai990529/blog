@@ -3,7 +3,7 @@
  * @Date: 2021-12-30 19:22:24
  * @Author: luoshuai
  * @LastEditors: Lewis
- * @LastEditTime: 2021-12-31 00:07:59
+ * @LastEditTime: 2022-01-03 16:38:07
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -72,6 +72,13 @@
       var regex = /[A-Z]/;
       var res2 = paragraph.match(regex);
       console.log("res2--", res2); //  ['T', index: 0, input: 'The quick brown fox jumps over the lazy dog. It barked.', groups: undefined]
+
+      /* 
+        5- String.prototype.split()
+        解释：split() 方法用于切割字符串 返回一个数组，我们也可以传入一个正则表达式来进行切割
+      */
+      var regex = /\D/;
+      console.log("2017/06/26".split(regex)); // ['2017', '06', '26']
     </script>
   </body>
 </html>

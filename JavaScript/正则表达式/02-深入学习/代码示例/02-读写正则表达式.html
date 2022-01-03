@@ -1,9 +1,9 @@
 <!--
  * @Description: 这是***页面（组件）
- * @Date: 2021-12-30 18:54:51
+ * @Date: 2021-12-28 18:54:51
  * @Author: luoshuai
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-02 23:20:41
+ * @LastEditTime: 2022-01-03 17:15:47
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -82,6 +82,7 @@
       console.log(str, str.match(reg)); // ['id="container"']
 
       // -- 位置匹配案例：------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
       // 需求1：用一个正则来处理数字千分位
       var str = "123456789";
       // 写法1：有问题，如果是在三位数的前面添加逗号，那么下方的字符串开头位置也会加上逗号
@@ -139,15 +140,54 @@
 
         最终可以得出下列正则：
       */
-      var reg = /((?=.*[0-9])(?=.*[a-z])|(?=.*[0-9])(?=.*[A-Z])|(?=.*[a-z])(?=.*[A-Z]))^[0-9A-Za-z]{6,12}$/;
-      console.log( reg.test("1234567") ); // false 全是数字
-      console.log( reg.test("abcdef") ); // false 全是小写字母
-      console.log( reg.test("ABCDEFGH") ); // false 全是大写字母
-      console.log( reg.test("ab23C") ); // false 不足6位
-      console.log( reg.test("ABCDEF234") ); // true 大写字母和数字
-      console.log( reg.test("abcdEF234") ); // true 三者都有
+      var reg =
+        /((?=.*[0-9])(?=.*[a-z])|(?=.*[0-9])(?=.*[A-Z])|(?=.*[a-z])(?=.*[A-Z]))^[0-9A-Za-z]{6,12}$/;
+      console.log(reg.test("1234567")); // false 全是数字
+      console.log(reg.test("abcdef")); // false 全是小写字母
+      console.log(reg.test("ABCDEFGH")); // false 全是大写字母
+      console.log(reg.test("ab23C")); // false 不足6位
+      console.log(reg.test("ABCDEF234")); // true 大写字母和数字
+      console.log(reg.test("abcdEF234")); // true 三者都有
 
-      // 。。。。未完待续
+      // 04- 第二种解法：“至少包含两种字符” 的意思其实可以理解为，不能全都是数字、也不能全是小写字母、也不能全是大写字母 因此我们可以使用 (?!regex) 即：
+      // 首先推断出 "不能全是数字" 的正则：
+      var reg = /(?!^[0-9]{6,12}$)^[0-9a-zA-Z]{6,12}$/;
+      // 那么如果满足以上 “三种都不能” 即：
+      var reg =
+        /(?!^[0-9]{6,12}$)(?!^[a-z]{6,12}$)(?!^[A-Z]{6,12}$)^[0-9A-Za-z]{6,12}$/; // 不能全都是数字、也不能全是小写字母、也不能全是大写字母
+      console.log("1234567", reg.test("1234567")); // false 全是数字
+      console.log("abcdef", reg.test("abcdef")); // false 全是小写字母
+      console.log("ABCDEFGH", reg.test("ABCDEFGH")); // false 全是大写字母
+      console.log("ab23C", reg.test("ab23C")); // false 不足6位
+      console.log("ABCDEF234", reg.test("ABCDEF234")); // true 大写字母和数字
+      console.log("abcdEF234", reg.test("abcdEF234")); // true 三者都有
+
+      // -- 括号匹配案例：------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+      // 需求1：将每个单词的首字母都转换为大写
+      var str = "my name is lewis";
+      var reg1 = /(?<=\b)\w/g; // 释义：\b 即单词边界，(?<=\b)\w连起来就是 匹配一个前面是单词边界的字符 即首字母
+      var reg2 = /(^|\s)\w/g; // 释义：^\w 即匹配首字母，\s\w 即匹配前面是空格的字母，连起来就是匹配开头的首字母和前面有空格的首字母
+      const newStr1 = str.replace(reg1, (s) => {
+        return s.toUpperCase();
+      });
+      console.log("newStr1-", newStr1); // newStr1- My Name Is Lewis
+      const newStr2 = str.replace(reg2, (s) => {
+        return s.toUpperCase();
+      });
+      console.log("newStr2-", newStr2); // newStr2- My Name Is Lewis
+
+      // 需求2：驼峰单词 转 中划线化
+      var str = "MozTransform";
+      function dasherize(str) {
+        return str
+          .replace(/([A-Z])/g, "-$1")
+          .replace(/[-_\s]+/g, "-")
+          .toLowerCase();
+      }
+      const newStr3 = dasherize(str)
+      console.log("newStr3--", newStr3); // -moz-transform
+
     </script>
   </body>
 </html>

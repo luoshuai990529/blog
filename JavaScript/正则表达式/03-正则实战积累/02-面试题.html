@@ -1,0 +1,94 @@
+<!--
+ * @Date: 2022-01-03 17:19:47
+ * @LastEditors: Lewis
+ * @LastEditTime: 2022-01-03 20:48:45
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            题目1：写一个提取下列 URL 参数的 js方法
+            要求：只识别queryParam，排除 hash 的干扰
+      */
+
+      // 如果要排除hash的干扰我们就不能用 window.location 的 search 或者 hash 参数来截取了
+      function getParamFromURL(url) {
+        const params = {};
+
+        const reg1 = /([^?=&#]+)=([^?=&#]+)/g;
+        /* 
+            reg1释义：
+                [^?=&#]+ 即只要不是?=&#的1个或者多个字符
+                因此上面的连起来就可以看做是匹配 由=号相连 并两边不是?=&#的1个或者多个字符
+        */
+        url.replace(reg1, (match, key, value) => {
+          // console.log("result-", match, key, value); // a=1 a 1
+          params[key] = value;
+        });
+        // 如果我们想记录hash值的话 可以再次匹配
+        const reg2 = /#([^?=&#]+)/g; // 释义：匹配 #号后面不是?=&#的1个或者多个字符
+        url.replace(reg2, (match, hash) => {
+          // console.log("result-",match,hash);
+          params["HASH"] = hash;
+        });
+        return params;
+      }
+      var params1 = getParamFromURL(
+        "https://alibaba.com?a=1&b=2&c=3#/abc/def?a=2&b=3&c=4"
+      );
+      console.log("params1---", params1); // {a: '2', b: '3', c: '4', HASH: '/abc/def'}
+      var params2 = getParamFromURL(
+        "https://alibaba.com?A=1&B=2&C=3#/abc/def?a=2&b=3&c=4"
+      );
+      console.log("params2---", params2); // {A: '1', B: '2', C: '3', a: '2', b: '3', c: '4', HASH: '/abc/def'}
+
+      // 拓展：提取指定的name方法,即指定key的参数
+      function getUrlParameter(url, name) {
+        const regexSearch = "[\\?&#]" + name + "=([^&#]*)";
+        const regex = new RegExp(regexSearch);
+        const results = regex.exec(url);
+        return results ? window.decodeURIComponent(results[1]) : null;
+      }
+      var value1 = getUrlParameter(
+        "https://alibaba.com?A=1&B=2&C=3#/abc/def?a=2&b=3&c=4",
+        "B"
+      );
+      console.log("value1---", value1); // 2
+      var value2 = getUrlParameter(
+        "https://alibaba.com?A=1&B=2&C=3#/abc/def?a=2&b=3&c=4",
+        "D"
+      );
+      console.log("value2---", value2); // null
+
+      /* 
+        题目2：在im中 聊天内容经常会遇到对方发送连接地址的情况，请编写一道正则表达式 最大限度匹配聊天内容的url
+        要求：仅仅识别 tmall.com 以及 taobao.com 这两个域名下的链接
+      */
+      var str1 =
+        "今天我淘到了一个宝贝，你也看一下感觉很适合你 https://detail.tmall.com/item.htm?id=577359445691&spm=a1z10.10649-b-s.0.0.335e225cy94dcW ，种草的话，下单吧！";
+
+      var str2 =
+        "今天我淘到了一个宝贝，你也看一下感觉很适合你 https://detail.jingdong.com/item.htm?id=577359445691&spm=a1z10.10649-b-s.0.0.335e225cy94dcW ，种草的话，下单吧！";
+      function getUrlFromString(str) {
+        let regexp =
+          /((http|ftp|https|file):\/\/([\w\-]+\.)+[\w\-]+(\/[\w\-\.\/?\@\%\!\&=\+\~\:\#\;\,]*)?)/gi;
+        return str
+          .match(regexp)
+          .filter((item) =>
+            ["tmall.com", "taobao.com"].some(
+              (domain) => item.indexOf(domain) !== -1
+            )
+          );
+      }
+      console.log(getUrlFromString(str1)); // ['https://detail.tmall.com/item.htm?id=577359445691&spm=a1z10.10649-b-s.0.0.335e225cy94dcW']
+      console.log(getUrlFromString(str2)); // []
+    </script>
+  </body>
+</html>
