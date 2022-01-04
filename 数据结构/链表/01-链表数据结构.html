@@ -3,7 +3,7 @@
  * @Date: 2021-12-28 15:34:39
  * @Author: luoshuai
  * @LastEditors: Lewis
- * @LastEditTime: 2021-12-28 23:23:14
+ * @LastEditTime: 2022-01-04 21:40:48
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -24,19 +24,6 @@
       function Node(val) {
         this.val = val;
         this.next = null;
-      }
-
-      /**
-       * @description: LinkedList类
-       * 这个类有删除节点、插入节点、查找给定的值、以及一个用Node对象来保存链表的头结点head属性
-       *
-       */
-      function LinkedList() {
-        this.head = new Node("head");
-        this.find = find;
-        this.insert = insert;
-        // this.remove = remove;
-        this.display = display;
       }
 
       /**
@@ -65,15 +52,36 @@
       }
 
       /**
-       * @description: 该方法用来显示链表中的元素：
+       * @description: display方法，该方法用来显示链表中的元素：
        */
       function display() {
         var currNode = this.head;
         while (!(currNode.next == null)) {
-          print(currNode.next.element);
+          console.log(currNode.next.val);
           currNode = currNode.next;
         }
       }
+
+      /**
+       * @description: LinkedList类
+       * 这个类有删除节点、插入节点、查找给定的值、以及一个用Node对象来保存链表的头结点head属性
+       *
+       */
+      function LinkedList() {
+        this.head = new Node("head");
+        this.find = find;
+        this.insert = insert;
+        // this.remove = remove;
+        this.display = display;
+      }
+
+      // 测试 LinkedList 类
+      var cities = new LinkedList();
+      cities.insert("长沙", "head"); // 插入头结点
+      cities.insert("衡阳", "长沙"); // 在长沙节点后插入衡阳节点
+      cities.insert("郴州", "衡阳"); // 在衡阳节点后插入郴州节点
+      cities.display(); // 依次打印链表的元素： 长沙 -> 衡阳 -> 郴州
+      console.log("cities---",cities);
     </script>
   </body>
 </html>
