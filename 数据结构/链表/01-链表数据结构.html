@@ -3,7 +3,7 @@
  * @Date: 2021-12-28 15:34:39
  * @Author: luoshuai
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-04 21:40:48
+ * @LastEditTime: 2022-01-05 23:13:26
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -17,8 +17,8 @@
     <script>
       /**
        * @description: Node类
-       * val 用来保存节点上的数据
-       * next 用来保存指向下一个节点的链接
+       * @param {*} val 用来保存节点上的数据
+       * @param {*} next 用来保存指向下一个节点的链接
        *
        */
       function Node(val) {
@@ -28,6 +28,7 @@
 
       /**
        * @description: find方法
+       * @param {*} item 已知节点
        * 该方法遍历链表，查找给定的数据，找到对应数据就返回保存当前数据的节点，其实是用于辅助插入方法insert的辅助方法
        *
        */
@@ -41,6 +42,8 @@
 
       /**
        * @description: insert方法,在已知节点的后面插入新节点
+       * @param {*} newVal 新节点
+       * @param {*} item 已知节点
        * 通过find方法找到指定节点，将新节点的next指向 指定节点 的next，再将指定节点的next指向新节点即可
        *
        */
@@ -56,10 +59,34 @@
        */
       function display() {
         var currNode = this.head;
-        while (!(currNode.next == null)) {
+        while (currNode.next) {
           console.log(currNode.next.val);
           currNode = currNode.next;
         }
+      }
+      /**
+       * @description: remove方法，用于从链表中删除一个节点
+       */
+      function remove(item) {
+        // 1.先找到待删除节点前面的节点，我们可以用findPrevious方法
+        // 2.再修改这个节点的next属性，使其指向待删除节点的下一个节点
+        var prevNode = this.findPrevious(item);
+        if (prevNode.next) {
+          // 如果前面节点的 next 属性不为null 即有节点,那么我们就将这个节点的next指向它的下下个节点
+          prevNode.next = prevNode.next.next;
+        }
+      }
+
+      /**
+       * @description: findPrevious方法 遍历链表的元素检查每一个节点的下一个节点是否存储着待删除数据，找到就返回
+       */
+      function findPrevious(item) {
+        var currNode = this.head;
+        while (currNode.next && (currNode.next.val != item)) {
+          // 当前节点的下一个节点不为null 并且 当前节点的下一个节点和待删除节点的值相等，那么就找到了待删除节点的前面节点了
+          currNode = currNode.next;
+        }
+        return currNode;
       }
 
       /**
@@ -71,17 +98,23 @@
         this.head = new Node("head");
         this.find = find;
         this.insert = insert;
-        // this.remove = remove;
+        this.remove = remove;
+        this.findPrevious = findPrevious;
         this.display = display;
       }
 
       // 测试 LinkedList 类
       var cities = new LinkedList();
-      cities.insert("长沙", "head"); // 插入头结点
-      cities.insert("衡阳", "长沙"); // 在长沙节点后插入衡阳节点
+      console.log("cities---", cities);
+      cities.insert("长沙", "head"); // 在头结点后面插入长沙节点
+      cities.insert("株洲", "长沙"); // 在长沙节点后面插入株洲节点
+      cities.insert("衡阳", "株洲"); // 在株洲节点后插入衡阳节点
       cities.insert("郴州", "衡阳"); // 在衡阳节点后插入郴州节点
+      cities.display(); // 依次打印链表的元素： 长沙 -> 株洲 -> 衡阳 -> 郴州
+      // 删除其中一个节点
+      cities.remove('株洲')
+      console.log('-------------------删除一个节点 株洲 后-------------------');
       cities.display(); // 依次打印链表的元素： 长沙 -> 衡阳 -> 郴州
-      console.log("cities---",cities);
     </script>
   </body>
 </html>
