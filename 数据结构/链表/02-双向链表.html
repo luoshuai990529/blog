@@ -1,20 +1,142 @@
 <!--
  * @Date: 2022-01-05 23:13:57
- * @LastEditors: Lewis
- * @LastEditTime: 2022-01-05 23:13:57
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-06 18:07:05
 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    
+  </head>
+  <body>
     <script>
-        
+      /* 
+            概述：如果单纯从链表的头结点遍历到尾结点很简单，但是如果反过来从后向前遍历则没有那么简单。
+            可以通过给节点Node对象增加一个属性，该属性存储指向前去节点的链接，这样就会变得容易。
+            因此当我们需要像链表中插入一个节点时，我们同时需要指出该节点的前驱和后继。
+            （注意：书中说什么 双向链表删除节点比单链表删除节点效率高 我个人认为如果是单看书中的JS代码并没有提高，
+            而且部分代码有不少问题，需要大家经过自己的思考和理解再吸收。）
+         */
+
+      /**
+       * @description: Node类
+       * @param {*} val 用来保存节点上的数据
+       * @param {*} next 用来保存指向下一个节点的链接
+       * @param {*} previous 用来保存指向上一个节点的链接
+       *
+       */
+      function Node(val) {
+        this.val = val;
+        this.next = null;
+        this.previous = null;
+      }
+
+      /**
+       * @description: find方法
+       * @param {*} item 已知节点
+       * 该方法遍历链表，查找给定的数据，找到对应数据就返回保存当前数据的节点，其实是用于辅助插入方法insert的辅助方法
+       *
+       */
+      function find(item) {
+        var currNode = this.head;
+        while (currNode.val != item) {
+          currNode = currNode.next;
+        }
+        return currNode;
+      }
+
+      /**
+       * @description: insert方法,在已知节点的后面插入新节点，和单链表相比的多出的操作是需要设置新节点的 previous 属性
+       * @param {*} newVal 新节点
+       * @param {*} item 已知节点
+       *
+       */
+      function insert(newVal, item) {
+        var newNode = new Node(newVal);
+        var current = this.find(item);
+        newNode.next = current.next;
+        newNode.previous = current;
+        current.next = newNode;
+      }
+
+      /**
+       * @description: display方法，该方法用来显示链表中的元素：
+       */
+      function display() {
+        var currNode = this.head;
+        while (currNode.next) {
+          console.log(currNode.next.val);
+          currNode = currNode.next;
+        }
+      }
+
+      /**
+       * @description: findLast方法，该方法用来找到节点的最后一个节点
+       */
+      function findLast() {
+        var currNode = this.head;
+        while (currNode.next) {
+          currNode = currNode.next;
+        }
+        return currNode;
+      }
+
+      /**
+       * @description: dispReverse方法，该方法用来反向显示链表中的元素：
+       */
+      function dispReverse() {
+        var currNode = this.findLast();
+        while (currNode.previous) {
+          console.log(currNode.val);
+          currNode = currNode.previous;
+        }
+      }
+
+      /**
+       * @description: remove方法（书中的代码好像remove方法有问题，无法删除最后一个节点，因此这里我自己加了一些兼容）
+       * 我们只需要在链表中找出存储待删除数据的节点
+       * 然后设置该节点前驱的next属性，使其指向待删除节点的后继，
+       * 再设置该节点的后继节点的previous属性，使其指向待删除节点的previous前驱节点
+       * 最后再将待删除节点的next和previous都指向null即可
+       */
+      function remove(item) {
+        var currNode = this.find(item);
+        // 找到要删除的节点
+        if (currNode.next) {
+          // 如果该节点的next 不为null，即不是最后一个节点
+          currNode.previous.next = currNode.next;
+          currNode.next.previous = currNode.previous;
+        } else {
+          // next如果为null，则表示是最后一个节点了，我们只需修改待删除节点的前一个节点的next属性，并修改当前节点的previous改为null即可
+          currNode.previous.next = currNode.next;
+        }
+      }
+
+      function LinkedList() {
+        this.head = new Node("head");
+        this.find = find;
+        this.insert = insert;
+        this.display = display;
+        this.remove = remove;
+        this.findLast = findLast;
+        this.dispReverse = dispReverse;
+      }
+
+      var cities = new LinkedList();
+      console.log("cities---", cities);
+      cities.insert("长沙", "head"); // 在头结点后面插入长沙节点
+      cities.insert("株洲", "长沙"); // 在长沙节点后面插入株洲节点
+      cities.insert("衡阳", "株洲"); // 在株洲节点后插入衡阳节点
+      cities.insert("郴州", "衡阳"); // 在衡阳节点后插入郴州节点
+      cities.display(); // 顺序依次打印链表的元素： 长沙 -> 株洲 -> 衡阳 -> 郴州
+      console.log("----------反向打印----------");
+      cities.dispReverse(); // 反向打印链表的元素： 郴州 -> 衡阳 -> 株洲 -> 长沙
+      cities.remove("郴州"); // 删除节点郴州
+      console.log("----------删除 郴州 节点----------");
+      cities.display(); // 顺序依次打印链表的元素： 长沙 -> 株洲 -> 衡阳
     </script>
-</body>
+  </body>
 </html>

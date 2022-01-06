@@ -1,9 +1,9 @@
 <!--
  * @Description: 这是***页面（组件）
- * @Date: 2021-12-28 15:34:39
+ * @Date: 2022-01-06 18:07:47
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-01-06 15:50:01
+ * @LastEditTime: 2022-01-06 18:40:03
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +15,14 @@
   </head>
   <body>
     <script>
+      /* 
+            循环链表和单项链表相似，节点类型都是一样的。
+            区别：创建循环链表时，让其头结点的next属性指向它本身 即： head.next = head
+            因此，链表的尾节点指向头节点，就会形成了一个循环链表
+
+            注意：display遍历的时候，如果下一个节点等于头节点的话就要停止遍历，否则会死循环
+        */
+
       /**
        * @description: Node类
        * @param {*} val 用来保存节点上的数据
@@ -23,7 +31,7 @@
        */
       function Node(val) {
         this.val = val;
-        this.next = null;
+        this.next = null; // 最后节点的next属性 应该指向头节点
       }
 
       /**
@@ -55,11 +63,12 @@
       }
 
       /**
-       * @description: display方法，该方法用来显示链表中的元素：
+       * @description: display方法，该方法用来遍历链表依次显示链表中的元素：
        */
       function display() {
         var currNode = this.head;
-        while (currNode.next) {
+        // 注意：因为是循环列表，这里遍历的时候如果下一个节点等于头节点的话就要停止遍历，否则会死循环
+        while (currNode.next !== this.head) {
           console.log(currNode.next.val);
           currNode = currNode.next;
         }
@@ -76,7 +85,7 @@
       }
 
       /**
-       * @description: findPrevious方法,找到对应节点的前一个节点，用于删除节点时用 
+       * @description: findPrevious方法,找到对应节点的前一个节点，用于删除节点时用
        * 遍历链表的元素检查每一个节点的下一个节点是否存储着待删除数据，找到就返回
        */
       function findPrevious(item) {
@@ -95,6 +104,7 @@
        */
       function LinkedList() {
         this.head = new Node("head");
+        this.head.next = this.head;
         this.find = find;
         this.insert = insert;
         this.remove = remove;
