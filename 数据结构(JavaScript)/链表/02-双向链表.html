@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-01-05 23:13:57
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-01-06 18:07:05
+ * @LastEditTime: 2022-01-07 09:58:59
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +115,7 @@
         }
       }
 
-      function LinkedList() {
+      function DoublyLinkedList() {
         this.head = new Node("head");
         this.find = find;
         this.insert = insert;
@@ -125,7 +125,7 @@
         this.dispReverse = dispReverse;
       }
 
-      var cities = new LinkedList();
+      var cities = new DoublyLinkedList();
       console.log("cities---", cities);
       cities.insert("长沙", "head"); // 在头结点后面插入长沙节点
       cities.insert("株洲", "长沙"); // 在长沙节点后面插入株洲节点

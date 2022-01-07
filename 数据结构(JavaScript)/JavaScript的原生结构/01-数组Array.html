@@ -1,0 +1,47 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-01-07 10:00:19
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-07 10:08:12
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            数组是表示元素集合的线性数据结构。
+            在 JavaScript 中，数组没有固定大小，而它们的内容可以是任何有效类型，甚至是数组本身。
+            数组可能是最常用的数据结构，并带有大量方法，可以轻松操作和转换其内容。
+
+            注：更多方法详细描述可以见去到MDN 或者 阮一峰的 《ES6入门》：https://es6.ruanyifeng.com/?search=weakmap&x=0&y=0#README
+         */
+
+      const nums = [1, 2, 3];
+      const strs = Array.from("est");
+
+      nums.push(6);
+      nums.push(4, 9);
+      strs.unshift("t");
+
+      console.log(nums.length);; // 6
+      console.log(nums[nums.length - 1]);; // 9
+      console.log(strs[0]);; // 't'
+      console.log(strs[2]);; // 's'
+
+      console.log(nums.slice(1, 3)); // [2, 3]
+      console.log(nums.map((n) => n * 2));; // [2, 4, 6, 12, 8, 18]
+      console.log(nums.filter((n) => n % 2 === 0));; // [2, 6, 4]
+      console.log(nums.reduce((a, n) => a + n, 0));; // 25
+
+      console.log(strs.join(""));; // 'test'
+      console.log(strs.reverse());; // ['t', 's', 'e', 't']
+    </script>
+  </body>
+</html>

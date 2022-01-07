@@ -1,0 +1,49 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-01-07 10:12:12
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-07 10:14:45
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+
+        /* 
+            ES6 提供了 Map 数据结构。
+            它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+            也就是说，Object 结构提供了“字符串—值”的对应，Map 结构提供了“值—值”的对应，是一种更完善的 Hash 结构实现。
+            如果你需要“键值对”的数据结构，Map 比 Object 更合适。
+            
+            注：更多方法详细描述可以见去到MDN 或者 阮一峰的 《ES6入门》：https://es6.ruanyifeng.com/?search=weakmap&x=0&y=0#docs/set-map
+        */
+      const items = new Map([
+        [1, { name: "John" }],
+        [2, { name: "Mary" }],
+      ]);
+
+      items.set(4, { name: "Alan" });
+      items.set(2, { name: "Jeff" });
+
+      console.log(items.size);; // 3
+      console.log(items.has(4));; // true
+      console.log(items.get(2));; // { name: 'Jeff' }
+
+      items.delete(2);
+      console.log(items.size);; // 2
+
+      console.log([...items.keys()]);; // [1, 4]
+      console.log([...items.values()]);; // [{ name: 'John' }, { name: 'Alan' }]
+
+      items.clear();
+      console.log(items.size);; // 0
+    </script>
+  </body>
+</html>

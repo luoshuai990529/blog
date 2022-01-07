@@ -1,0 +1,43 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-01-07 10:03:52
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-07 10:10:41
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            ES6 提供了新的数据结构 Set。可以存储任何有效类型的值，它类似于数组，但是成员的值都是唯一的，没有重复的值。
+            
+            注：更多方法详细描述可以见去到MDN 或者 阮一峰的 《ES6入门》：https://es6.ruanyifeng.com/?search=weakmap&x=0&y=0#docs/set-map
+        */
+
+      const nums = new Set([1, 2, 3]);
+
+      nums.add(4);
+      nums.add(1);
+      nums.add(5);
+      nums.add(4);
+
+      console.log(nums.size);; // 5
+      console.log(nums.has(4));; // true
+
+      nums.delete(4);
+      console.log(nums.has(4));; // false
+
+      console.log([...nums]);; // [1, 2, 3, 5]
+
+      nums.clear();
+      console.log(nums.size);; // 0
+    </script>
+  </body>
+</html>

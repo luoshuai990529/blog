@@ -3,7 +3,7 @@
  * @Date: 2022-01-06 18:07:47
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-01-06 18:40:03
+ * @LastEditTime: 2022-01-07 09:59:34
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +102,7 @@
        * 这个类有删除节点、插入节点、查找给定的值、以及一个用Node对象来保存链表的头结点head属性
        *
        */
-      function LinkedList() {
+      function LoopLinkedList() {
         this.head = new Node("head");
         this.head.next = this.head;
         this.find = find;
@@ -112,8 +112,8 @@
         this.display = display;
       }
 
-      // 测试 LinkedList 类
-      var cities = new LinkedList();
+      // 测试 LoopLinkedList 类
+      var cities = new LoopLinkedList();
       console.log("cities---", cities);
       cities.insert("长沙", "head"); // 在头结点后面插入长沙节点
       cities.insert("株洲", "长沙"); // 在长沙节点后面插入株洲节点
