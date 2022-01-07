@@ -1,0 +1,185 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-01-07 10:50:54
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-07 14:39:02
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        单向链表 from 30 seconds of code
+
+        链表数据结构的每个元素都必须具有以下属性：
+            value: 元素的值
+            next: 指向链表中下一个元素的指针（null如果没有）
+        
+        链表数据结构的主要属性：
+            size: 链表的元素个数
+            head: 链表的第一个元素
+            tail: 链表的最后一个元素
+
+        链表数据结构的主要操作方法：
+            insertAt: 在特定索引处插入一个元素
+            removeAt: 移除特定索引处的元素
+            getAt: 检索特定索引处的元素
+            clear: 清空链表
+            reverse: 反转链表中元素的顺序
+        */
+
+      // 基于 class 和 数组 的实现
+      class LinkedList {
+        constructor() {
+          this.nodes = [];
+        }
+
+        get size() {
+          return this.nodes.length;
+        }
+
+        get head() {
+          return this.size ? this.nodes[0] : null;
+        }
+
+        get tail() {
+          return this.size ? this.nodes[this.size - 1] : null;
+        }
+
+        insertAt(index, value) {
+          // 根据index索引找到对应节点的 前驱和后继节点
+          const previousNode = this.nodes[index - 1] || null;
+          const nextNode = this.nodes[index] || null;
+          // 当前节点的 next属性 指向 下一个节点
+          const node = { value, next: nextNode };
+
+          if (previousNode) previousNode.next = nextNode;
+          // 在nodes中索引为index的节点前面插入node节点，返回[]
+          return this.nodes.splice(index, 0, node);
+        }
+
+        // 插入头节点
+        insertFirst(value) {
+          this.insertAt(0, value);
+        }
+        // 插入尾节点
+        insertLast(value) {
+          this.insertAt(this.size, value);
+        }
+
+        getAt(index) {
+          return this.nodes[index];
+        }
+
+        removeAt(index) {
+          const previousNode = this.nodes[index - 1];
+          const nextNode = this.nodes[index + 1] || null;
+
+          if (previousNode) previousNode.next = nextNode;
+          // 删除nodes中索引为index的节点并返回被删除的节点
+          return this.nodes.splice(index, 1);
+        }
+
+        clear() {
+          this.nodes = [];
+        }
+
+        reverse() {
+          this.nodes = this.nodes.reduce(
+            (acc, { value }) => [{ value, next: acc[0] || null }, ...acc],
+            []
+          );
+        }
+
+        // 部署 Iterator 接口(ES6规定 默认的 Iterator 接口部署在数据结构的Symbol.iterator属性), 将它的 nodes使用yield*语法委托给数组的迭代器
+        // 我们便可以用...扩展 和for of 来遍历这个链表对象了
+        *[Symbol.iterator]() {
+          yield* this.nodes;
+        }
+      }
+
+      const list = new LinkedList();
+      list.insertFirst(1);
+      list.insertFirst(2);
+      list.insertFirst(3);
+      list.insertLast(4);
+      list.insertAt(3, 5);
+      // 因为我们实现了 Iterator 因此可以直接通过 ...扩展符 和 for of 直接遍历
+      //   for (const iterator of list) {
+      //       console.log("iterator--",iterator); // {value: 3, next: {…}}
+      //   }
+      console.log("ArrayList-", [...list]);
+      list.reverse(); // 翻转链表
+      console.log(
+        "linkedList-- 反转后：",
+        [...list].map((item) => item.value)
+      ); // [4, 5, 1, 2, 3]
+
+      /* 
+        双向链表 from 30 seconds of code
+        
+        对比单向链表的实现，我们只需要调整insertAt 插入节点方法和 removeAt 删除节点方法就行
+        和单向链表不同的即我们需要给每一个节点再加上一个previous指针 指向它的前驱节点
+
+        下面我们直接用class的 extends继承 单向链表类，再重写不同的几个方法即可实现
+      */
+
+      class DoublyLinkedList extends LinkedList {
+        insertAt(index, value) {
+          const previousNode = this.nodes[index - 1] || null;
+          const nextNode = this.nodes[index] || null;
+          const node = { value, next: nextNode, previous: previousNode };
+
+          if (previousNode) previousNode.next = node;
+          if (nextNode) nextNode.previous = node;
+          this.nodes.splice(index, 0, node);
+        }
+
+        removeAt(index) {
+          const previousNode = this.nodes[index - 1] || null;
+          const nextNode = this.nodes[index + 1] || null;
+
+          if (previousNode) previousNode.next = nextNode;
+          if (nextNode) nextNode.previous = previousNode;
+
+          return this.nodes.splice(index, 1);
+        }
+
+        reverse() {
+          this.nodes = this.nodes.reduce((acc, { value }) => {
+            const nextNode = acc[0] || null;
+            const node = { value, next: nextNode, previous: null };
+            if (nextNode) nextNode.previous = node;
+            return [node, ...acc];
+          }, []);
+        }
+      }
+      const doublyList = new DoublyLinkedList();
+      doublyList.insertFirst("北京");
+      doublyList.insertLast("广州");
+      doublyList.insertLast("深圳");
+      doublyList.insertAt(1, "上海");
+      console.log(
+        "doublyList-- 打印：",
+        [...doublyList].map((item) => item.value)
+      ); // ['北京', '上海', '广州', '深圳']
+      doublyList.reverse();
+      console.log(
+        "reversed--- 反转后：",
+        [...doublyList].map((item) => item.value)
+      ); // ['深圳', '广州', '上海', '北京']
+      doublyList.removeAt(0);
+      console.log(
+        "removed--- 删除后：",
+        [...doublyList].map((item) => item.value)
+      );
+    </script>
+  </body>
+</html>
