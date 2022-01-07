@@ -1,0 +1,69 @@
+<!--
+ * @Description: 这是 栈 结构代码
+ * @Date: 2022-01-07 14:44:34
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-07 15:29:26
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            栈：一种特殊的列表，栈内的元素只能通过列表的一端访问，这一端称为“栈顶”
+            对于栈的两种操作，一种是将一个元素压入栈 被称之为 “压栈”，另一种是将一个元素弹出栈 被称之为 “弹栈”
+            栈遵循 “先进后出” (LIFO)的原则，即我们将元素 A B C 依次压入栈，那么取出来的时候就只能从 C开始依次取出，即 C B A
+        
+            在JavaScript中数组已经给我们提供了一些很方便的方法进行操作，我们可以来很容易的实现一个 Stack 类
+        */
+
+      class Stack {
+        constructor() {
+          this.dataStore = [];
+        }
+
+        // 压栈： 向栈中压入一个新元素
+        push(item) {
+          return this.dataStore.unshift(item);
+        }
+
+        // 弹栈： 从栈顶取出一个元素
+        pop() {
+          return this.dataStore.shift();
+        }
+
+        // 得到栈顶的元素
+        peek() {
+          return this.dataStore[0];
+        }
+
+        // 检查堆栈是否为空
+        isEmpty() {
+          return this.dataStore.length === 0;
+        }
+      }
+
+      const stack = new Stack();
+
+      stack.push("伞兵1号卢本伟");
+      stack.push("伞兵2号马飞飞");
+      stack.push("伞兵3号大官人");
+      console.log("stack---", [...stack.dataStore]); // ['伞兵3号大官人', '伞兵2号马飞飞', '伞兵1号卢本伟']
+      console.log("栈顶的元素：", stack.peek()); // 伞兵3号大官人
+
+      console.log(stack.pop()); // 弹栈 伞兵3号大官人
+      console.log("stack---", [...stack.dataStore]); // ['伞兵2号马飞飞', '伞兵1号卢本伟']
+      console.log(stack.pop()); // 弹栈 伞兵2号大官人
+      console.log(stack.pop()); // 弹栈 伞兵1号大官人
+      console.log("stack---", [...stack.dataStore]); // []
+
+      console.log(stack.isEmpty());;    // true
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!--
+ * @Description: 队列
+ * @Date: 2022-01-07 15:14:52
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-07 15:35:59
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        队列也是一种列表，与栈不同的是，队列只能再队尾插入元素 即“入队”，队首删除元素 即“出队”
+        队列遵循“先进先出”(FIFO) ，听名字其实就能联想到现实生活中的排队
+        如食堂打饭 第一个排队的总是第一打完出来的，队列的最后一位总要等到前面的所有人打完才可以打饭
+
+        和栈一样，我们用JavaScript给我们提供的数组的方法可以很方便实现一个 Queue类
+        */
+      class Queue {
+        constructor() {
+          this.queue = [];
+        }
+
+        // 用于在queue数组末尾添加一个元素
+        enqueue(item) {
+          this.queue.push(item);
+        }
+
+        // 用于从queue数组的开头删除一个元素。
+        dequeue() {
+          return this.queue.shift();
+        }
+
+        peek() {
+          return this.queue[0];
+        }
+
+        isEmpty() {
+          return this.queue.length === 0;
+        }
+      }
+
+      const queue = new Queue();
+
+      queue.enqueue("A");
+      queue.enqueue("B");
+      queue.enqueue("C");
+      console.log("queue-", queue.queue); // ['A', 'B', 'C']
+      console.log("头元素：", queue.peek()); // 'A'
+
+      console.log(queue.dequeue()); // 'A'
+      console.log(queue.dequeue()); // 'B'
+      console.log(queue.dequeue()); // 'C'
+      console.log("queue-", queue.queue); // []
+    </script>
+  </body>
+</html>

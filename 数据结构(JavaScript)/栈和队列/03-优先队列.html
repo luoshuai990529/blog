@@ -1,0 +1,87 @@
+<!--
+ * @Description: 优先队列
+ * @Date: 2022-01-07 15:45:36
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-07 16:26:19
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+              拓展：优先队列
+                  在一般情况下，从队列中删除的元素，一定是率先入队的元素。
+                  但是也有一些使用队列的应用，在删除元素时不必遵守先进先出的约定。
+                  这种应用，需要使用一个叫做优先队列的数据结构来进行模拟。 从优先队列中删除元素时，需要考虑优先权的限制。
+                  比如医院急诊科的候诊室，需要判断病人的病情严重程度来进行优先级划分，高优先级的患者优先于低优先级的患者进行就医。
+          */
+
+      class Queue {
+        constructor() {
+          this.queue = [];
+        }
+
+        // 用于在queue数组末尾添加一个元素
+        enqueue(item) {
+          this.queue.push(item);
+        }
+
+        // 用于从queue数组的开头删除一个元素。
+        dequeue() {
+          return this.queue.shift();
+        }
+
+        peek() {
+          return this.queue[0];
+        }
+
+        isEmpty() {
+          return this.queue.length === 0;
+        }
+      }
+
+      /*
+        和普通队列的区别，即取出一个元素时 要根据这个元素的优先级 来取
+        那么我可以在插入的时候就 对这些带有优先级标识的元素进行排序，那么我们重写enqueue方法即可
+      */
+      class PriorityQueue extends Queue {
+        enqueue(item) {
+          if (!item.priority) {
+            // 没有优先级标识 或者 优先级标识为0
+            this.queue.push(item);
+          } else {
+            // 有优先级标识 并且不为0 进行排序
+            for (let i = 0; i < this.queue.length; i++) {
+              if (item.priority > this.queue[i].priority) {
+                this.queue.unshift(item);
+                break;
+              }
+            }
+          }
+        }
+      }
+      const PriQueue = new PriorityQueue();
+      PriQueue.enqueue({ priority: 0, value: "A" });
+      PriQueue.enqueue({ priority: 0, value: "B" });
+      PriQueue.enqueue({ priority: 0, value: "C" });
+      console.log("PriQueue-", PriQueue.queue.map(item=>item.value)); // ['A', 'B', 'C']
+
+      PriQueue.enqueue({ priority: 3, value: "D" });
+      PriQueue.enqueue({ priority: 0, value: "E" });
+      PriQueue.enqueue({ priority: 4, value: "F" });
+      console.log("PriQueue-", PriQueue.queue.map(item=>item.value)); // ['F', 'D', 'A', 'B', 'C', 'E']
+      
+      console.log(PriQueue.dequeue().value); // 'F'
+      console.log(PriQueue.dequeue().value); // 'D'
+      console.log(PriQueue.dequeue().value); // 'A'
+    
+    </script>
+  </body>
+</html>
