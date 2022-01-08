@@ -1,0 +1,123 @@
+<!--
+ * @Date: 2022-01-08 21:05:36
+ * @LastEditors: Lewis
+ * @LastEditTime: 2022-01-08 23:41:30
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        padding: 10px;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="table-container"></div>
+    <script>
+      /* 
+            编写一个cube函数，入参为num
+
+            当输入num = 3 时  表格效果为：
+                                        1 2 3
+                                        8 9 4
+                                        7 6 5
+
+            当输入num = 4 时  表格效果为：
+                                        1    2    3    4
+                                        12   13   14   5
+                                        11   16   15   6
+                                        10   9    8    7
+        */
+
+      function cube(num) {
+        /* 
+                思路：通过观察可以发现形成这个宫格的一个规律
+                从起始点向右填充到尽头，再向下填充到尽头，再向左填充到尽头，再向上填充到尽头，再向右....
+                一直循环知道宫格被填满即完成。
+            */
+
+        // 用一个二维数组来模拟一个宫格
+        const arr2d = Array.from({ length: num }, () => new Array(num));
+
+        // 由题意可以得知我们要填充的次数为 num * num
+        const fillCount = num * num;
+
+        // 起始位置0,0
+        const position = [0, 0];
+
+        let count = 1,
+          index = 0;
+
+        //  四个方位
+        const dir = [
+          [0, 1],
+          [1, 0],
+          [0, -1],
+          [-1, 0],
+        ];
+
+        const filledList = []; //  用于判断是否有填充过
+        while (count < fillCount + 1) {
+          // 填充 顺序：右(改变y++) => 下(改变x++) => 左(改变y--) => 上(改变x--)
+
+          const [x, y] = position;
+          console.log("x-y-:", x, y);
+
+          // 填充
+          arr2d[x][y] = count;
+          filledList.push(JSON.stringify(position));
+
+          if (
+            (dir[index][0] && x > num - 2) ||
+            (dir[index][1] && y > num - 2) ||
+            (dir[index][0] && x === 0 && y !== 0) ||
+            (dir[index][1] && y === 0 && x !== 0) ||
+            filledList.includes(
+              JSON.stringify([
+                position[0] + dir[index][0],
+                position[1] + dir[index][1],
+              ])
+            )
+          ) {
+            // 边界判断
+            index++;
+            if (index > dir.length - 1) {
+              index = 0;
+            }
+          }
+          console.log("index------------------------", index, position);
+
+          position[0] += dir[index][0];
+          position[1] += dir[index][1];
+          count++;
+        }
+        console.log("arr2d--", arr2d);
+
+        // 有了 arr2d 这个二位数组 就可以轻而易举的生产这个宫格了，接着就是dom操作
+        const table = document.createElement("table");
+        const div = document.querySelector(".table-container");
+        arr2d.forEach((rows) => {
+          const tr = document.createElement("tr");
+          rows.forEach((val) => {
+            const td = document.createElement("td");
+            td.innerText = val;
+            tr.appendChild(td);
+          });
+          table.appendChild(tr);
+        });
+        div.appendChild(table);
+      }
+
+      cube(4);
+    </script>
+  </body>
+</html>
