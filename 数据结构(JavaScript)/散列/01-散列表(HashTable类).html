@@ -1,0 +1,107 @@
+<!--
+ * @Date: 2022-01-09 22:04:08
+ * @LastEditors: Lewis
+ * @LastEditTime: 2022-01-09 23:31:26
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            我们使用一个类来表示散列表，该类包括计算散列值的方法、向散列中插入数据的方法、从散列表中读取数据的方法、显示散列表中数据分布的方法....
+        
+         */
+
+      class HashTable {
+        constructor() {
+          this.table = new Array(137);
+          //   this.simpleHsh = simpleHsh;
+          //   this.showDistro = showDistro;
+          //   this.put = put;
+          //   this.get = get;
+        }
+
+        put(data) {
+          let pos = this.simpleHsh(data);
+          //  得到索引后 将数据存储到对应索引位置上
+          this.table[pos] = data;
+        }
+
+        simpleHsh(data) {
+          /* 
+                散列函数的选择依赖于键值的数据类型。如果键是整数，最简单的散列函数就是以数组的长度对键取余
+                在一些情况下，比如数组的长度是10，而键值都是10的倍数时，就不推荐使用这种方式了。
+                这也是数组的长度为什么要是质数的原因之一，就像我们在上面将数组的长度设定为137一样。
+                如果键是随机的整数，则散列函数应该更均匀的分布这些键。这种散列方式称为 除留余数法
+            */
+          let total = 0;
+          for (let i = 0; i < data.length; i++) {
+            // charCodeAt() 方法返回 0 到 65535 之间的整数，表示给定索引处的 UTF-16 代码单元
+            // 通过对data每个字符的 UTF-16 代码单元 累加
+            total += data.charCodeAt(i);
+          }
+          console.log("Hash value: " + data + " -> " + total);
+          //  最后得到散列表对应的索引(累加值 除 散列表的长度 的余数)
+          return total % this.table.length;
+        }
+
+        showDistro() {
+          let n = 0;
+          for (let i = 0; i < this.table.length; i++) {
+            if (this.table[i] != undefined) {
+              console.log(`i : ${this.table[i]}`);
+            }
+          }
+        }
+      }
+
+      const someNames = [
+        "David",
+        "Jennifer",
+        "Donnie",
+        "Raymond",
+        "Cynthia",
+        "Mike",
+        "Clayton",
+        "Danny",
+        "Jonathan",
+      ];
+
+      const hashTable = new HashTable();
+      someNames.forEach((item) => {
+        hashTable.put(item);
+      });
+      hashTable.showDistro();
+      /* 
+        打印测试发现，我们存储的数据并不均匀
+        Cynthia
+        Clayton
+        Donnie
+        David
+        Danny
+        Mike
+        Jennifer
+        Jonathan
+
+        在插入时的打印：
+        Hash value: David -> 488
+        Hash value: Jennifer -> 817
+        Hash value: Donnie -> 605
+        Hash value: Raymond -> 730
+        Hash value: Cynthia -> 720
+        Hash value: Mike -> 390
+        Hash value: Clayton -> 730
+        Hash value: Danny -> 506
+        Hash value: Jonathan -> 819
+
+        我们打印插入时的散列值，发现字符串 "Clayton" 和 "Raymond" 的散列值是一样的，因此引发了碰撞，只有 "Clayton" 存入了散列表
+      */
+    </script>
+  </body>
+</html>
