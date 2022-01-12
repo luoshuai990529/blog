@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-01-09 22:04:08
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-12 00:51:21
+ * @LastEditTime: 2022-01-12 23:14:11
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -57,7 +57,6 @@
               我们打印插入时的散列值，发现字符串 "Clayton" 和 "Raymond" 的散列值是一样的，因此引发了碰撞，只有 "Clayton" 存入了散列表
             */
 
-
             /* 
               02-一个更好的散列函数：
                 
@@ -66,7 +65,48 @@
               
               为了避免碰撞，在给散列表一个合适的大小后，接下来要有一个计算散列值的更好方法。
               纳算霍法很好地解决了这个问题。
+              新的算法中求和时每次都要乘以一个质数(除了1和它本身以外不再有其他因数的自然数)，大多数书中都推荐一个较小的质数 如：31
             */
+            class HashTable2 extends HashTable {
+                simpleHsh(data) {
+                    const H = 31;
+                    let total = 0;
+                    for (let i = 0; i < data.length; ++i) {
+                        total += H * total + data.charCodeAt(i);
+                    }
+                    total = total % this.table.length;
+                    if (total < 0) {
+                        total += this.table.length - 1;
+                    }
+                    console.log(
+                        "新的散列函数 Hash value: " + data + " -> " + total
+                    );
+                    return parseInt(total);
+                }
+            }
+            // 测试优化后的散列函数
+            const someNames2 = [
+                "David",
+                "Jennifer",
+                "Donnie",
+                "Raymond",
+                "Cynthia",
+                "Mike",
+                "Clayton",
+                "Danny",
+                "Jonathan",
+            ];
+            // 01-测试HashTable类
+            const hashTable2 = new HashTable2();
+            someNames2.forEach((item) => {
+                hashTable2.put(item);
+            });
+            // 打印
+            console.log(
+                "hashTable2--测试==================================",
+                hashTable2
+            );
+            hashTable2.showDistro();
         </script>
     </body>
 </html>
