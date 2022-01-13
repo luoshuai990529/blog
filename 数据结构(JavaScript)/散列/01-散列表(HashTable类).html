@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-01-09 22:04:08
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-12 23:14:11
+ * @LastEditTime: 2022-01-13 22:57:39
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -68,6 +68,7 @@
               新的算法中求和时每次都要乘以一个质数(除了1和它本身以外不再有其他因数的自然数)，大多数书中都推荐一个较小的质数 如：31
             */
             class HashTable2 extends HashTable {
+                // 重写 优化散列函数
                 simpleHsh(data) {
                     const H = 31;
                     let total = 0;
@@ -107,6 +108,43 @@
                 hashTable2
             );
             hashTable2.showDistro();
+
+            /* 
+                使用散列表来存储数据，我们需要修改一下put方法，让其接受键和数据作为参数
+                对键值散列以后，将数据存储到散列表中
+
+                重写 put方法：
+            */
+            class HashTable3 extends HashTable2 {
+                put(key, data) {
+                    let pos = this.simpleHsh(key);
+                    this.table[pos] = data;
+                }
+                // 取值
+                get(key) {
+                    let pos = this.simpleHsh(key);
+                    return this.table[pos];
+                }
+            }
+
+            const personList = [
+                { name: "Jacky", info: { phone: 10086, age: 18 } },
+                { name: "Mary", info: { phone: 10010, age: 21 } },
+                { name: "Dary", info: { phone: 10000, age: 20 } },
+            ];
+
+            const hashtable3 = new HashTable3();
+            personList.forEach((item) => {
+                hashtable3.put(item.name, item.info);
+            });
+            console.log("hashtable3 =====================================");
+            hashtable3.showDistro();
+            // i : {"phone":10010,"age":21}
+            // i : {"phone":10086,"age":18}
+            // i : {"phone":10000,"age":20}
+            console.log("取数据", "Mary =>", hashtable3.get("Mary"));
+            console.log("取数据", "Jacky =>", hashtable3.get("Jacky"));
+            console.log("取数据", "Dary =>", hashtable3.get("Dary"));
         </script>
     </body>
 </html>

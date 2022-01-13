@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-01-11 22:39:45
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-12 00:45:21
+ * @LastEditTime: 2022-01-13 22:56:10
  */
 
 /* 
@@ -42,10 +42,9 @@ class HashTable {
     }
 
     showDistro() {
-        let n = 0;
         for (let i = 0; i < this.table.length; i++) {
             if (this.table[i] != undefined) {
-                console.log(`i : ${this.table[i]}`);
+                console.log(`i : ${JSON.stringify(this.table[i])}`);
             }
         }
     }
