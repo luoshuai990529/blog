@@ -1,0 +1,39 @@
+<!--
+ * @Date: 2022-01-14 23:02:45
+ * @LastEditors: Lewis
+ * @LastEditTime: 2022-01-14 23:48:32
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script src="./BinarySearchTree.js"></script>
+        <script>
+            /* 
+            二叉查找树 是一种特殊的二叉树，相对较小的值保存在左节点，较大的值保存在右节点中。
+
+            二叉查找树结构中的每个节点的主要属性：
+                key：节点的键
+                value：节点的值
+                parent：父节点（没有则为null）
+                left：节点的左子节点（没有则为null）
+                right：节点的右子节点（没有则为null）
+            主要方法：
+                insert：插入节点
+                remove：删除节点以及子节点
+                has：检查给定节点是否存在
+                find：查找该节点
+                preOrderTraversal：前序遍历
+                postOrderTraversal：后序遍历
+                inOrderTraversal：中序遍历
+         */
+            let searchTree = new BinarySearchTree(25, "老板");
+            console.log("searchTree---", searchTree);
+        </script>
+    </body>
+</html>
