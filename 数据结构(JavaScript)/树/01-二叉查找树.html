@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-01-14 23:02:45
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-14 23:48:32
+ * @LastEditTime: 2022-01-16 22:50:14
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -15,25 +15,70 @@
         <script src="./BinarySearchTree.js"></script>
         <script>
             /* 
-            二叉查找树 是一种特殊的二叉树，相对较小的值保存在左节点，较大的值保存在右节点中。
+                二叉查找树 是一种特殊的二叉树，相对较小的值保存在左节点，较大的值保存在右节点中。
 
-            二叉查找树结构中的每个节点的主要属性：
-                key：节点的键
-                value：节点的值
-                parent：父节点（没有则为null）
-                left：节点的左子节点（没有则为null）
-                right：节点的右子节点（没有则为null）
-            主要方法：
-                insert：插入节点
-                remove：删除节点以及子节点
-                has：检查给定节点是否存在
-                find：查找该节点
-                preOrderTraversal：前序遍历
-                postOrderTraversal：后序遍历
-                inOrderTraversal：中序遍历
-         */
-            let searchTree = new BinarySearchTree(25, "老板");
+                二叉查找树结构中的每个节点的主要属性：
+                    key：节点的键
+                    value：节点的值
+                    parent：父节点（没有则为null）
+                    left：节点的左子节点（没有则为null）
+                    right：节点的右子节点（没有则为null）
+                主要方法：
+                    insert：插入节点
+                    remove：删除节点以及子节点
+                    has：检查给定节点是否存在
+                    find：查找该节点
+                    preOrderTraversal：前序遍历
+                    postOrderTraversal：后序遍历
+                    inOrderTraversal：中序遍历
+            */
+            let searchTree = new BinarySearchTree(100, "根节点-boss");
+            searchTree.insert(120, "技术总监"); //   120 比 100大，因此该节点应该在根节点的右边
+            searchTree.insert(80, "产品总监"); //    80  比 100小，因此该节点应该在根节点的左边
+            searchTree.insert(81, "金融"); //        81  比 100小，再跟左节点比，比80大，因此该节点在产品总监的 右边节点
+            searchTree.insert(79, "电商"); //        79  比 100小，再跟左节点比，比80小，因此该节点在产品总监的 左边节点
+            searchTree.insert(119, "前端"); //       119 比 100大，再跟右节点比，比120小，因此该节点在技术总监的 左边节点
+            searchTree.insert(121, "后端"); //       121 比 100大，再跟右节点比，比120大，因此该节点在技术总监的 右边节点
             console.log("searchTree---", searchTree);
+            /* 
+                searchTree 结构：
+
+                                根节点-boss（100）
+                            /                \
+                    产品总监（80）                技术总监（120）
+                    /         \                  /           \
+                电商（79）     金融（81）        前端（119）   后端（121）
+            */
+
+            // 写一个函数 用来遍历Generator返回的 遍历器对象
+            function traversalFun(generator) {
+                while (true) {
+                    const { value, done } = generator.next();
+                    if (done) {
+                        break;
+                    }
+                    console.log(
+                        "Node：",
+                        JSON.stringify({ key: value.key, value: value.value })
+                    );
+                }
+            }
+
+            // 中序遍历：79 => 80 => 81 => 100 => 119 => 120 => 121
+            console.log("<---------------------中序遍历--------------------->");
+            let inOrderGenerator = searchTree.inOrderTraversal();
+            traversalFun(inOrderGenerator)
+
+            // 前序遍历：100 => 80 => 79 => 81 => 120 => 119 => 121
+            console.log("<---------------------前序遍历--------------------->");
+            let preOrderGenerator = searchTree.preOrderTraversal();
+            traversalFun(preOrderGenerator)
+
+
+            // 后序遍历：79 => 81 => 80 => 119 => 121 => 120 => 100
+            console.log("<---------------------前序遍历--------------------->");
+            let postOrderGenerator = searchTree.postOrderTraversal();
+            traversalFun(postOrderGenerator)
         </script>
     </body>
 </html>
