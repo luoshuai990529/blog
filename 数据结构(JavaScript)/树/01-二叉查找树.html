@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-01-14 23:02:45
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-16 22:50:14
+ * @LastEditTime: 2022-01-17 22:49:41
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +79,17 @@
             console.log("<---------------------前序遍历--------------------->");
             let postOrderGenerator = searchTree.postOrderTraversal();
             traversalFun(postOrderGenerator)
+
+
+            // 查找节点
+            const findNode1 = searchTree.find(119)
+            console.log("findNode1---", findNode1); // 前端
+            const findNode2 = searchTree.find(200)
+            console.log("findNode2---", findNode2); // undefined
+
+            // 删除节点
+            searchTree.remove(79)
+            console.log("searchTree---", searchTree);
         </script>
     </body>
 </html>
