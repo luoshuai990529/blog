@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-01-14 23:09:56
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-17 23:10:10
+ * @LastEditTime: 2022-01-18 23:49:51
  */
 
 // 节点类BinarySearchTreeNode
@@ -97,9 +97,6 @@ class BinarySearchTree {
         const isRoot = node.parent === null; // 是否是根节点
         const isLeftChild = !isRoot ? node.parent.left === node : false; // 被删除的节点 是否为左子节点
         const hasBothChildren = node.left !== null && node.right !== null; // 被删除的这个节点 是否有两个子节点，即左右节点都有
-        console.log("isLeftChild---", isLeftChild);
-        console.log("hasBothChildren---", hasBothChildren);
-        console.log("node.isLeaf---", node.isLeaf);
         if (node.isLeaf) {
             // 如果被删除的节点 一个子节点都没有
             if (!isRoot) {
@@ -115,27 +112,45 @@ class BinarySearchTree {
                 this.root = null;
             }
             return true;
-        }else if(!hasBothChildren){
+        } else if (!hasBothChildren) {
             // 如果被删除的节点 只有一个子节点
             const child = node.left !== null ? node.left : node.right; // 拿到该节点的子节点
-            if(!isRoot){
-                if(isLeftChild){
+            if (!isRoot) {
+                if (isLeftChild) {
                     // 是左节点
                     node.parent.left = child;
-                }else{
+                } else {
                     // 是右节点
-                    node.parent.right = child
+                    node.parent.right = child;
                 }
-            }else{
+            } else {
                 // 如果该节点是根节点,直接让根节点指向 被删除节点的 子节点
-                this.root = child
+                this.root = child;
             }
             // 最后让该子节点的 父节点 指向被删除节点的父节点（有点像删除链表中一个节点的操作）
-            child.parent = node.parent
-            return true
-        }else{
+            child.parent = node.parent;
+            return true;
+        } else {
             // 如果被删除的节点 有两个子节点
-            
+            const list = [...this.inOrderTraversal(node.left)];
+            console.log("list---", list[0]);
+            const rightmostLeft = list.slice(-1)[0];
+            console.log("rightmostLeft---", rightmostLeft);
+            rightmostLeft.parent = node.parent;
+
+            if (!isRoot) {
+                if (isLeftChild) {
+                    node.parent.left = rightmostLeft;
+                } else {
+                    console.log("右节点");
+                    node.parent.right = rightmostLeft;
+                }
+            } else {
+                this.root = rightmostLeft;
+            }
+            rightmostLeft.right = node.right;
+            node.right.parent = rightmostLeft;
+            return true;
         }
     }
 }
