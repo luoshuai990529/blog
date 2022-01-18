@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-01-14 23:09:56
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-18 23:49:51
+ * @LastEditTime: 2022-01-19 00:34:01
  */
 
 // 节点类BinarySearchTreeNode
@@ -131,23 +131,27 @@ class BinarySearchTree {
             child.parent = node.parent;
             return true;
         } else {
-            // 如果被删除的节点 有两个子节点
-            const list = [...this.inOrderTraversal(node.left)];
-            console.log("list---", list[0]);
-            const rightmostLeft = list.slice(-1)[0];
-            console.log("rightmostLeft---", rightmostLeft);
+            // 如果被删除的节点 有左右两个子节点的话，那么我们删除的时候需要注意：
+            // 我们只能把左边的节点往上提，这样我们才可以保证二叉搜索树的右节点一定比父节点的key要大
+            const rightmostLeft = [...this.inOrderTraversal(node.left)].slice(
+                -1
+            )[0];
+            // 拿到被删除节点的左节点，将左节点提上去，分两步：
+            //   1-修改被提上去的节点的 parent指向
             rightmostLeft.parent = node.parent;
-
             if (!isRoot) {
+                // 2-修改被删除节点的父节点的left 和 right 指向
                 if (isLeftChild) {
                     node.parent.left = rightmostLeft;
                 } else {
-                    console.log("右节点");
                     node.parent.right = rightmostLeft;
                 }
             } else {
                 this.root = rightmostLeft;
             }
+            // 最后还剩一个节点指向没有修改好，同样也分两步：
+            //   1-修改被提上去的那个节点的 left 右边节点指向
+            //   2-修改被删除节点右节点的parent指向
             rightmostLeft.right = node.right;
             node.right.parent = rightmostLeft;
             return true;

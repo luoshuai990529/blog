@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-01-14 23:02:45
  * @LastEditors: Lewis
- * @LastEditTime: 2022-01-18 23:29:56
+ * @LastEditTime: 2022-01-19 00:12:41
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -43,11 +43,11 @@
             /* 
                 searchTree 结构：
 
-                                根节点-boss（100）
+                            根节点-boss（100）
                             /                \
-                    产品总监（80）                技术总监（120）
-                    /         \                  /           \
-                电商（79）     金融（81）        前端（119）   后端（121）
+                    产品总监（80）             技术总监（120）
+                    /         \                /           \
+                电商（79）     金融（81）     前端（119）   后端（121）
             */
 
             // 写一个函数 用来遍历Generator返回的 遍历器对象
@@ -90,8 +90,12 @@
             // 删除节点
             searchTree.remove(79)
             console.log("searchTree---", searchTree);
-            searchTree.remove(120)
+            let inOrderGenerator1 = searchTree.inOrderTraversal();
+            traversalFun(inOrderGenerator1)
+            searchTree.remove(100)
             console.log("searchTree---", searchTree);
+            let inOrderGenerator2 = searchTree.inOrderTraversal();
+            traversalFun(inOrderGenerator2)
         </script>
     </body>
 </html>
