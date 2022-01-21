@@ -5,3 +5,20 @@
  * @LastEditors: luoshuai
  * @LastEditTime: 2022-01-07 16:30:17
 -->
+
+# 图
+
+概述：**图是由一组节点或顶点以及一组表示这些节点之间连接的边组成的数据结构，即由边的集合以及顶点的集合组成**。如 地图，每个城市都由一条道路相连，就是一种图，每个城镇可以看做一个**顶点**，链接城市的道路就是**边**
+
+**有向图**：如果一个图的顶点对是有序的，则可以称之为有向图。在对有向图中的顶点排序后，便可以在两个顶点之间绘制一个箭头。有向图表明了顶点的流向。
+
+![](https://lewis-note.oss-cn-beijing.aliyuncs.com/github/youxiangtu.png)
+
+**无序图**：图的顶点对是无序的。
+
+![](https://lewis-note.oss-cn-beijing.aliyuncs.com/github/wuxutu.png)
+
+
+
+
+
