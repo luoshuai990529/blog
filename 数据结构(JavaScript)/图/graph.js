@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-01-21 23:27:00
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-01-24 20:36:04
+ * @LastEditTime: 2022-01-25 15:33:57
  */
 
 /* 
@@ -95,7 +95,7 @@ class Graph {
         return weight
     }
 
-    // 查找从给定节点中存在边的所有节点
+    // 查找给定节点的相邻节点
     adjacent(key) {
         return [...this.edges.values()].reduce((acc, { a, b }) => {
             if (a === key) {

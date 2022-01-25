@@ -1,0 +1,59 @@
+<!--
+ * @Date: 2022-01-21 23:26:44
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-01-25 15:58:22
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./graph.js"></script>
+    <script>
+      // 创建一个有序图
+      const graph = new Graph(true);
+
+      graph.addNode("京", "北京");
+      graph.addNode("鄂", "武汉");
+      graph.addNode("湘", "长沙");
+      graph.addNode("粤", "广州");
+
+      graph.addEdge("京", "鄂", 10);
+      graph.addEdge("京", "湘", 10);
+      graph.addEdge("鄂", "湘", 10);
+      graph.addEdge("湘", "鄂", 10);
+      graph.addEdge("湘", "粤", 10);
+      graph.addEdge("粤", "湘", 10);
+
+      console.log([...graph.edges.values()].map(({ a, b }) => `${a} => ${b}`)); // ['京 => 鄂', '京 => 湘', '鄂 => 湘', '湘 => 鄂', '湘 => 粤', '粤 => 湘']
+
+      //  查找给定节点的相邻节点
+      console.log(graph.adjacent("湘")); // ['鄂', '粤']
+
+      //  查找给定节点的引入次数
+      console.log(graph.indegree("湘")); // 3 鄂=>湘  粤=>湘 京=>湘
+
+      //  查找给定节点的引出次数
+      console.log(graph.outdegree("湘")); // 2 湘=>鄂 湘=>粤
+
+      console.log(graph.hasEdge("京", "湘")); //查找是否有从京到湘的路径 true
+      console.log(graph.hasEdge("湘", "京")); //查找是否有从湘到京的路径 false
+
+      //  删除从 京=>湘 的边
+      graph.removeEdge("京", "湘");
+      console.log([...graph.edges.values()].map(({ a, b }) => `${a} => ${b}`)); // ['京 => 鄂', '鄂 => 湘', '湘 => 鄂', '湘 => 粤', '粤 => 湘']
+
+      //  删除节点 "鄂"
+      graph.removeNode("鄂");
+      console.log([...graph.edges.values()].map(({ a, b }) => `${a} => ${b}`)); // ['湘 => 粤', '粤 => 湘']
+
+      //  设置权重
+      graph.setEdgeWeight('湘', '粤', 99);
+      console.log(graph.getEdgeWeight('湘', '粤')); // 99
+    </script>
+  </body>
+</html>
