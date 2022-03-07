@@ -162,7 +162,7 @@ Promise.all([p1, p2])
       const userOrder = await getUserOrder();
       // something code...
     }
-    
+
     //改造后
     async function fn2(){
       // something code...
@@ -289,7 +289,7 @@ Promise.any([rejected, alsoRejected]).catch(function (results) {
         resolve(42);
       }
     };
-    
+
     const p1 = Promise.resolve(thenable);
     // thenable对象的then()方法执行后，对象p1的状态就变为resolved，从而立即执行最后那个then()方法指定的回调函数，输出42。
     p1.then(function (value) {
@@ -297,7 +297,6 @@ Promise.any([rejected, alsoRejected]).catch(function (results) {
     });
     ````
 
-    
 
 - **参数不是具有 then() 方法的对象，或者根本不是对象：**如果参数是一个原始值，或者是一个不具有 then() 方法的对象，则Promise.resolve() 方法返回一个新的 Promise 对象，状态为resolved。
 
@@ -313,25 +312,26 @@ Promise.any([rejected, alsoRejected]).catch(function (results) {
 
   - ````javascript
     /* 
-    
+
         注意：
             立即resolve()的 Promise 对象，是在本轮“事件循环”（event loop）的结束时执行，而不是在下一轮“事件循环”的开始时。
     */
-    
+
     setTimeout(function () {
         console.log("three");
     }, 0);
-    
+
     Promise.resolve().then(function () {
         console.log("two");
     });
-    
+
     console.log("one");
-    
+
     //one
     //two
     //three
     ````
+
 
 
 
@@ -349,6 +349,59 @@ Promise.reject('出错了')
   console.log(e === '出错了') // true
 })
 ````
+
+**注意:Promise.reject 抛出的异步错误不能被 try/catch 捕获，而只能通过拒绝处理程序捕获即 .catch()**，例：
+
+```javascript
+/*
+	下面的例子中，第一个try/catch 抛出并捕获了错误，第二个却没有捕获到。
+	原因：reject的错误并没有抛到执行同步代码的线程里，而是通过浏览器异步消息队列来处理的。因此，try/catch块并不能捕获该错误。代码一旦开始以异步模式执行，则唯一与之交互的方式就是使用异步结构————更具体的说，就是promise的方法。
+*/
+
+try{
+  throw new Error('foo'); 
+} catch(e) { 
+ console.log(e); // Error: foo 
+} 
+
+try { 
+ Promise.reject(new Error('bar')); 
+} catch(e) { 
+ console.log(e); 
+} 
+// Uncaught (in promise) Error: bar
+```
+
+
+
+
+
+#### 对比`Promise.resolve`和`Promise.reject`：
+
+- **Promise.resolve()**可以说是一个**幂等**的方法，这个幂等性会保留传入期约(promise)的状态。即上述promise.resolve()方法的第一种参数为promise的情况。例：
+
+  - ```javascript
+    let p = Promise.resolve(7); 
+    setTimeout(console.log, 0, p === Promise.resolve(p)); 
+    // true 
+    setTimeout(console.log, 0, p === Promise.resolve(Promise.resolve(p))); 
+    // true
+    ```
+
+- 这个静态方法可以包装任何非期约值，**包括了错误对象，并将其转换为成功的期约**。例：
+
+  - ```javascript
+    let p = Promise.resolve(new Error('foo')); 
+    setTimeout(console.log, 0, p); 
+    // Promise <resolved>: Error: foo
+    ```
+
+- **Promise.reject()**  并没有照搬Promise.resolve() 的幂等逻辑。如果给它传递一个期约对象，则这个期约会成为它返回的拒绝期约的理由
+
+  - ```javascript
+    setTimeout(console.log, 0, Promise.reject(Promise.resolve())); 
+    // Promise <rejected>: Promise <resolved>
+    ```
 
 
 
@@ -377,7 +430,7 @@ console.log('next')
     console.log('next');
     // now
     // next
-    
+
     /*
     	上面的代码中，如果f是同步的，就会得到同步的结果；如果f是异步的，就可以用then指定下一步
     */
