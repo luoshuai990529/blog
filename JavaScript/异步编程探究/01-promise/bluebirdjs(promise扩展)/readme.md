@@ -15,4 +15,6 @@
 
 
 
-ps: 以上都是bluebird的官方原话哈，都是用谷歌翻译把英文翻译过来的，如果可以建议自己去看一下文档，如官方所说其实我也是借助bluebird这个库来深入了解和学习一下promise，在实际开发中其实原生promise 已经有很好的支持了。
+ps: 以上都是bluebird的官方原话哈，都是用谷歌翻译把英文翻译过来的，如果可以建议自己去看一下文档，如官方所说其实我也是借助bluebird这个库来深入了解和学习一下promise，在实际开发中其实原生promise 已经有很好的支持了。这里也例举了bluebird库中的几个api来了解。
+
+再补充一篇百度到的文章：[promise 进阶 —— async / await 结合 bluebird - 小蒋不素小蒋 - 博客园 (cnblogs.com)](https://www.cnblogs.com/xjnotxj/p/12041074.html)
