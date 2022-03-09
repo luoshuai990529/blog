@@ -1,0 +1,73 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-03-09 09:57:43
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-03-09 11:41:51
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+            用extends继承扩展Promise类，为它添加 notify() 方法
+        */
+      class TrackablePromise extends Promise {
+        constructor(executor) {
+          const notifyHandlers = [];
+
+          const progress = (status) => {
+            //  handler即 notify函数传入的一个执行函数 (x) => console.log(`progress: ${x}`)
+            notifyHandlers.map((handler) => handler(status));
+          };
+
+          //  补充：super表示父类的构造函数 这里调用了父类的 constructor((resolve,reject) => {}) 关于super或者class有不了解的可以看到es6入门 class 篇
+          super((resolve, reject) => {
+            /* 
+                resolve即Promise构造函数的resolve
+                reject即Promise构造函数的reject
+                progress 即我们 TrackablePromise 新增的一个回调函数
+            */
+            return executor(resolve, reject, progress);
+          });
+
+          this.notifyHandlers = notifyHandlers;
+        }
+
+        notify(notifyHandler) {
+          console.log("notify=", notifyHandler); // (x) => console.log(`progress: ${x}`)
+          this.notifyHandlers.push(notifyHandler);
+          return this;
+        }
+      }
+
+      //  这样，TrackablePromise 就可以在执行函数中使用 progress() 函数了，现在可以用TrackablePromise来实例化一个promise了
+      const p = new TrackablePromise((resolve, reject, progress) => {
+        function countdown(x) {
+          if (x > 0) {
+            progress(`${20 * x}% remaining`); // 这里相当于调用了 progress
+            setTimeout(() => countdown(x - 1), 1000);
+          } else {
+            resolve();
+          }
+        }
+
+        countdown(5);
+      });
+
+      p.notify((x) => console.log(`progress: ${x}`)).then(() => console.log("completed"));
+
+      // （约 1 秒后）80% remaining
+      // （约 2 秒后）60% remaining
+      // （约 3 秒后）40% remaining
+      // （约 4 秒后）20% remaining
+      // （约 5 秒后）completed
+    </script>
+  </body>
+</html>

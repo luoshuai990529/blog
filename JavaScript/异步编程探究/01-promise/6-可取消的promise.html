@@ -1,0 +1,57 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-03-07 09:39:16
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-03-09 09:52:54
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button class="start">开始</button>
+    <button class="cancel">取消</button>
+
+    <script>
+      /* 
+            这个类包装了一个promise,把解决方法暴露给了 cancelFn 参数。
+            这样，外部代码就可以向构造函数中传入一个函数，从而控制什么情况下可以取消promise。
+            这里promise是令牌类的公共成员，因此可以给它添加处理程序用来取消promise  
+      */
+      class CancelToken {
+        constructor(cancelFn) {
+          this.promise = new Promise((resolve, reject) => {
+            cancelFn(() => {
+              console.log("delay cancelled");
+              resolve();
+            });
+          });
+        }
+      }
+
+      const startBtn = document.querySelector(".start");
+      const cancelBtn = document.querySelector(".cancel");
+
+      function cancellableDelayedResolve(delay) {
+        console.log("set delay");
+        return new Promise((resolve, reject) => {
+          const id = setTimeout(() => {
+            console.log("delayed resolve");
+            resolve();
+          }, delay);
+
+          const cancelToken = new CancelToken((cancelCallback) => cancelBtn.addEventListener("click", cancelCallback));
+
+          cancelToken.promise.then(() => clearTimeout(id));
+        });
+      }
+
+      startBtn.addEventListener("click", () => cancellableDelayedResolve(3000));
+    </script>
+  </body>
+</html>
