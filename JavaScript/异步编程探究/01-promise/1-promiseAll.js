@@ -3,7 +3,7 @@
  * @Date: 2022-03-03 15:32:31
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-03-03 16:01:02
+ * @LastEditTime: 2022-03-09 17:41:02
  */
 const getUserInfo = () => {
     console.log("getUserInfo START");
@@ -33,6 +33,7 @@ const getUserOrder = () => {
     })
 }
 
+// 改造前
 async function fn1() {
     console.log("fn1 start");
     const { payload: userInfo } = await getUserInfo()
@@ -40,7 +41,6 @@ async function fn1() {
     console.log("userInfo:", userInfo);
     console.log("userOrder:", userOrder);
 }
-
 // fn1()
 
 // 改造后
@@ -50,8 +50,14 @@ async function fn2() {
         Promise.resolve().then(() => getUserInfo()),
         Promise.resolve().then(() => getUserOrder())
     ])
-    console.log("userInfo:", userInfo);
-    console.log("userOrder:", userOrder);
+    console.log("userInfo:", userInfo); 
+    console.log("userOrder:", userOrder); 
+    /* 
+        fn2 start
+        getUserInfo START
+        getUserOrder START
+        userInfo: { code: 200, payload: { name: 'zs' } }
+        userOrder: { code: 200, payload: { orderId: 10086 } }
+    */
 }
-
 fn2()
