@@ -9,7 +9,7 @@
 
 
 
-### 1-Promise
+##1-Promise
 
 ````javascript
 // 基础案例：异步加载图片
@@ -32,7 +32,7 @@ function loadImageAsync(url) {
 
 
 
-#### 1.1-Promise.prototype.then()
+### 1.1-Promise.prototype.then()
 
 作用：为 Promise 实例添加状态改变时的回调函数。**then**方法接收两个回调函数为参数，第一个参数是**resolved**状态的回调函数，第二个参数是**rejected**状态的回调函数，他们都是可选的。
 
@@ -45,7 +45,7 @@ getJSON("/post/1.json")
 
 
 
-#### 1.2-Promise.prototype.catch()
+### 1.2-Promise.prototype.catch()
 
 作用：用于指定发生错误时的回调函数。是**.then(null, rejection)** 或 **.then(undefined, rejection)**的别名。
 
@@ -77,7 +77,7 @@ promise.then(function (value) { console.log(value) });
 
 
 
-#### 1.3-Promise.prototype.finally()
+### 1.3-Promise.prototype.finally()
 
 作用：指定不管 Promise 对象最后状态如何，都会执行的操作。（ES2018引入标准）
 
@@ -114,7 +114,7 @@ Promise.prototype.finally = function (callback){
 
 
 
-#### 1.4-Promise.all()
+### 1.4-Promise.all()
 
 作用：用于将多个 Promise 实例，包装成一个新的 Promise 实例。
 
@@ -178,7 +178,8 @@ Promise.all([p1, p2])
 
 
 
-#### 1.5-Promise.race()
+
+### 1.5-Promise.race()
 
 作用：同样是将多个 Promise 实例，包装成一个新的 Promise 实例
 
@@ -202,7 +203,8 @@ Promise.all([p1, p2])
 
 
 
-#### 1.6-Promise.allSettled()
+
+### 1.6-Promise.allSettled()
 
 作用：有时候我们希望一组异步操作都结束了，不管每一个操作是成功还是失败，再进行下一步操作。但是，现有的Promise 方法很难实现这个要求，因此 [ES2020](https://github.com/tc39/proposal-promise-allSettled) 引入了 `Promise.allSettled()`，用来确定一组异步操作是否都结束了（不管成功或失败）。
 
@@ -239,7 +241,7 @@ p.then(result => {
 
 
 
-####1.7-Promise.any()
+### 1.7-Promise.any()
 
 作用：ES2021 引入了[`Promise.any()`方法](https://github.com/tc39/proposal-promise-any)。该方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例返回。
 
@@ -261,7 +263,7 @@ Promise.any([rejected, alsoRejected]).catch(function (results) {
 
 
 
-#### 1.8-Promise.resolve()
+### 1.8-Promise.resolve()
 
 有时候需要将现有对象转换为Promise对象，`Promise.resolve()`方法就起到这个作用。
 
@@ -335,7 +337,7 @@ Promise.any([rejected, alsoRejected]).catch(function (results) {
 
 
 
-#### 1.9-Promise.reject()
+### 1.9-Promise.reject()
 
 `Promise.reject(reason)`方法也会返回一个新的 Promise 实例，该实例的状态为`rejected`。
 
@@ -405,7 +407,8 @@ try {
 
 
 
-#### 2.0-Promise.try()
+
+### 2.0-Promise.try()
 
 [一个提案，目前还处于流程的第一阶段](https://github.com/tc39/proposal-promise-try)
 
