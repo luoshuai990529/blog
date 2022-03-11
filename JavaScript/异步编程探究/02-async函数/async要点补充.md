@@ -335,16 +335,120 @@ console.log(5);
 如果使用await时不留心，则很可能错过平行加速的机会。例：
 
 ```javascript
+async function randomDelay(id) { 
+ // 延迟 0~1000 毫秒
+ const delay = Math.random() * 1000; 
+ return new Promise((resolve) => setTimeout(() => { 
+ console.log(`${id} finished`); 
+ resolve(); 
+ }, delay)); 
+} 
+async function foo() { 
+ const t0 = Date.now(); 
+ await randomDelay(0); 
+ await randomDelay(1); 
+ await randomDelay(2); 
+ await randomDelay(3); 
+ await randomDelay(4); 
+ console.log(`${Date.now() - t0}ms elapsed`); 
+} 
+foo(); 
+// 0 finished 
+// 1 finished 
+// 2 finished 
+// 3 finished 
+// 4 finished 
+// 877ms elapsed
+```
 
+就算这些期约之间没有依赖，异步函数也会依次暂停，等待每个超时完成。这样可以保证执行顺序，但总执行时间会变长。如果顺序不是必需保证的，那么可以先一次性初始化所有期约，然后再分别等待它们的结果。例：
+
+```javascript
+async function randomDelay(id) { 
+ // 延迟 0~1000 毫秒
+ const delay = Math.random() * 1000; 
+ return new Promise((resolve) => setTimeout(() => { 
+ setTimeout(console.log, 0, `${id} finished`); 
+ resolve(); 
+ }, delay)); 
+} 
+async function foo() { 
+ const t0 = Date.now(); 
+ const p0 = randomDelay(0); 
+ const p1 = randomDelay(1); 
+ const p2 = randomDelay(2); 
+ const p3 = randomDelay(3); 
+ const p4 = randomDelay(4); 
+ await p0; 
+ await p1; 
+ await p2; 
+ await p3; 
+ await p4; 
+ setTimeout(console.log, 0, `${Date.now() - t0}ms elapsed`); 
+} 
+foo(); 
+// 1 finished
+// 4 finished 
+// 3 finished 
+// 0 finished 
+// 2 finished 
+// 877ms elapsed
+
+// 虽然期约没有按照顺序执行，但 await 按顺序收到了每个期约的值
+// awaited 0 
+// awaited 1 
+// awaited 2 
+// awaited 3 
+// awaited 4
 ```
 
 
 
+### 08-栈追踪和内存管理
 
+Promise和异步函数的功能有相当程度的重叠，但他们在内存中的表示则差别很大。
 
+```javascript
+function fooPromiseExecutor(resolve, reject) { 
+ setTimeout(reject, 1000, 'bar'); 
+} 
+function foo() { 
+ new Promise(fooPromiseExecutor); 
+}
+foo();
+/*
+    Uncaught (in promise) bar 
+      setTimeout 
+      setTimeout (async) 
+      fooPromiseExecutor 
+      foo
+*/
+```
 
+栈追踪信息应该相当直接地表现 JavaScript 引擎当前栈内存中函数调用之间的嵌套关系。在超时处理程序执行时和拒绝Promise时，我们看到的错误信息包含嵌套函数的标识符，那是被调用以创建最初Promise实例的函数。可是，我们知道这些函数已经返回了，因此栈追踪信息中不应该看到它们。答案很简单，这是**因为 JavaScript 引擎会在创建Promise时尽可能保留完整的调用栈。在抛出错误时，调用栈可以由运行时的错误处理逻辑获取，因而就会出现在栈追踪信息中。当然，这意味着栈追踪信息会占用内存，从而带来一些计算和存储成本。**
+
+```javascript
+function fooPromiseExecutor(resolve, reject) { 
+ setTimeout(reject, 1000, 'bar'); 
+} 
+async function foo() { 
+ await new Promise(fooPromiseExecutor); 
+} 
+foo(); 
+/*
+	Uncaught (in promise) bar 
+		foo
+		async function (async) 
+		foo
+*/
+```
+
+这样一改，栈追踪信息就准确地反映了当前的调用栈。fooPromiseExecutor()已经返回，所以它不在错误信息中。但 foo()此时被挂起了，并没有退出。
+
+**JavaScript 运行时可以简单地在嵌套函数中存储指向包含函数的指针，就跟对待同步函数调用栈一样。这个指针实际上存储在内存中，可用于在出错时生成栈追踪信息。这样就不会像之前的例子那样带来额外的消耗，因此在重视性能的应用中是可以优先考虑的。**
 
 
 
 ### 小结:
 
+长期以来，掌握单线程 JavaScript 运行时的异步行为一直都是个艰巨的任务。随着 ES6 新增了期约和 ES8 新增了异步函数，ECMAScript 的异步编程特性有了长足的进步。通过期约和 async/await，不仅可以实现之前难以实现或不可能实现的任务，而且也能写出更清晰、简洁，并且容易理解、调试的代码。期约的主要功能是为异步代码提供了清晰的抽象。可以用期约表示异步执行的代码块，也可以用期约表示异步计算的值。在需要串行异步代码时，期约的价值最为突出。作为可塑性极强的一种结构，期约可以被序列化、连锁使用、复合、扩展和重组。异步函数是将期约应用于 JavaScript 函数的结果。异步函数可以暂停执行，而不阻塞主线程。无论是编写基于期约的代码，还是组织串行或平行执行的异步代码，使用异步函数都非常得心应手。异步函数可以说是现代 JavaScript 工具箱中最重要的工具之一。(《JavaScript高级程序设计》原话 哈哈)
