@@ -1,0 +1,79 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-03-25 14:14:50
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-03-25 19:02:06
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        const list = [
+            [1,  2,  4,  7,  11],
+            [3,  5,  8,  12, 15],
+            [6,  9,  13, 16, 18],
+            [10, 14, 17, 19, 20]
+        ]
+
+        /* 
+            思路：广度优先搜索上面的矩阵(二维数组)
+
+            从左上角开始遍历list：
+                1. 第一个数 1，消费掉，再拿到其右边和下面位置的数，即2,3 推入队列，此时队列 [2,3]
+                2. 遍历队列[2,3], 消费掉2，拿到2的右边和下面位置的数，即4,5 推入队列，此时队列 [3,4,5]
+                3. 遍历队列[3,4,5], 消费掉3，拿到3的右边和下面位置的数，即5,6 推入队列，此时队列 [4,5,6]
+                .....
+            待优化，这是基础思路
+        */
+
+        const fn = (list) => {
+            const xMax = list.length, yMax = list[0].length; // x坐标和y坐标边界
+            const dirs = [[-1, 0],[0, 1],[1, 0],[0, -1]]; // 上右下左 四个方位
+
+            const queue = [] // 广度优先搜索 配合 queue队列实现
+            const dirMap = new Map() // 用于存储每个值对应的坐标，用于去重  存储： 值value => 坐标[x,y]
+            const x = 0, y = 0
+            const value = list[x][y]
+            dirMap.set(value, [x,y])
+            queue.push(value)
+
+            bfs(queue, dirMap)
+            
+            function bfs (queue, dirMap) {
+                const output = queue.shift()
+                console.log('output:', output);
+                const [x,y] = dirMap.get(output)
+                for (let index = 0; index < 4; index++) {
+                    const [xD, yD] = dirs[index]
+                    const boundaryCheck =  x + xD > -1 && y + yD > -1 && x + xD < xMax && y+ yD < yMax //边界检查
+                    if (boundaryCheck) {
+                        const strDirs = JSON.stringify([x + xD, y + yD])
+                        const value = list[x + xD][y + yD]
+                        if (!dirMap.has(value)) { // 防止重复添加
+                            dirMap.set(value, [x + xD, y + yD])
+                            queue.push(value)
+                        }
+                    }
+                }
+                if (queue.length > 0) {
+                    // console.log("当前的队列 queue---", queue);
+                    // console.log("dirMap---", dirMap);
+                    bfs(queue, dirMap)
+                }
+            }
+            
+        }
+        fn(list)
+
+    </script>
+</body>
+</html>
