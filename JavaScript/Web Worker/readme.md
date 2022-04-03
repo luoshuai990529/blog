@@ -121,9 +121,67 @@ Worker对象支持的**事件处理程序属性**：
 
 在专用工作者线程内部，全局作用域是**DedicateWorkerGlobalScope**的实例。因为这继承自**WorkerGlobalScope**，所以包含它的所有属性和方法。工作者线程可以通过**self**关键字访问该全局作用域。
 
+代码：./1.专用工作者线程.html
 
+##### 4.5 在 JavaScript 行内创建工作者线程
 
+工作者线程需要基于脚本文件来创建，但这并不意味着该脚本必须是远程资源。专用工作者线程也 可以通过 Blob对象 URL 在行内脚本创建。这样可以更快速地初始化工作者线程，因为没有网络延迟。例：
 
+````javascript
+// 创建要执行的 JavaScript 代码字符串
+const workerScript = `self.onmessage = ({data}) => console.log(data);`;
+// 基于脚本字符串生成 Blob 对象
+const workerScriptBlob = new Blob([workerScript]); 
+// 基于 Blob 实例创建对象 URL 
+const workerScriptBlobUrl = URL.createObjectURL(workerScriptBlob); 
+// 基于对象 URL 创建专用工作者线程
+const worker = new Worker(workerScriptBlobUrl); 
+worker.postMessage('blob worker script'); 
+// blob worker script
+````
+
+##### 4.6 在工作者线程中同台执行脚本
+
+使用**importScript()方法**通过编程方式加载和执 行任意脚本。该方法可用于全局 Worker 对象。这个方法会加载脚本并按照加载顺序同步执行。
+
+```javascript
+// 例：main.js
+
+const worker = new Worker('./worker.js'); 
+// importing scripts 
+// scriptA executes 
+// scriptB executes 
+// scripts imported
+```
+
+```javascript
+// scriptA.js
+console.log('scriptA executes'); 
+```
+
+```javascript
+// scriptA.js
+console.log('scriptA executes'); 
+```
+
+```javascript
+// worker.js
+console.log('importing scripts');
+importScripts('./scriptA.js'); 
+importScripts('./scriptB.js'); 
+console.log('scripts imported');
+
+/* importScripts()方法可以接收任意数量的脚本作为参数。浏览器下载它们的顺序没有限制，但执行则会严格按照它们在参数列表的顺序进行。
+	所以上述其实可以这么写：
+	importScripts('./scriptA.js', './scriptB.js'); // 效果和上述一样
+*/
+```
+
+> 注：脚本加载受到常规 CORS 的限制，但在工作者线程内部可以请求来自任何源的脚本。这里的脚本导 入策略类似于使用生成的script标签动态加载脚本。
+
+### 小结
+
+以上内容都来自于《Javascript高级程序设计（第四版）》，可以让我们大概的了解Web Worker 是什么和基本使用。当然，在书中还介绍了很多的细节注意点，后面还有非常多的内容，这里就不一一记录了。更深入认识建议直接看书的工作者线程 这一章节。后面还列举了 委托任务到子工作者线程、处理工作者线程错误、主线程和工作者线程的通信、线程池和其他类型的工作者线程等等。
 
 
 

@@ -1,0 +1,83 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-03-30 16:10:44
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-04-03 21:09:15
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专用工作者线程</title>
+</head>
+
+<body>
+
+
+    <script>
+        /* 
+            在专用工作者线程内部，全局作用域是DedicatedWorkerGlobalScope 的实例。
+            因为这继承自WorkerGlobalScope，所以包含它的所有属性和方法。
+            工作者线程可以通过self关键字访问该全局作用域
+
+            Worker构造函数允许将可选的配置对象作为第二个参数。该配置对象支持下列属性。
+                name：可以在工作者线程中通过self.name读取到的字符串标识符。
+                type：表示加载脚本的运行方式，可以是"classic"或"module"，classic将脚本作为常规脚本执行，module将脚本作为模块来执行
+                credentials：在type为module时，指定如何获取与传输凭证数据相关的工作者线程模块脚本。值可以是 omit、same-orign、include。这些选项和fetch()的凭证选项相同。
+                    注：在type为classic时，默认为omit
+        */
+        const worker = new Worker('./globalScopeWorker.js')
+        console.log("created worker:", worker);
+
+        worker.addEventListener('message', (msg) => { console.log('main:', msg.data) })
+
+        // Worker可能处于初始化状态
+        // 但postMessage()数据可以正常处理，worker线程内部如果close了，那么下面的内容也不会被接收到
+        worker.postMessage('Lewis')
+        worker.postMessage('Jake')
+        worker.postMessage('Mark')
+
+        /*
+            打印：
+            // created worker: Worker {onmessage: null, onerror: null}
+            // inside worker:  DedicatedWorkerGlobalScope {name: '', onmessage: null, onmessageerror: null, cancelAnimationFrame: ƒ, close: ƒ, …}
+            // foo 
+            // bar 
+            // baz 
+
+            如此例所示，顶级脚本和工作者线程中的console对象都将写入浏览器控制台
+            工作者线程具有不可忽略的启动延迟，所以即使 Worker 对象存在，工作者线程的日志也会在主线程的日志之后打印出来。
+
+            注意：浏览器从两个不同的 JavaScript 线程收到消息，并按照自己认为合适的顺序输出这些消息。为此，在多线程应用程序中使用日志确定操作顺序时必须要当心。
+            
+            DedicatedWorkerGlobalScope 在 WorkerGlobalScope 基础上增加了以下属性和方法：
+                name:可以提供给 Worker 构造函数的一个可选的字符串标识符
+                postMessage()：与 worker.postMessage()对应的方法，用于从工作者线程内部向父上下文发送消息
+                close()：与 worker.terminate()对应的方法，用于立即终止工作者线程。没有为工作者线程提供清理的机会，脚本会突然停止
+                importScripts()：用于向工作者线程中导入任意数量的脚本
+            */
+
+        /*
+            专用工作者线程的生命周期：
+                初始化工作者线程后获取worker对象后，父上下文可以立即使用这个Worker对象，但是与之关联的工作者线程可能没有创建好，因为存在脚本的网络延迟。
+
+                专用工作者线程可以处于下列三个状态：初始化、活动、终止
+                    初始化时，虽然工作者线程脚本尚未执行，但可以先把要发送给工作者线程的消息加入消息队列。这些消息会等待工作者线程变成活动active，再把消息添加到它的消息队列。
+                    创建之后，专用工作者线程就会伴随页面的整个生命期而存在，除非自我终止(self.close()),或者通过外部终止(worker.terminate())。即使线程脚本已运行完成，线程的环境仍然会存在。
+                    只要工作者线程存在，与之关联的Worker对象就不会被当成垃圾收集掉。
+                        注意：close()和terminate()是幂等操作，多次调用没有没问题。这两个方法仅仅是将Worker标记为 teardown，因此多次调用不会有不好的影响。
+                
+                小结：  
+                a.在整个生命周期中，一个专用工作者线程只会关联一个网页。
+                b.除非明确终止，否则只要关联文档存在，专用工作者线程就会存在。
+                c.如果浏览器离开网页(通过导航或者关闭标签关闭窗口)，它将会与其关联的工作者线程标记为终止，他们的执行也会立即停止
+        
+        */
+    </script>
+</body>
+
+</html>
