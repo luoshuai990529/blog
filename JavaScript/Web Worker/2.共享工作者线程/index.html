@@ -1,0 +1,42 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-04-04 19:50:59
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-04-04 20:25:45
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    
+
+    <script>
+        /* 
+            共享工作者线程或共享线程与专用工作者线程类似，但是可以被多个可信任的执行上下文访问。
+                如：同源的两个标签页可以访问同一个共享工作者线程。ShareWorker和Worker的消息接口稍有不同，包括外部和内部。
+
+            共享工作者线程适合开发者希望通过多个上下文共享线程减少计算性消耗的情形。
+                如：可以用一个共享线程管理多个同源页面WebSocket消息的发送与接受。共享工作者线程也可以用在同源上下文希望通过一个线程通信的情形。    
+        
+            简介：从行为上看，共享工作者线程可以看做是专用工作者线程的一个扩展。线程的创建、选项、安全限制和importScript行为都是相同的。
+            与专用工作者线程一样，共享工作者线程也在独立执行上下文中运行，也只能与其他上下文异步通信。
+
+            与专用工作者线程的重要区别：虽然Worker()构造函数始终会创建新实例，而SharedWorker()则只会在相同的标识不存在的情况下才创建新实例。
+            如果的确存在与标识匹配的共享工作者线程，则只会与已有共享者线程建立新的连接。
+        */
+
+
+        // 注意 根据浏览器实现，在 SharedWorker 中把日志打印到控制台不一定能在浏览器默认的控制台中看到。
+        for (let i = 0; i < 5; i++) {
+            new SharedWorker('./sharedWorker.js')            
+        }
+    </script>
+</body>
+</html>
