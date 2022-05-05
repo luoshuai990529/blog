@@ -89,6 +89,7 @@ WorkerGlobalScope 还增加了新的全局方法 importScripts()，只在工作�
 
 ```javascript
 // main.js
+// 注意worker线程是无法加载本地文件的，必须要网络资源，想要加载本地文件得先转化为blob，然后生成一个url去使用
 const worker = new Worker('./emptyWorker.js') // 这里要求main.js和emptyWorker.js在同一个路径下
 console.log(worker) // Worker {}
 ```
