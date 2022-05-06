@@ -3,7 +3,7 @@
  * @Date: 2022-05-05 16:41:18
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-05-05 16:48:53
+ * @LastEditTime: 2022-05-06 16:27:14
  */
 
 /**
@@ -29,4 +29,31 @@ function formatUrl(url, params) {
     const originParams = {...curryParams, ...params}
     const paramStr = Object.keys(originParams).filter(item => originParams[item] !== '').map((item) => `${item}=${originParams[item]}`).join('&');
     return paramStr !== '' ? `${url.split('?')[0]}?${paramStr}` : `${url.split('?')[0]}`;
+}
+
+/**
+ * @description: 加载script
+ * @param {*} src 文件路径
+ * @param {*} cb 加载后的回调
+ * @return {*}
+ */
+function loadScript(src, cb) {
+    const head = document.head || document.getElementsByTagName("head")[0];
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = src;
+    cb = cb || function () { };
+
+    if (!("onload" in script)) {
+        script.onreadystatechange = function () {
+            if (this.readyState !== "complete" && this.readyState !== "loaded") return;
+            this.onreadystatechange = null;
+            cb(script);
+        };
+    }
+    script.onload = function () {
+        this.onload = null;
+        cb(script);
+    };
+    head.appendChild(script);
 }
