@@ -1,0 +1,85 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-05-07 10:57:27
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-05-07 16:51:24
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        // 自己实现一个定时器，每次间隔 a, a+b, a+2b 执行fn
+        /**
+         * @description:  每次间隔 a, a+b, a+2b 执行fn
+         * @param {Function} fn
+         * @param {Number} a
+         * @param {Number} b
+         * @return {*}
+         */
+        const symbolQueue = Symbol('mySetInterVal')
+        window[symbolQueue] = new Map()
+
+        function mySetInterVal(fn, a, b) {
+            const myTimeId = `${fn.name}${new Date().getTime()}`
+            console.log("myTimeId-",fn.name, myTimeId);
+            window[symbolQueue].set(myTimeId, myTimeId)
+            const intervalMap = new Map([[0, a], [1, a + b], [2, a + 2 * b]])
+            let cur = 0
+            inner()
+            return myTimeId
+
+            async function inner() {
+                if (window[symbolQueue].get(myTimeId) !== myTimeId) {
+                    return
+                }
+                console.log(fn.name, "等待：", intervalMap.get(cur), "秒");
+                await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        // console.log("window[symbolQueue].get(myTimeId)-", window[symbolQueue].get(myTimeId));
+                        if (window[symbolQueue].get(myTimeId) === myTimeId && fn) {
+                            fn();
+                        }
+                        resolve()
+                    }, intervalMap.get(cur) * 1000)
+                })
+                cur++
+                cur = cur === intervalMap.size ? 0 : cur
+
+                inner()
+            }
+        }
+
+        function myClear(timeId) {
+            window[symbolQueue].set(timeId, null)
+        }
+
+        function test1() {
+            console.log("test1:", new Date().toLocaleTimeString());
+        }
+
+        function test2() {
+            console.log("test2:", new Date().toLocaleTimeString());
+        }
+
+        const timeId1 = mySetInterVal(test1, 1, 2)
+        const timeId2 = mySetInterVal(test2, 1, 2)
+
+        setTimeout(() => {
+            console.log("暂停计时 timeId1");
+            myClear(timeId1)
+        }, 10000)
+    </script>
+</body>
+
+</html>
