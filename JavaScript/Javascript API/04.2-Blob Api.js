@@ -3,7 +3,7 @@
  * @Date: 2022-04-24 15:33:34
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-04-24 16:03:42
+ * @LastEditTime: 2022-05-17 18:42:44
  */
 
 
@@ -61,20 +61,80 @@ console.log(new Blob(['<p>Foo</p>', '<p>Bar</p>'], { type: 'text/html' }));
     如果想表明不再使用某个对象 URL，则可以把它传给 window.URL.revokeObjectURL()。
     页面卸载时，所有对象 URL 占用的内存都会被释放。
 */
+// let filesList = document.getElementById("files-list");
+// filesList.addEventListener("change", (event) => {
+//     let output = document.querySelector(".output"),
+//         files = event.target.files,
+//         url = window.URL.createObjectURL(files[0]); // blob:http://127.0.0.1:5501/3397b3ec-e371-4e83-96ef-c05e0e7e5a49
+//     if (url) {
+//         if (/image/.test(files[0].type)) {
+//             output.innerHTML = `<img src="${url}">`;
+//         } else {
+//             output.innerHTML = "Not an image.";
+//         }
+//     } else {
+//         output.innerHTML = "Your browser doesn't support object URLs.";
+//     }
+// });
+
+/* 
+    通过读取文件的魔数来正确判断文件的类型：
+
+    在实际工作中，遇到的文件类型是多种多样的，针对这种情形，你可以使用现成的第三库来实现文件检测的功能,如：https://github.com/sindresorhus/file-type#readme
+*/
 let filesList = document.getElementById("files-list");
-filesList.addEventListener("change", (event) => {
-    let output = document.querySelector(".output"),
-        files = event.target.files,
-        url = window.URL.createObjectURL(files[0]); // blob:http://127.0.0.1:5501/3397b3ec-e371-4e83-96ef-c05e0e7e5a49
-    if (url) {
-        if (/image/.test(files[0].type)) {
-            output.innerHTML = `<img src="${url}">`;
-        } else {
-            output.innerHTML = "Not an image.";
-        }
-    } else {
-        output.innerHTML = "Your browser doesn't support object URLs.";
+filesList.addEventListener("change", async (event) => {
+    let output = document.querySelector(".output"), files = event.target.files
+    try {
+        const { mime } = await getImageType(files[0])
+        const url = window.URL.createObjectURL(files[0]);
+        output.innerHTML = `<img src="${url}"> <p>${mime} 类型</p>`;
+    } catch (error) {
+        output.innerHTML = error.msg;
     }
 });
+
+function getImageType(file) {
+    function check(headers) {
+        return (buffers, options = { offset: 0 }) => headers.every((header, index) => header === buffers[options.offset + index]);
+    }
+    return new Promise((resolve, reject) => {
+        readBuffer(file, 0, 8).then(res => {
+
+            const uint8Array = new Uint8Array(res)
+            const FileHeaderMap = new Map([
+                ['png', { header: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], mime: 'image/png', ext: 'png', checkFn: check }],
+                ['jpg', { header: [0xff, 0xd8, 0xff], mime: 'image/jpg', ext: 'jpg', checkFn: check }],
+                ['gif', { header: [0x47, 0x49, 0x46], mime: 'image/gif', ext: 'gif', checkFn: check }],
+                ['bmp', { header: [0x42, 0x4d], mime: 'image/bmp', ext: 'bmp', checkFn: check }],
+                ['webp', { header: [82, 73, 70, 70], mime: 'image/webp', ext: 'webp', checkFn: check }]
+            ])
+            for (const { header, mime, ext, checkFn, options } of FileHeaderMap.values()) {
+                console.log("校验：", ext);
+                if (checkFn(header, options)(uint8Array)) {
+                    resolve({ mime, ext })
+                    return
+                }
+            }
+            reject({ msg: '未找到该对应图片类型', TypedArray: JSON.stringify(uint8Array) })
+        }).catch((err) => {
+            reject({ ...err, msg: JSON.stringify(err) })
+        })
+    })
+}
+
+function readBuffer(file, start = 0, end = 2) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file.slice(start, end));
+    });
+}
+
+
+
 
 
