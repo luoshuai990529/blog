@@ -1,0 +1,388 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-05-30 15:08:58
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-06-08 10:04:14
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .wrap1,
+        .wrap2,
+        .wrap3,
+        .wrap4,
+        .wrap5,
+        .wrap6,
+        .wrap7 {
+            width: 300px;
+            height: 300px;
+            margin: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="container">
+        <div class="wrap1">
+            填充和描边、绘制矩形
+            <canvas id="drawing1" width="300" height="300">A drawing of something.</canvas>
+        </div>
+        <div class="wrap2">
+            绘制路径
+            <canvas id="drawing2" width="300" height="300">A drawing of something.</canvas>
+        </div>
+        <div class="wrap3">
+            绘制文本
+            <canvas id="drawing3" width="300" height="300">A drawing of something.</canvas>
+        </div>
+        <div class="wrap4">
+            变换操作绘制在画布上的图像。
+            <canvas id="drawing4" width="300" height="300">A drawing of something.</canvas>
+        </div>
+        <div class="wrap5">
+            <canvas id="drawing5" width="300" height="300">绘制图像</canvas>
+        </div>
+        <div class="wrap6">
+            阴影、渐变、径向渐变
+            <canvas id="drawing6" width="300" height="300">A drawing of something.</canvas>
+        </div>
+        <div class="wrap7">
+            图案
+            <canvas id="drawing7" width="300" height="300">A drawing of something.</canvas>
+        </div>
+    </div>
+
+    <script>
+        /* 
+            2D绘图上下文提供了绘制2D图形的方法，包括矩形、弧形和路径。
+            2D上下文的坐标原点（0,0）在canvas元素的左上角。所有坐标值都相对于该点计算，因此x坐标向右增长，y坐标向下增长。
+            默认情况下，width和height标识两个方向上像素的最大值。
+        */
+
+
+        /* 
+            1.填充和描边
+                2D上下文有两个基本挥之操作：填充和描边。
+                填充以指定样式(颜色、渐变、图形) 自动填充形状，而描边只为图形边界着色。
+                大多数2D上下文操作有填充和描边的变体，显示效果取决于两个属性：fillStyle 和 strokeStyle
+                这两个属性可以使字符串、渐变对象或图案对象，默认值都是 "#000000"。字符串表示颜色值，可以使CSS支持的任意格式：名称、十六进制代码、rgb、rgba、hsl...
+            
+            2.绘制矩形
+                矩形是唯一一个可以直接在2D绘图上下文中绘制的形状。与绘制矩形相关的方法有三个：fillRect()、strokeRect()和 clearRect()。
+                这些方法都接受4个参数：矩形x坐标、矩形y坐标、矩形宽度、矩形高度。单位都是像素px
+        */
+        let drawing = document.getElementById("drawing1");
+        let context = drawing.getContext("2d"); // CanvasRenderingContext2D
+        context.fillStyle = '#0094ff'
+        context.fillRect(10, 10, 50, 50);
+        context.fillStyle = "rgba(0,0,255,0.5)";
+        context.fillRect(30, 30, 50, 50);
+
+        // strokeRect()方法使用通过 strokeStyle 属性指定的颜色绘制矩形轮廓。
+        // 注意：描边宽度由 lineWidth属性控制，他可以是任意整数值，
+        // 而lineCap属性控制线条端点的形状 butt-平头、round-出圆头、square-出方头，
+        // lineJoin属性控制线条焦点的形状 round-圆转、bevel-取平、miter-出尖
+        context.strokeStyle = 'red';
+        context.lineWidth = '1'
+        context.strokeRect(10, 10, 50, 50);
+        context.strokeStyle = "rgba(0,0,255,0.5)";
+        context.lineWidth = '5'
+        context.strokeRect(30, 30, 80, 80);
+        console.log("context-", context);
+
+        // 使用 clearRect()方法可以擦除画布中某个区域。该方法用于把绘图上下文中的某个区域变透明。
+        // 通过先绘制形状再擦除指定区域，可以创建出有趣的效果，比如从已有矩形中开个孔。
+        context.clearRect(40, 40, 10, 10); // 在前两个矩形重叠的区域擦除一个矩形区域
+
+        /* 
+            3.绘制路径
+                2D上下文支持很多在画布上绘制路径的方法，通过路径可以创建复杂的形状和线条。要绘制路径，
+                必须首先调用beginPath() 方法以表示要开始绘制新路径。然后，再调用下列方法来绘制路径：
+
+                arc(x, y, radius, startAngle, endAngle, counterclockwise): 
+                    以坐标(x, y)为圆心，以radius为半径绘制一条弧线，起始角度为startAngle，结束角度为endAngle。
+                    最后一个参数 counterclockwise 表示是否逆时针计算起始角度和结束角度(默认为顺时针)。
+                arcTo(x1, y1, x2, y2, radius):
+                    以给定半径radius，经由(x1, y1)绘制一条从上一点到(x2, y2)的弧线
+                bezierCurveTo(c1x, c1y, c2x, c2y, x, y):
+                    以(c1x, c1y)和(c2x, c2y) 为控制点，绘制一条从上一点到(x, y)的弧线(三次贝塞尔曲线) https://blog.csdn.net/zhaozjc112/article/details/52909172/
+                lineTo(x, y):
+                    绘制一条从上一点到(x, y) 的直线
+                moveTo(x, y):
+                    不绘制线条，只会吧绘制光标移动到(x, y)
+                quadraticCurveTo(cx, cy, x, y):
+                    以(cx, cy) 为控制点，绘制一条从上一点到(x, y) 的弧线(二次贝塞尔曲线)
+                rect(x, y, width, height): 
+                    以给定宽度和高度在坐标点(x, y)绘制一个矩形。这个方法和strokeRect() 和 fillRect() 的区别在于，它创建的是一条路径，而不是独立的图形
+                    创建路径之后，可以使用closePath() 方法绘制一条返回起点的线。
+                    如果路径已经完成，则既可以指定fillStyle属性 并调用 fill() 方法来填充路径，
+                    也可以指定strokeStyle 属性并调用stroke()方法来描画路径，
+                    还可以调用clip() 方法基于已有路径创建一个新剪切区域
+
+        */
+        let drawing2 = document.getElementById("drawing2");
+        let context2 = drawing2.getContext("2d");
+
+        // 创建路径
+        context2.beginPath()
+        // 绘制外圆
+        context2.arc(100, 100, 99, 0, 2 * Math.PI, false) // 以(100, 100) 为圆心，99为半径绘制一条弧线，起始角度：0 ，结束角度：0, 2 * Math.PI
+        // 绘制内圆
+        context2.moveTo(194, 100);
+        context2.arc(100, 100, 94, 0, 2 * Math.PI, false);
+        // 绘制分针
+        context2.moveTo(100, 100);
+        context2.lineTo(100, 15);
+        // 绘制时针
+        context2.moveTo(100, 100);
+        context2.lineTo(35, 100);
+        // 描画路径
+        context2.stroke();
+
+        /* 
+            路径是 2D 上下文的主要绘制机制，为绘制结果提供了很多控制。
+            因为路径经常被使用，所以也有一个 isPointInPath()方法，接收 x 轴和 y 轴坐标作为参数。
+            这个方法用于确定指定的点是否在路径上，可以在关闭路径前随时调用，如：
+        */
+        // if (context2.isPointInPath(100, 100)) {
+        //     alert("Point (100, 100) is in the path.");
+        // }
+        // 2D 上下文的路径 API 非常可靠，可用于创建涉及各种填充样式、描述样式等的复杂图像。
+
+        /* 
+            4.绘制文本
+                文本和图像混合也是常见的绘制需求，因此2D绘图上下文还提供了绘制文本的方法 fillText() 和 strokeText()
+                这两个方法都接收4个参数：要绘制的字符串、x 坐标、y 坐标、可选的最大像素宽度。
+                这两个方法最终绘制的结果都取决于以下 3 个属性：
+                    font：以 CSS 语法指定的字体样式、大小、字体族等，比如"10px Arial"。
+                    textAlign：指定文本的对齐方式，可能的值包括"start"、"end"、"left"、"right"和"center"。
+                               推荐使用"start"和"end"，不使用"left"和"right"，
+                               因为前者无论在从左到右书写的语言还是从右到左书写的语言中含义都更明确。
+                    textBaseLine ：指定文本的基线，可能的值包括 "top" 、 "hanging" 、 "middle" 、"alphabetic"、"ideographic"和"bottom"。
+        
+                fillText()方法使用 fillStyle 属性绘制文本（这个方法用的最多）
+                strokeText()方法使用 strokeStyle 属性。
+        
+        */
+        context2.font = "bold 14px Arial";
+        // 标准
+        context2.textAlign = "center";
+        context2.textBaseline = "middle";
+        context2.fillText("12", 100, 20); // 在表盘上绘制数字 “12”
+
+        context2.textAlign = "start"; // 与开头对齐
+        context2.fillText("12", 100, 40);
+
+        context2.textAlign = "end"; // 与末尾对齐
+        context2.fillText("12", 100, 60);
+
+        /* 
+            2D 上下文提供了用于辅助确定文本大小的 measureText()方法。
+                这个方法接收一个参数：要绘制的文本，返回一个TextMetrics对象。
+                该对象也只有一个属性width。将来应该会增加更多属性。
+            measureText()方法使用 font、textAlign、textBaseline 属性当前的值计算绘制指定文本后的大小。
+        */
+
+        // 假设要把文本"Hello world!"放到一个 100 像素宽的矩形中，可以使用以下代码，从 100 像素的字体大小开始计算，不断递减，直到文本大小合适
+        let drawing3 = document.getElementById("drawing3");
+        let context3 = drawing3.getContext("2d");
+        let fontSize = 100;
+        context3.font = fontSize + "px Arial";
+        while (context3.measureText("Hello world!").width > 100) {
+            fontSize--;
+            context3.font = fontSize + "px Arial";
+        }
+        console.log(`context3.measureText("Hello world!")-`, context3.measureText("Hello world!"));
+        context3.fillText("Hello world!", 20, 30);
+        context3.fillText("Font size is " + fontSize + "px", 10, 50);
+
+        /* 
+            5.变换：
+                “上下文变换”可以操作绘制在画布上的图像。
+                在创建绘制上下文时，会以默认值初始化变换矩阵，从而让绘制操作如实应用到绘制结果上。
+                对绘制上下文应用变换，可以导致以不同的变换矩阵应用绘制操作，从而产生不同的结果。
+
+            用于改变绘制上下文的变换矩阵的方法：
+                rotate(angle)：围绕原点把图像旋转 angle 弧度。
+                scale(scaleX, scaleY)：通过在 x 轴乘以 scaleX、在 y 轴乘以 scaleY 来缩放图像。scaleX 和 scaleY 的默认值都是 1.0。
+                translate(x, y)：把原点移动到(x, y)。执行这个操作后，坐标(0, 0)就会变成(x, y)。
+                transform(m1_1, m1_2, m2_1, m2_2, dx, dy)：像下面这样通过矩阵乘法直接修改矩阵。
+                setTransform(m1_1, m1_2, m2_1, m2_2, dx, dy)：把矩阵重置为默认值，再以传入的参数调用 transform()。
+        
+        */
+        let drawing4 = document.getElementById("drawing4");
+        let context4 = drawing4.getContext("2d");
+        // 创建路径
+        context4.beginPath();
+        // 绘制外圆
+        context4.arc(100, 100, 99, 0, 2 * Math.PI, false);
+        // 绘制内圆
+        context4.moveTo(194, 100);
+        context4.arc(100, 100, 94, 0, 2 * Math.PI, false);
+        // 移动原点到表盘中心
+        context4.translate(100, 100);
+        // 旋转表针
+        context4.rotate(1);
+        // 绘制分针
+        context4.moveTo(0, 0);
+        context4.lineTo(0, -85);
+        // 绘制时针
+        context4.moveTo(0, 0);
+        context4.lineTo(-65, 0);
+        // 描画路径
+        context4.stroke();
+
+
+        // save方法：如果想着什么时候再回到当前的属性和变换状态，可以调用这个方法，调用后所有这一时刻的设置会被放到一个暂存栈中。
+        // restore方法：当需要恢复之前的上下文时，可以调用这个方法，会从暂存栈中取出并恢复之前保存的设置。
+
+
+        /* 
+            6.绘制图像：
+                drawImage(image, x, y, sWidth, sHeight, dx, dy, dWidth, dHeight) 方法：
+                    image：绘制到上下文的元素，最简单的调用是传入一个 HTML 的<img>元素,它允许任何的 canvas 图像源:CSSImageValue (en-US)，HTMLImageElement，SVGImageElement (en-US)，HTMLVideoElement...
+                    x 和 y：表示绘制目标的 x 和 y 坐标，结果是把图像绘制到指定位置。
+                    sWidth 和 sHeight：目标宽度和目标高度，传入之后，图像会缩放到 sWidth 像素宽、sHeight 像素高。
+                    dx 和 dy：表示目标区域 x 坐标和目标区域 y 坐标
+                    dWidth 和 dHeight：目标区域宽度和目标区域高度
+        */
+        const img = document.createElement('img')
+        let drawing5 = document.getElementById("drawing5");
+        let context5 = drawing5.getContext("2d");
+        img.src = 'https://lewis-note.oss-cn-beijing.aliyuncs.com/images/qlz1.jpg'
+        img.onload = () => {
+            const width = 720, height = 405
+            const bili = width / height
+            const dWidth = 298, dHeight = dWidth / bili
+            context5.drawImage(img, 0, 0, width, height, 0, 0, dWidth, dHeight); // 等比绘制
+
+            context5.drawImage(img, 360, 0, width, height, 155, dHeight, dWidth, dHeight);
+            context5.drawImage(img, -360, 0, width, height, -155, dHeight, dWidth, dHeight);
+        }
+
+        /* 
+            7.阴影：
+                根据以下属性的值自动为已有形状或路径生成阴影：
+                shadowColor：Css颜色值，表示要绘制的阴影颜色，默认为黑色
+                shadowOffsetX：阴影相对于形状或路径的x坐标的偏移量，默认为0
+                shadowOffsetY：阴影相对于形状或路径的y坐标的偏移量，默认为0
+                shadowBlur：像素，表示阴影的模糊量。默认值为0，表示不模糊
+                这些属性都可以通过context对象读写。
+
+            8.渐变：
+                渐变通过 CanvasGradient 的实例表示，在 2D 上下文中创建和修改都非常简单。
+                调用上下文的 createLinearGradient(startX, startY, endX, endY) 方法 来创建一个新的线性渐变。
+                    参数：startX:起点x坐标、startY：起点y坐标、endX：终点x坐标、endY：终点y坐标
+                    返回：CanvasGradient对象实例
+                有了gradient对象，使用 addColorStop(position, colorStr) 方法为渐变指定色标。
+                    参数：
+                        position：色标位置(0 - 1范围内的值表示)，0是第一种颜色，1是最后一种颜色
+                        colorStr：css颜色字符串
+
+                径向渐变（或放射性渐变）要使用 createRadialGradient(startX, startY, startR, endX, endY, endR)方法来创建。
+                    参数：前 3 个参数指定起点圆形中心的 x、y 坐标和半径，后 3 个参数指定终点圆形中心的 x、y 坐标和半径。
+        */
+        let drawing6 = document.getElementById("drawing6");
+        let context6 = drawing6.getContext("2d");
+        context6.shadowOffsetX = 5;
+        context6.shadowOffsetY = 5;
+        context6.shadowBlur = 4;
+        context6.shadowColor = "rgba(0, 0, 0, 0.5)";
+        // 绘制红色矩形
+        context6.fillStyle = "#ff0000";
+        context6.fillRect(10, 10, 50, 50);
+        // 绘制蓝色矩形
+        context6.fillStyle = "rgba(0,0,255,1)";
+        context6.fillRect(30, 30, 50, 50);
+
+        // 渐变
+        // 在画布上从(30, 30)到(70, 70)绘制一个渐变
+        // let gradient = context6.createLinearGradient(120, 30, 300, 0);
+        // gradient.addColorStop(0, "white"); // 起点颜色为白色
+        // gradient.addColorStop(1, "black"); // 终点颜色为黑色
+        // 绘制红色矩形
+        context6.fillStyle = "#ff0000";
+        context6.fillRect(100, 10, 50, 50);
+        // 绘制渐变矩形 这里绘制没有把矩形绘制到渐变的范围内，因此我们要一个计算函数来计算位置
+        // context6.fillStyle = gradient;
+        // context6.fillRect(120, 30, 50, 50);
+
+        /**
+         * @description: 保持渐变与形状的一致的计算函数
+         * @param {*} context
+         * @param {*} x
+         * @param {*} y
+         * @param {*} width
+         * @param {*} height
+         * @return {*}
+         */
+        function createRectLinearGradient(context, x, y, width, height) {
+            return context.createLinearGradient(x, y, x + width, y + height);
+        }
+        let gradient = createRectLinearGradient(context, 120, 30, 50, 50);
+        gradient.addColorStop(0, "white"); // 起点颜色为白色
+        gradient.addColorStop(1, "black"); // 终点颜色为黑色
+        // 绘制渐变矩形
+        context6.fillStyle = gradient;
+        context6.fillRect(120, 30, 50, 50);
+
+        // 径向渐变（或放射性渐变）
+        let radialGradient = context6.createRadialGradient(225, 35, 10, 225, 35, 30);
+        radialGradient.addColorStop(0, "white");
+        radialGradient.addColorStop(1, "black");
+        context6.fillStyle = radialGradient;
+        context6.fillRect(200, 10, 50, 50);
+
+
+        /* 
+            9.图案：
+                图案是用于填充和描画图形的重复图像。
+                createPattern(htmlImage, backgroundRepeat): 创建新图案
+        
+        */
+        const img1 = document.createElement('img')
+        let drawing7 = document.getElementById("drawing7");
+        let context7 = drawing7.getContext("2d");
+        img1.src = 'https://lewis-note.oss-cn-beijing.aliyuncs.com/images/qlz1.jpg'
+        img1.onload = () => {
+            let pattern = context.createPattern(img1, "repeat");
+            // 绘制矩形
+            context7.fillStyle = pattern;
+            context7.fillRect(10, 10, 150, 150);
+        }
+
+        // 使用 getImageData(x, y, width, height) 方法获取原始图像数据
+        let imageData = context7.getImageData(10, 5, 50, 50);
+        console.log("imageData-", imageData);
+
+        /* 
+            注意：只有在画布没有加载跨域内容时才可以获取图像数据。如果画布上绘制的是跨域内
+                容，则尝试获取图像数据会导致 JavaScript 报错。
+        
+        */
+    </script>
+</body>
+
+</html>

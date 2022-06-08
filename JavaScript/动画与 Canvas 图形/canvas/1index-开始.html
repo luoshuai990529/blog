@@ -1,0 +1,45 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-05-30 14:46:41
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-05-30 15:07:33
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <canvas id="drawing" width="200" height="200">A drawing of something.</canvas>
+    <script>
+
+        /* 
+            1.绘制图形，首先我们先要取得绘图上下文。使用 getContext() 方法可以获取绘图上下文的引用。
+            对于平面图形，需要给这个方法传入“2d”,表示要获取2D上下文对象
+        */
+        let drawing = document.getElementById("drawing");
+        let context = drawing.getContext("2d"); // CanvasRenderingContext2D
+
+        /* 
+            2.可以用toDataURL()方法导出 canvas 元素上的图像。
+            此方法接收一个参数：要生成图像的MIME类型。
+        */
+        //  如：要从画布上导出一张PNG格式的图片
+        const imgURI = drawing.toDataURL("image/png")
+        const image = document.createElement("img")
+        image.src = imgURI
+        document.body.append(image)
+        // 补充：浏览器默认将图像编码为 PNG 格式，除非另行指定。Firefox 和 Opera 还支持传入"image/jpeg"进行 JPEG 编码。因为这个方法是后来才增加到规范中的，所以支持的浏览器也是在后面的版本实现的。
+
+        
+    </script>
+</body>
+
+</html>
