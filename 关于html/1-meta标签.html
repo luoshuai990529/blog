@@ -1,0 +1,131 @@
+<!--
+ * @Description: meta标签
+ * @Date: 2022-06-15 14:59:03
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-06-15 16:35:42
+-->
+
+<!-- 
+    <!DOCTYPE html>
+    文档类型 doctype 的声明是必要的。在所有文档的头部，你都将会看到"<!DOCTYPE html>"
+    对 HTML 文件来说，浏览器使用文件开头的 DOCTYPE 来决定用 怪异模式处理 或 标准模式处理。
+    这个声明的目的是防止浏览器在渲染文档时，切换到我们称为“怪异模式 (兼容模式)”的渲染模式。
+    <!DOCTYPE html>是所有可用的 DOCTYPE 之中最简单的，也是 HTML5 所推荐的。
+ -->
+<!DOCTYPE html>
+
+<!-- 
+    lang属性：
+        有助于屏幕阅读技术确定要陈述的正确语言
+        标识语言标签应描述页面大部分内容使用的语言。
+        没有它，屏幕阅读器通常会默认使用操作系统的设置语言，这可能会导致错误陈述。
+ -->
+<html lang="en">
+
+<head>
+    <!-- 
+        关于meta标签：
+            MDN定义：HTML <meta> 元素表示那些不能由其它 HTML 元相关（meta-related）元素（(<base>、<link>, <script>、<style> 或 <title>）之一表示的任何元数据信息。
+        
+        meta 元素定义的元数据的类型：
+            1.如果设置了 name属性，meta 元素提供的是文档级别的元数据，应用于整个页面。
+            2.如果设置了 http-equiv属性，meta 元素则是编译指令，提供的信息与类似命名的 HTTP 头部相同。
+            3.如果设置了 charset属性，meta 元素是一个字符集声明，告诉文档使用哪种字符编码。
+            4.如果设置了 itemprop 属性，meta 元素提供用户定义的元数据。
+        
+        name属性：
+                name和content一起使用，前者表示要表示的元数据的名称，后者是元数据的值。
+                例：
+                    <meta name="author" content="aaa@mail.abc.com">：用来表示网页的作者的名字，例如某个组织或者机构。
+                    <meta name="keywords" content=""></meta>：与页面内容相关的关键词，使用逗号分隔。某些搜索引擎在遇到这些关键字时，会用这些关键字对文档进行分类。
+                    <meta name="description" content=""></meta>：是一段简短而精确的、对页面内容的描述。在某些情况下这个描述作为搜索结果中所示的代码片段的一部分
+                    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,shrink-to-fit=no"></meta>：指定页面初始缩放比例 为视口的初始化提供指示，目前仅用于移动设备
+                        width：用来设置 viewport 的宽度为设备宽度;
+                        initial-scale：为设备宽度与 viewport 大小之间的初始缩放比例。
+                        maximum-scale：允许用户缩放到的最大比例
+                        user-scalable：用户是否可以手动缩放
+                        shrink-to-fit=no：重写页面适应视口的行为，防止页面缩放以适应视口导致内容溢出。 
+                    
+                    <meta name="robots" content="index,follow">：表示爬虫对此页面的处理行为，是用来做搜索引擎抓取的
+                        它的content可以是：
+                        all:搜索引擎将索引此网页，并继续通过此网页的链接索引文件将被检索
+                        none:搜索引擎讲忽略此网页
+                        index:搜索引擎索引此网页
+                        follow:搜索引擎继续通过此网页的链接索引搜索其它的网页
+                        
+                    <meta name="renderer" content="webkit">：用来指定浏览器的渲染方式 提升渲染速度,content可以是：webkit(默认webkit内核)、ie-comp(IE兼容)、ie-stand(IE标准)
+                    
+                    <meta name="apple-mobile-web-app-capable" content="yes"/>：IOS移动web，是否删除默认的苹果工具栏和菜单栏，content：no/yes。
+                    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>：IOS移动web，控制状态栏显示样式
+                    
+                    <meta name="format-detection" content="telephone=no, email=no"/>：格式检测，例如识别类似号码的数字串自动设置为拨号连接
+                        当然这需要浏览器支持，比如微信内置的浏览器不支持，红米手机默认浏览器也不支持。
+                        content：telephone，email，adress，
+                        telephone：no/yes,是否允许检测标记手机号，并设置为拨号链接
+                        email：no/yes,是否允许检测标记邮箱，并设置为邮箱链接，
+                        adress：no/yes,是否允许检测标记地理位置，并设置为地图跳转链接
+
+                    <meta name="x5-orientation" content="portrait">：QQ浏览器设置竖屏
+                    <meta name="x5-fullscreen" content="true">：QQ浏览器设置全屏
+                    <meta name="x5-page-mode" content="app">：启用QQ浏览器应用模式
+                    <meta name="full-screen" content="yes">：UC浏览器全屏显示
+                    <meta name="screen-orientation" content="portrait">：设置UC浏览器竖屏
+                    <meta name="msapplication-tap-highlight" content="no"></meta>：windows phone，点击无高光
+
+                    <meta name="HandheldFriendly" content="true"></meta>：针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，如黑莓
+                    <meta name="MobileOptimized" content="320"></meta>：微软的老式浏览器
+
+        http-equiv属性：
+                    也是和content一起使用，前者表示要表示的元数据的名称，后者是元数据的值。
+                    http-equiv 所有允许的值都是特定 HTTP 头部的名称。
+
+                    <meta http-equiv="x-ua-compatible" content="ie=edge">：
+                        ie=edge告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。
+                        chrome=1告诉浏览器，如果当前IE浏览器安装了Google Chrome Frame插件，就以chrome内核来渲染页面。
+                        注意：如果在我们的http头部中也设置了这个属性，并且和meta中设置的有冲突，那么是开发者偏好(meta元素)优先！
+
+                    <meta http-equiv="content-type" content="text/html;charset=utf-8"></meta>: 用来声明文档类型和字符集
+                    <meta http-equiv="x-dns-prefetch-control" content="on">：控制着浏览器的 DNS 预读取功能
+                        注意：在浏览器支持 DNS 预解析的特性时即使不使用该标签浏览器依然会进行预解析。
+                        官方文档：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control#%E4%BB%8B%E7%BB%8D
+                        我们也可以通过使用 rel 属性值为 link type 中的 dns-prefetch 的 <link> 标签来对特定域名进行预读取：
+                            如：<link rel="dns-prefetch" href="http://www.spreadfirefox.com/">、<link rel="dns-prefetch" href="//front.dm-cube.com" />
+                        强制对域名进行预读取在一些情况下很有用，比如，在网站的主页上，强制在整个网站上频繁引用的域名的预解析，即使它们不在主页本身上使用。即使主页的性能可能不受影响，这将提高整体站点性能。
+
+                    <meta http-equiv="pragma" content="no-cache">
+                    <meta http-equiv="cache-control" content="no-cache">
+                    <meta http-equiv="expires" content="0">
+                        上述三个标签的作用是：设置页面不缓存，这样设定将无法进行脱机浏览（在计算机未与 Internet 连接时阅读网页的内容，即离线情况下访问Cache(磁盘缓存)中的网页）
+                        注意：三者的优先级小于http头的对应缓存策略设置
+
+                    <meta http-equiv="refresh" content="0;url='https://www.baidu.com'">：当前页面一秒后跳转到百度
+                    <meta http-equiv="refresh" content="1">：当前页面每一秒后刷新一下
+    -->                 
+    <meta charSet="utf-8"></meta>
+    <meta name="keywords" content=""></meta>
+    <meta name="description" content=""></meta>
+    <meta name="applicable-device" content="pc,mobile"></meta>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"></meta>
+    <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"></meta>
+    <meta name="format-detection" content="telephone=no, email=no"></meta>
+    <meta name="renderer" content="webkit"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="HandheldFriendly" content="true"></meta>
+    <meta name="MobileOptimized" content="320"></meta>
+    <meta name="screen-orientation" content="portrait"></meta>
+    <meta name="x5-orientation" content="portrait"></meta>
+    <meta name="msapplication-tap-highlight" content="no"></meta>
+    <meta http-equiv="Cache-Control" content="no-store, must-revalidate" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
