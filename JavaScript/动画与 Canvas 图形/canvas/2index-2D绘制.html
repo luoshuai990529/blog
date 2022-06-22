@@ -3,7 +3,7 @@
  * @Date: 2022-05-30 15:08:58
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-06-08 10:04:14
+ * @LastEditTime: 2022-06-22 18:21:53
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -261,7 +261,11 @@
 
         /* 
             6.绘制图像：
-                drawImage(image, x, y, sWidth, sHeight, dx, dy, dWidth, dHeight) 方法：
+                drawImage(img, dx, dy);
+                drawImage(img, dx, dy, dWidth, dHeight); 5参数
+                drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight); 9参数
+                注意：9参数和5参数的参数位置是不一样的
+                参数mdn释义：
                     image：绘制到上下文的元素，最简单的调用是传入一个 HTML 的<img>元素,它允许任何的 canvas 图像源:CSSImageValue (en-US)，HTMLImageElement，SVGImageElement (en-US)，HTMLVideoElement...
                     x 和 y：表示绘制目标的 x 和 y 坐标，结果是把图像绘制到指定位置。
                     sWidth 和 sHeight：目标宽度和目标高度，传入之后，图像会缩放到 sWidth 像素宽、sHeight 像素高。
