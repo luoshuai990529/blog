@@ -3,7 +3,7 @@
  * @Date: 2022-06-15 14:59:03
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-06-15 16:35:42
+ * @LastEditTime: 2022-06-23 17:44:00
 -->
 
 <!-- 
@@ -12,6 +12,7 @@
     对 HTML 文件来说，浏览器使用文件开头的 DOCTYPE 来决定用 怪异模式处理 或 标准模式处理。
     这个声明的目的是防止浏览器在渲染文档时，切换到我们称为“怪异模式 (兼容模式)”的渲染模式。
     <!DOCTYPE html>是所有可用的 DOCTYPE 之中最简单的，也是 HTML5 所推荐的。
+    通俗讲就是让浏览器知道应该怎样去正确渲染文档。
  -->
 <!DOCTYPE html>
 
@@ -20,8 +21,10 @@
         有助于屏幕阅读技术确定要陈述的正确语言
         标识语言标签应描述页面大部分内容使用的语言。
         没有它，屏幕阅读器通常会默认使用操作系统的设置语言，这可能会导致错误陈述。
+    dir为ltr
+        从左向右的文本方向，用于告诉用户代理内容所在的方向; 对于阿拉伯语等语言，其他值是从右到左，或者只是留给浏览器来确定。
  -->
-<html lang="en">
+<html dir="ltr" lang="en">
 
 <head>
     <!-- 
@@ -33,6 +36,10 @@
             2.如果设置了 http-equiv属性，meta 元素则是编译指令，提供的信息与类似命名的 HTTP 头部相同。
             3.如果设置了 charset属性，meta 元素是一个字符集声明，告诉文档使用哪种字符编码。
             4.如果设置了 itemprop 属性，meta 元素提供用户定义的元数据。
+                注意：If a meta element has an itemprop attribute, the name, http-equiv, and charset attributes must be omitted, and the content attribute must be present.
+                如果元元素具有itemprop属性，则必须省略name、http-equiv和charset属性，并且必须提供content属性。
+                全局属性 itemprop被用于向一个物体中添加属性。每一个 HTML 元素都可以指定一个 itemprop 属性，一个itemprop属性由 name-value 对组成。 
+                每一个键值对称为一个属性，一个元素可以有一个或者多个属性。属性值可以是一个 string 或者一个 URL，并且可以和大部分元素进行组合。
         
         name属性：
                 name和content一起使用，前者表示要表示的元数据的名称，后者是元数据的值。
@@ -58,7 +65,11 @@
                     
                     <meta name="apple-mobile-web-app-capable" content="yes"/>：IOS移动web，是否删除默认的苹果工具栏和菜单栏，content：no/yes。
                     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>：IOS移动web，控制状态栏显示样式
-                    
+                    <meta name="apple-mobile-web-app-title" content="Twitter"/>：
+                        你可以把网站固定在iPhone的主屏幕上，让它看起来像原生应用。Safari不支持渐进式的网页应用，你不能再ios上使用其他浏览器，
+                        因此你想要体验原生应用的话，就没有其他选择，但是twitter当然喜欢，因此他们添加了title这个告诉Safari浏览器这个应用是Twitter
+                    <meta name="theme-color" content="#FFFFFF"/>：当应用启动告诉其状态栏应该怎样展示
+
                     <meta name="format-detection" content="telephone=no, email=no"/>：格式检测，例如识别类似号码的数字串自动设置为拨号连接
                         当然这需要浏览器支持，比如微信内置的浏览器不支持，红米手机默认浏览器也不支持。
                         content：telephone，email，adress，
@@ -101,6 +112,21 @@
 
                     <meta http-equiv="refresh" content="0;url='https://www.baidu.com'">：当前页面一秒后跳转到百度
                     <meta http-equiv="refresh" content="1">：当前页面每一秒后刷新一下
+
+                    <meta http-equiv="origin-trial" content="AlpCmb40FS.....">: 这是 twitter html文件中的一行meta
+                        only if you have in-depth knowledge about all the new things that are happening on the standards track.
+                        翻译：只有当你对标准轨道上正在发生的所有新事物有深入的了解时，你才会知道这一点。 
+                        Origin trials让我们在我们的网站上使用新的和实验性的功能,用户代理跟踪反馈并向web标准社区报告，而无需用户选择功能标志。
+                        例如，Edge有一个双屏和可折叠设备原语的原始试用版本，这非常酷，因为你可以根据可折叠手机的打开或关闭状态做出有趣的布局。
+
+        经常会在一些国外网站的head中看到如下代码：
+                <meta property="og:site_name" content="Twitter...">
+                og是一种新的HTTP头部标记，即Open Graph Protocol,这种协议可以让网页成为一个“富媒体对象”。
+                用了Meta Property=og标签，就是你同意了网页内容可以被其他社会化网站引用等，目前这种协议被SNS网站如Fackbook、renren采用。
+                任何网页只要遵守该协议，SNS就能从页面上提取最有效的信息并呈现给用户。
+                Open Graph协议是由Facebook创造的, 让网页链接更容易被解析放到一个区域内进行预览,开发人员可以添加各种各样的作者身份细节和封面图片，以进行有趣的分享。
+                原文：make it easier to unfurl links and show their previews in a nice card layout; (https://css-tricks.com/microbrowsers-are-everywhere/)
+                现在大多数站点都结合使用Open Graph和其他元标签以及页面上的内容来生成丰富的preview .name属性 
     -->                 
     <meta charSet="utf-8"></meta>
     <meta name="keywords" content=""></meta>
