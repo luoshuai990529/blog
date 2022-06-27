@@ -1,0 +1,207 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-06-24 15:56:58
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-06-27 16:05:54
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css的变量</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 
+           在任何语言中，变量的有一点作用都是一样的，
+           那就是可以降低维护成本，附带还有更高性能，
+           文件更高压缩率的好处。 
+           https://www.zhangxinxu.com/wordpress/2016/11/css-css3-variables-var/
+        */
+
+        /* 
+            CSS变量 var() 语法 和 用法 和 特性
+            
+            CSS中原生的变量定义语法是： --* , 变量使用语法是：var(--*),其中* 表示我们的变量名称。
+            
+            关于命名：在各种语言中都会有一些限制，如CSS选择器不能是数字开头，JS变量不能直接数值，而在CSS变量中，就没有这些限制。
+                     但是，不能包含 $，[，^，(，% 等字符，
+                     普通字符局限在只要是“数字[0-9]”“字母[a-zA-Z]”“下划线_”和“短横线-”这些组合，
+                     但是可以是中文，日文或者韩文    
+            
+            注意：量的定义和使用只能在声明块 {} 里面
+
+            完整语法：var( <custom-property-name> [, <declaration-value> ]? )
+            中文表示：var(<自定义属性名> [, <默认值 ]?)
+
+            注意: 对于CSS变量，只要语法是正确的，就算变量里面的值是个乱七八糟的东西，
+                  也是会作为正常的声明解析，如果发现变量值是不合法的, 如：
+                  --color: 20px;
+                  background-color: var(--color); 
+                  此时背景色显然不能为20px，因此将用默认值代替即 transparent。
+        */
+        /* --天蓝色: skyblue; 无效 */
+        :root {
+            --1: #0094ff;
+            --金色: gold;
+            /* 
+                CSS变量的相互传递特性：我们在CSS变量定义的时候可以直接引入其他变量给自己使用
+            */
+            --green: green;
+            --backgroundColor: var(--green);
+        }
+
+        .container {
+            width: 200px;
+            height: 200px;
+            font-size: 24px;
+            border: 5px solid var(--金色);
+            color: var(--粉红, hotpink);
+            background: var(--1);
+        }
+
+        /* CSS变量与响应式布局实例 */
+        .demo-container {
+            width: 100%;
+            min-width: 320px;
+            margin: auto;
+            overflow: hidden;
+            border: 1px solid black;
+
+            /* 列数 */
+            --columns: 4;
+            /* 外边距 根据列数来改变外边距  */
+            --margins: calc(24px / var(--columns));
+            /* 内边距 根据列数来改变内边距  */
+            --space: calc(4px * var(--columns));
+            /* 字体大小 根据列数来显示字体大小 */
+            --fontSize: calc(20px - 4 / var(--columns));
+        }
+
+        .cell {
+            /* 盒子宽度 =  (100% - 外边距 * 列数 * 2)/列数 */
+            width: calc((100% - var(--margins) * var(--columns) * 2) / var(--columns));
+            margin: var(--margins);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            background-color: #f0f3f9;
+            float: left;
+        }
+
+        .cell-title {
+            color: #fff;
+            padding: var(--space);
+            font-size: var(--fontSize);
+        }
+
+        .cell-content {
+            height: 150px;
+            padding: var(--space);
+            font-size: var(--fontSize);
+        }
+
+        /* 随着浏览器宽度减小，4栏可能就变成3栏，2栏甚至1栏，核心代码：.demo-container 和 以下媒体查询的代码 */
+        @media screen and (max-width: 1200px) {
+            .demo-container {
+                --columns: 3;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .demo-container {
+                --columns: 2;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .demo-container {
+                --columns: 1;
+            }
+        }
+
+        /* 如何在JS中设置CSS变量 */
+        .script-demo {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            /* 通过JS来让 --color 生效 */
+            background-color: var(--color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        container
+    </div>
+    <div class="demo-container">
+        <h4>CSS变量与响应式布局实例</h4>
+        <div class="demo-wrap">
+            <div class="cell" style="color: #F44336;">
+                <header class="cell-header">
+                    <div class="cell-title">红色</div>
+                </header>
+                <main class="cell-content">改变浏览器的宽度</main>
+            </div>
+            <div class="cell" style="color: #E91E63;">
+                <header class="cell-header">
+                    <div class="cell-title">粉色</div>
+                </header>
+                <main class="cell-content">会看到布局发生了变化</main>
+            </div>
+            <div class="cell" style="color: #9C27B0;">
+                <header class="cell-header">
+                    <div class="cell-title">紫色</div>
+                </header>
+                <main class="cell-content">仅仅是通过CSS改变一个变量值实现</main>
+            </div>
+            <div class="cell" style="color: #00BCD4;">
+                <header class="cell-header">
+                    <div class="cell-title">青色</div>
+                </header>
+                <main class="cell-content">这比传统的响应式处理要更省代码更好维护</main>
+            </div>
+            <div class="cell" style="color: #009688;">
+                <header class="cell-header">
+                    <div class="cell-title">茶色</div>
+                </header>
+                <main class="cell-content">本例子主要为了演示响应式与变化效果</main>
+            </div>
+            <div class="cell" style="color: #4CAF50;">
+                <header class="cell-header">
+                    <div class="cell-title">绿色</div>
+                </header>
+                <main class="cell-content">所以，至于布局变化细节是否合理就不用在意了。</main>
+            </div>
+        </div>
+    </div>
+    <div class="script-demo">
+        <button class="changeColorBtn">设置css变量</button>
+    </div>
+</body>
+
+<script>
+    /* 
+        补充：如何在JS中设置CSS变量？
+
+        通过：box.style.setProperty('--color', '#cd0000');
+    */
+    const btn = document.querySelector(".changeColorBtn")
+    const box = document.querySelector(".script-demo")
+    btn.addEventListener('click', () => {
+        box.style.setProperty('--color', '#cd0000');
+        // 获取 --color CSS 变量值
+        var cssVarColor = getComputedStyle(box).getPropertyValue('--color');
+        console.log("cssVarColor====", cssVarColor);
+    })
+
+</script>
+
+</html>
