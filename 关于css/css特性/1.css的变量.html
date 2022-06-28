@@ -3,7 +3,7 @@
  * @Date: 2022-06-24 15:56:58
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-06-27 16:05:54
+ * @LastEditTime: 2022-06-28 19:14:33
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +57,7 @@
             */
             --green: green;
             --backgroundColor: var(--green);
+            --defaultColor: #000000
         }
 
         .container {
@@ -66,6 +67,10 @@
             border: 5px solid var(--金色);
             color: var(--粉红, hotpink);
             background: var(--1);
+        }
+        .box1, .box2 {
+            /* 如果有color变量就用color变量，如果没有就利用默认值 defaultColor */
+            color: var(--color, --defaultColor);
         }
 
         /* CSS变量与响应式布局实例 */
@@ -93,10 +98,10 @@
             box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
             background-color: #f0f3f9;
             float: left;
+            color: var(--color);
         }
 
         .cell-title {
-            color: #fff;
             padding: var(--space);
             font-size: var(--fontSize);
         }
@@ -140,41 +145,43 @@
 <body>
     <div class="container">
         container
+        <div class="box1" style="--color: #bfff00">box1 传入颜色变量</div>
+        <div class="box2" style="--color: #7500ff">box2 传入颜色变量</div>
     </div>
     <div class="demo-container">
         <h4>CSS变量与响应式布局实例</h4>
         <div class="demo-wrap">
-            <div class="cell" style="color: #F44336;">
+            <div class="cell" style="--color: #F44336;">
                 <header class="cell-header">
                     <div class="cell-title">红色</div>
                 </header>
                 <main class="cell-content">改变浏览器的宽度</main>
             </div>
-            <div class="cell" style="color: #E91E63;">
+            <div class="cell" style="--color: #E91E63;">
                 <header class="cell-header">
                     <div class="cell-title">粉色</div>
                 </header>
                 <main class="cell-content">会看到布局发生了变化</main>
             </div>
-            <div class="cell" style="color: #9C27B0;">
+            <div class="cell" style="--color: #9C27B0;">
                 <header class="cell-header">
                     <div class="cell-title">紫色</div>
                 </header>
                 <main class="cell-content">仅仅是通过CSS改变一个变量值实现</main>
             </div>
-            <div class="cell" style="color: #00BCD4;">
+            <div class="cell" style="--color: #00BCD4;">
                 <header class="cell-header">
                     <div class="cell-title">青色</div>
                 </header>
                 <main class="cell-content">这比传统的响应式处理要更省代码更好维护</main>
             </div>
-            <div class="cell" style="color: #009688;">
+            <div class="cell" style="--color: #009688;">
                 <header class="cell-header">
                     <div class="cell-title">茶色</div>
                 </header>
                 <main class="cell-content">本例子主要为了演示响应式与变化效果</main>
             </div>
-            <div class="cell" style="color: #4CAF50;">
+            <div class="cell" style="--color: #4CAF50;">
                 <header class="cell-header">
                     <div class="cell-title">绿色</div>
                 </header>
