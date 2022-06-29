@@ -1,0 +1,112 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-06-28 18:31:00
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-06-29 15:40:17
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css的数学函数</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 
+            这里介绍被浏览器大规模支持的4个数学函数：calc()、min()、max()、clamp()
+            还有其他处于实验阶段的一些数学函数就不过多描述了如：pow()、sqrt()、sin()、cos()...
+
+            calc()
+                语法：width: calc(100% - 80px)
+                注意点：
+                    1. + 和 - 运算符的两边必须要有空白字符。
+                    2. * 和 / 这两个运算符前后不需要空白字符，但如果考虑到统一性，仍然推荐加上空白符
+                    3. 用 0 作除数会使 HTML 解析器抛出异常
+                    4. calc() 支持与 CSS 变量混合使用
+                    5. calc() 没有字符串拼接的能力，例： content: calc("My " + "counter"); 这种是不被支持的
+                
+                calc中加减乘除法的差异：加减法中两边的操作数都是需要单位的，而乘除法，需要一个无单位数 仅表示倍率，例：
+                    font-size: calc(1rem + 10px);
+                    width: calc(100% / 7);
+                calc() 支持不同单位的混合运算，对于长度，只要是属于长度相关的单位都可以进行混合运算，包含单位：
+                    px % em rem in mm cm pt pc ex ch vh vw vmin vmax
+            
+            min()/max()/clamp() 
+                这三个数学函数时现代浏览器2018年底开始支持的，使用的时候可以参考他们的浏览器兼容性：https://caniuse.com/?search=clamp
+                
+                min()
+                       概述：从一个逗号分隔的表达式列表中选择最小的值作为属性的值
+                       语法：min(expression [, expression]) 支持一个或多个表达式，每个表达式之间使用逗号分隔，然后以最小的表达式的值作为返回值。
+                       示例：width: min(10vw, 5em, 80px);
+                       解释：其中出现了2个相对长度值，1个固定长度值。因此，上面的width计算值最大就是80px。至于真实的宽度值，如果浏览器视口小于800px宽，或文字字号小于16px，则会更小。
+                             也就是，虽然函数的名称是min()，表示最小，实际上这作用是用来限制最大值的。
+
+                max()：
+                       概述：从一个逗号分隔的表达式中选择最大(正方向)的值作为属性的值
+                       语法：同 min() 函数，区别在于 max() 函数返回的是最大值，min() 函数返回的是最小值
+                            虽然max() 函数顾名思义是最大，但是实际作用是用来限制最小值的。其他特性和 min() 函数类似
+
+                clamp()：
+                       概述：把一个值限制在一个上限和下限之间，当这个值超过 最小值 和 最大值 的范围时，在最小值和最大值之间选择一个值使用
+                       语法：clamp(MIN, VAL, MAX) MIN表示最小值，VAL表示首选值，MAX表示最大值。
+                       解释：
+                            如果 VAL 在 MIN 和 MAX 范围之间，则使用 VAL 作为函数返回值；
+                            如果 VAL 大于 MAX，则使用 MAX 作为返回值；
+                            如果 VAL 小于 MIN，则使用 MIN 作为返回值。
+
+                       clamp(MIN, VAL, MAX) 实际上等同于 max(MIN, min(VAL, MAX))。
+
+                这三个函数可以和 calc() 函数相互嵌套使用的，例：width: calc( min(800px, 100vw) / 6 )
+            
+        */
+        :root {
+            --fs24: 24px;
+            --h300: 200px;
+        }
+
+        .min-fn {
+            /* 
+                过去我们希望网页在桌面浏览器 1024px，在移动端100%的宽度是这么实现的：
+                    width: 1024px;
+                    max-width: 100%;
+                而现在只需要一句css：
+                    width: min(1024px, 100%);
+            */
+            font-size: var(--fs24);
+            width: min(1024px, 100%);
+            height: var(--h300);
+            margin: auto;
+            background: sandybrown;
+        }
+
+        .clamp-fn {
+            font-size: var(--fs24);
+            /* 视口宽度的一半小于200px时 就取200px， 大于600px时 就取 600px， 如果在 200和600之间时，就取50vw */
+            width: clamp(200px, 50vw, 600px);
+            height: var(--h300);
+            margin: auto;
+            background: darkolivegreen;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="min-fn">
+        min-fn
+    </div>
+    <div class="clamp-fn">
+        clamp-fn
+    </div>
+</body>
+
+</html>
