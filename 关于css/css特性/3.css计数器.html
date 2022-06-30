@@ -1,0 +1,123 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-06-30 14:16:00
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-06-30 18:36:17
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        /* 
+            MDN解释：
+                CSS 计数器可让你根据内容在文档中的位置调整其显示的外观。
+                例：使用计数器自动为网页中的标题编号，或者更改有序列表的编号。
+
+            本质上 CSS 计数器是由 CSS 维护的变量，这些变量可能根据 CSS 规则跟踪使用次数以递增或递减。
+            你可以自定义一个计数器，也可以修改 list-item 这一默认生成的应用于所有有序列表的计数器。
+            
+            使用计数器：
+                1.在使用计数器之前，必须使用 counter-reset 属性初始化计数器的值。
+                2.计数器可以通过 counter-increment 属性指定其值为递增或递减。
+                3.当前计数器的值可以通过 counter() 或 counters() 函数显示出来，这通常用在微元素的content属性中。
+                
+                注意：计数器只能在可以生成盒子的元素中使用（设置 或 设置值、递增）。例如，如果一个元素被设置为了 display: none,
+                那么在这个元素上的任何计数器操作都会被忽略。
+
+            counter()函数：返回一个代表计数器的当前值的字符串。它通常和伪元素搭配使用，但是理论上可以在支持<string>值的任何地方使用。
+                两种形式：counter( <counter-name> )，counter( <counter-name>, <counter-style>? )
+                    参数counter-name：自定义标识，计数器的名称，区分大小写
+                    参数counter-style：计数器样式，计数器样式名称或 symbols() 函数(这里就不赘述css的symbols函数了)。如果省略，则计数器样式默认为十进制。
+                        计数器样式可以选择：
+                                    upper-roman：I, II, III, IV, V…
+                                    lower-greek：α, β, γ…
+                                    lower-alpha： a, b, c, … z
+                                    可以使用的字符参考：https://developer.mozilla.org/zh-CN/docs/Web/CSS/list-style-type
+            counters()函数：是一个嵌套计数器，返回表示指定计数器当前值的连接字符串。  
+                两种形式：counters(name, string)，counters(name, string, style)
+                    参数name：自定义标识
+                    参数string：任意数量的文本字符
+                    参数style：计数器样式名称或 symbols() (en-US) 函数，同上counter()函数
+                
+        */
+        .container {
+            /* 1.将名为 section 的计数器初始化为默认值（0） */
+            /* counter-reset: section; */
+            /* 
+                补充：也可以同时初始化多个计数器，并可以指定其初始值。 
+                例：将名为 section 和 topic 的计数器初始化为默认值，并将 page 计数器的初始值指定为 3。
+            */
+            counter-reset: section page 3 topic;
+        }
+
+        .container h4::before {
+            /* 2.初始化之后，计数器的值就可以使用  counter-increment 来指定为其递增或者递减*/
+            counter-increment: section 1;
+            /* 你可以在计数器的名称后指定单次递增或递减的值（正数或负数） */
+
+            /* 注意：计数器的名称不可以为 none、inherit 或 initial，否则，相应的声明会被忽略。 */
+
+            /* 
+               3.计数器的值可以使用 counter() 或 counters() 函数以在 content属性中显示 
+               counter( <counter-name>, <counter-style>? )
+            */
+            content: "Section " counter(section) ": ";
+            /* 这里会在每一个 h4 标题前面添加文本 Section <number>: */
+        }
+
+        .poetry {
+            counter-reset: chineseCharacter;
+        }
+
+        .poetry h4::before {
+            counter-increment: chineseCharacter;
+            content: counter(chineseCharacter, simp-chinese-informal) '.';
+            /* 使用汉字 一, 二, 三 表示计数器的值 */
+        }
+
+        ol {
+            counter-reset: myCounter 0;
+            list-style-type: none;
+        }
+        
+        /* 使用counters嵌套计数器实现如下 */
+        li::before {
+            counter-increment: myCounter 1;
+            content: counters(myCounter, '.') ' ''- ';
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h4>content1</h4>
+        <h4>content2</h4>
+        <h4>content3</h4>
+    </div>
+
+    <div class="poetry">
+        <h4>危楼高百尺</h4>
+        <h4>手可摘星辰</h4>
+        <h4>不敢高声语</h4>
+        <h4>恐惊天上人</h4>
+    </div>
+
+    <ol>
+        <li>counter是什么</li>
+        <li>counter的使用步骤
+            <ol style="padding-left:20px">
+                <li>引入</li>
+                <li>编写</li>
+            </ol>
+        </li>
+    </ol>
+
+</body>
+
+</html>
