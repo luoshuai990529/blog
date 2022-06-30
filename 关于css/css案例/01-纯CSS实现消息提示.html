@@ -1,0 +1,176 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-06-24 14:36:09
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-06-30 18:34:59
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯CSS实现消息提示效果</title>
+    <style>
+        /* demo1：下面就是使用 CSS 设置不同数量显示不同内容即可，代码如下所示 */
+        .demo1 span {
+            /* 
+                其实这里就是通过控制font-size大小来控制该显示正常的值还是显示“99+”
+                当值为50时，这里font-size为 min(16px, 5000px), 即 16px 则显示值 50
+                当值为99时, 这里font-size为 min(16px, 100px), 即 16px 则显示值 99
+                当值超过99 为100时，这里的font-size为 min(16px, 0px), 即 0px，数值100将不会显示
+            */
+            font-size: min(16px, calc(10000px - var(--num) * 100px));
+        }
+
+        .demo1 span::before {
+            content: '99+';
+            /* 当数值超过99时，这里的font-size为 min(16px, 100px) 即 16px 则显示content的内容 */
+            font-size: min(16px, calc(var(--num) * 100px - 9900px));
+        }
+
+        /* demo2：进一步简化后的css */
+        .demo2 span::before {
+            counter-reset: num var(--num);
+            /* 
+                counter-reset：用于将 “CSS计数器” 重置为制定值 计数器名称为num 步长即传入的值，demo代码和用法可以看到 css特性下的 3.css计数器
+                counter()：使用counter函数返回一个代表计数器的当前值的字符串
+                因为html中去掉了内容，那么可以通过计数器来代替实现
+            */
+            content: counter(num);
+            font-size: min(16px, calc(10000px - var(--num) * 100px));
+        }
+
+        .demo2 span::after {
+            content: '99+';
+            font-size: min(16px, calc(var(--num) * 100px - 9900px));
+        }
+
+        /* 
+            原理说明：
+                这个原理就是部分CSS属性中的边界渲染特性，简单来说就是这样的，
+                当CSS属性值超过其合法范围后，会使用边界值作为其计算值。
+                例：opacity:999, 其实会渲染成opacity: 1, 而 opacity: -9 会渲染成 opacity: 0。
+                font-size属性也类似，font-size: -99px 会渲染成 font-size: 0。
+
+                因此，我们希望变量值小于等于 99px 的时候文字隐藏，可以这么写：
+                font-size: calc(var(--num) * 1px - 99px)
+                不过这里的问题就是 如果--num 是100，则 font-size 计算值就是1px，这肯定是不行的
+                那么其实我们就可以通过放大系数同时配合min()函数来实现。
+
+                当 --num 值是 100 的时候，font-size 计算值就是 100px，再和规定的字号大小取小，自然字号尺寸就恒定了：
+                font-size: min(16px, calc(var(--num) * 100px - 9900px))
+        */
+
+
+        /* 实战代码效果 */
+        .demo3 .col {
+            display: inline-flex;
+            width: 4rem;
+            height: 4rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo3 .icon-comment {
+            width: 2rem;
+            height: 2rem;
+            background: url("https://lewis-note.oss-cn-beijing.aliyuncs.com/github/message.png") no-repeat center/100%;
+            font-size: 0;
+        }
+
+        .demo3 .col sup {
+            position: absolute;
+            box-sizing: border-box;
+            min-width: 1rem;
+            padding: 0 0.1875rem;
+            color: #fff;
+            font-size: min(.75rem, calc(10000px - var(--num) * 100px));
+            line-height: 1.2;
+            text-align: center;
+            background-color: #eb4646;
+            border: 1px solid #fff;
+            border-radius: 1rem;
+            transform: translate(calc(40% + .375rem), -.75rem);
+            /* 数值为0的时候隐藏 */
+            opacity: var(--num);
+        }
+
+        .demo3 .col sup::before {
+            content: '99+';
+            font-size: min(.75rem, calc(var(--num) * 100px - 9900px));
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 下面就是使用 CSS 设置不同数量显示不同内容即可，代码如下所示 -->
+    <div class="demo1">
+        <header>Demo1：CSS变量作为中间人, 使用 CSS 设置不同数量显示不同内容</header>
+        <main>
+            <!-- 要实现数量不同，显示不同的内容信息，则可以使用 CSS 变量作为中间信使，把数据传递进去 -->
+            <span style="--num:50">50</span>
+            <span style="--num:90">90</span>
+            <span style="--num:99">99</span>
+            <span style="--num:100">100</span>
+            <span style="--num:1234">1234</span>
+        </main>
+    </div>
+    <hr>
+    <!-- 
+        基于 CSS 实现有什么优势呢：
+            1.HTML 代码更干净；
+            2.维护更方便；
+            3.性能UP了一丝丝；
+            4.装逼+1；
+            5.HTML 中显示的是精准的未读消息数值，对辅助设备更加友好。
+    -->
+
+    <!-- 第5点如果很多人并不感冒，是移动端产品 不需要SEO也不关心盲人用户，则HTML还可以进一步优化： -->
+    <div class="demo2">
+        <header>Demo2：进一步简化</header>
+        <main>
+            <span style="--num:50"></span>
+            <span style="--num:90"></span>
+            <span style="--num:99"></span>
+            <span style="--num:100"></span>
+            <span style="--num:1234"></span>
+        </main>
+    </div>
+
+    <hr>
+    
+    <div class="demo3">
+        <header>Demo3：实战效果</header>
+        <main>
+            <a href class="col">
+                <i class="icon-comment">评论</i>
+                <sup style="--num:0">0</sup>
+            </a>
+            <a href class="col">
+                <i class="icon-comment">评论</i>
+                <sup style="--num:9">9</sup>
+            </a>
+            <a href class="col">
+                <i class="icon-comment">评论</i>
+                <sup style="--num:98">98</sup>
+            </a>
+            <a href class="col">
+                <i class="icon-comment">评论</i>
+                <sup style="--num:99">99</sup>
+            </a>
+            <a href class="col">
+                <i class="icon-comment">评论</i>
+                <sup style="--num:100">100</sup>
+            </a>
+            <a href class="col">
+                <i class="icon-comment">评论</i>
+                <sup style="--num:1314">1314</sup>
+            </a>
+        </main>
+    </div>
+</body>
+
+</html>
