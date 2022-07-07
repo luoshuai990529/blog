@@ -1,0 +1,218 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-07-06 19:54:51
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-07-07 12:21:25
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="text1"></div>
+    <div class="text2"></div>
+    <div class="text3"></div>
+
+
+    <script>
+        // 实现一个简易的响应式系统
+        const data = { text1: '最是人间留不住', text2: '人生得意须尽欢', ok: false }
+        const text1Change = () => {
+            document.querySelector('.text1').innerHTML = obj.text1
+        }
+
+        const text1Change2 = () => {
+            console.log("obj.text1==", obj.text1);
+        }
+
+        const text2Change = () => {
+            console.log("text2Change");
+            document.querySelector('.text2').innerHTML = obj.text2
+        }
+
+        // 分支切换的情况
+        const fenzhiqiehuanFn = () => {
+            console.log("分支切换函数执行");
+            document.querySelector('.text3').innerHTML = obj.ok ? obj.text2 : 'NOT'
+        }
+
+        // 测试是否生效进行响应式更新
+        setTimeout(() => {
+            // obj.text1 = '朱颜辞镜花辞树'
+            obj.text2 = '莫使金樽空对月'
+        }, 1000)
+
+        /* 
+            确定一段响应式系统代码中的三个角色：
+                - 被操作(读取)的代理对象 obj  我们用target表示
+                - 被操作(读取)的字段名称 text 我们用key表示
+                - 使用effect函数注册的副作用函数effectFn 
+
+            那么可以为上述三者确立一个角色关系（一种树形结构）：
+                target
+                   |
+                   ---- key
+                         |
+                         ----effectFn 
+            有了这种结构就可以解决 设置对应的key，只会导致其对应的副作用函数重新执行，下面看下实现
+        */
+
+        // 1.定义 存储副作用函数的桶
+        const bucket = new WeakMap()
+
+        // 2.基于Proxy 实现 get/set 拦截器代码
+        const obj = new Proxy(data, {
+            // 拦截读取操作
+            get(target, key) {
+                // 将副作用函数 activeEffect 添加到存储副作用函数的桶中
+                track(target, key)
+                return target[key]
+            },
+            // 拦截设置操作
+            set(target, key, newVal) {
+                // 设置属性值
+                target[key] = newVal
+                // 把副作用函数从桶里面取出并执行
+                trigger(target, key)
+            }
+        })
+        // 提取get的部分逻辑封装到 track函数中，提取set触发副作用的的函数重新封装到trigger函数中,提升灵活性
+        function track(target, key) {
+            // 没有activeEffect 直接return
+            if (!activeEffect) return
+            let depsMap = bucket.get(target);
+            if (!depsMap) {
+                bucket.set(target, (depsMap = new Map()))
+            }
+            let deps = depsMap.get(key)
+            if (!deps) {
+                depsMap.set(key, (deps = new Set()))
+            }
+            // 把当前激活的副作用函数(effectFn)添加到依赖集合 deps 中来
+            deps.add(activeEffect)
+            // deps就是一个与当前副作用函数存在联系的依赖集合
+            // 将其添加到activeEffect.deps 数组中
+            activeEffect.deps.push(deps) // 新增
+        }
+
+        function trigger(target, key) {
+            const depsMap = bucket.get(target)
+            if (!depsMap) return
+            const effects = depsMap.get(key)
+            // effects && effects.forEach(fn => fn()) 
+            /* 
+                上面这句代码在我们改版优化“代码分支”的依赖收集后，我们遍历 effects集合，它是一个Set集合 里面存储了副作用函数，
+                当副作用函数执行时会调用cleanup进行清除，实际上就是从effects集合中将当前执行的副作用函数剔除，
+                但是副作用函数的执行又会重新将其添加到依赖集合中，而此时对effects的forEach遍历还在进行，就会形成死循环。
+
+                语言规范中说明：在调用forEach遍历Set集合时，如果一个值已经被访问过了，但该值被删除并重新添加到集合，如果此时forEach遍历没有结束，那么这个值会被重新访问。
+                
+                举例解释：
+                    会死循环的代码：
+                        const set= new Set([1])
+                        set.forEach(item => {
+                            set.delete(1)
+                            set.add(1)
+                            console.log('遍历中')
+                        })
+                    改造后，不会死循环（trigger函数也同样改造）：
+                        const set = new Set([1])
+                        const newSet = new Set(set)
+                        newSet.forEach(item => {
+                            set.delete(1)
+                            set.add(1)
+                            console.log('遍历中')
+                        })
+            */
+           //  解决死循环
+           const effectsToRun = new Set(effects)
+           effectsToRun.forEach(effectFn => effectFn())
+        }
+        /* 
+            上述构建数据结构的方式就是
+                WeakMap 由 target => Map 构成
+                Map     由 key    => Set 构成
+            这里把Set数据结构锁存储的副作用函数集合称之为key的 “依赖集合”
+        */
+
+        // 提供一个用来注册副作用函数的机制 来解决哪怕这个副作用函数名字更换或者它是一个匿名函数，也可以正确的被收集
+        let activeEffect;
+        function effect(fn) {
+            
+            // 版本1：
+            // 当调用effct注册副作用函数时，将副作用函数fn赋值给 全局变量activeEffect
+            // activeEffect = fn
+            // // 执行副作用函数
+            // fn()
+           
+
+            /* 
+                版本2：因为副作用函数内部可能存在 分支切换的情况，即三元表达式 当一个值发生改变，代码执行的分支也会跟着变化。
+                这个时候理想状态下如果有一个 key不会被读取，那么这个副作用函数也不应该被 这个key 进行依赖收集
+                改版之后，同时在track函数中 对effectFn.deps数组中的依赖集合进行收集，将 “与当前副作用函数存在联系的依赖集合” 添加到 activeEffect.deps 数组中
+                这样的话，我们就可以在每次副作用函数执行的时候，根据effectFn.deps 获取所有相关的依赖集合，进而将副作用函数从依赖集合中移除：cleanup逻辑
+            */
+            const effectFn = () => {
+                // 调用 cleanup 函数完成清除工作
+                // cleanup(effectFn)
+                // 当effectFn执行时，将其设置为当前激活的副作用函数
+                activeEffect = effectFn
+                fn()
+            }
+            // activeEffect.deps 用来存储所有与该副作用函数相关联的依赖集合
+            effectFn.deps = []
+            // 执行副作用函数
+            effectFn()
+            // 这里之后 Set依赖集合中 收集的就都是 effectFn函数了
+        }
+
+        function cleanup(effectFn) {
+            // 遍历 effectFn.deps 数组
+            for (let i = 0; i < effectFn.deps.length; i++) {
+                // deps 是依赖集合
+                const deps = effectFn.deps[i]
+                // 将effectFn从依赖集合中移除
+                deps.delete(effectFn)
+            }
+            // 最后需要重置 effectFn.deps 数组
+            effectFn.deps.length = 0
+        }
+
+
+        // 注册副作用函数
+        effect(text1Change)
+        effect(text1Change2)
+        effect(text2Change)
+        effect(fenzhiqiehuanFn)
+        console.log("bucket结构===>", bucket);
+        /*
+            WeakMap:{
+                    key: {text1: '最是人间留不住', text2: '莫使金樽空对月'}
+                    value: Map:{
+                        'text1' => Set [
+                            0: () => { ....innerHTML = obj.text1 }
+                            1: () => { console.log("obj.text==", obj.text1) }
+                        ],
+                        'text2' => Set [
+                            0: () => { ....innerHTML = obj.text2 }
+                            1: () => { ....obj.ok ? obj.text2 : 'NOT'}  这里如果ok为false，那么理想状态下这个副作用函数时不应该被依赖收集的，因为此时 返回值永远都是 'NOT' 而不会返回 text2 (代码分支的依赖收集问题)
+                        ],
+                        'ok' => Set[
+                            0: () => { ....obj.ok ? obj.text2 : 'NOT'}
+                        ]
+                    }
+            }
+            如果某一个副作用函数 只有text1 发生改变，那么其text1改变的时候就只会去取 text1 相关的副作用函数执行
+        */
+    </script>
+
+</body>
+
+</html>
