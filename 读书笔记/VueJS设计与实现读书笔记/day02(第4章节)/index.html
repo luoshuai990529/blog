@@ -3,7 +3,7 @@
  * @Date: 2022-07-06 19:54:51
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-07-07 12:21:25
+ * @LastEditTime: 2022-07-11 00:02:37
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -28,27 +28,23 @@
             document.querySelector('.text1').innerHTML = obj.text1
         }
 
-        const text1Change2 = () => {
-            console.log("obj.text1==", obj.text1);
-        }
-
         const text2Change = () => {
-            console.log("text2Change");
             document.querySelector('.text2').innerHTML = obj.text2
         }
 
         // 分支切换的情况
         const fenzhiqiehuanFn = () => {
-            console.log("分支切换函数执行");
+            console.log("fenzhiqiehuanFn");
             document.querySelector('.text3').innerHTML = obj.ok ? obj.text2 : 'NOT'
         }
 
-        // 测试是否生效进行响应式更新
+        // 测试是否生效进行响应式更新,如果没有处理代码分支,则即使ok为false text2的修改 也会触发fenzhiqiehuanFn函数
         setTimeout(() => {
-            // obj.text1 = '朱颜辞镜花辞树'
-            obj.text2 = '莫使金樽空对月'
+            obj.text2 = '莫使金樽空对月1'
         }, 1000)
-
+        setTimeout(() => {
+            obj.text2 = '莫使金樽空对月2'
+        }, 2000)
         /* 
             确定一段响应式系统代码中的三个角色：
                 - 被操作(读取)的代理对象 obj  我们用target表示
@@ -106,7 +102,7 @@
             const depsMap = bucket.get(target)
             if (!depsMap) return
             const effects = depsMap.get(key)
-            // effects && effects.forEach(fn => fn()) 
+            // effects && effects.forEach(fn => fn())
             /* 
                 上面这句代码在我们改版优化“代码分支”的依赖收集后，我们遍历 effects集合，它是一个Set集合 里面存储了副作用函数，
                 当副作用函数执行时会调用cleanup进行清除，实际上就是从effects集合中将当前执行的副作用函数剔除，
@@ -131,9 +127,11 @@
                             console.log('遍历中')
                         })
             */
-           //  解决死循环
-           const effectsToRun = new Set(effects)
-           effectsToRun.forEach(effectFn => effectFn())
+            //  解决死循环
+            const effectsToRun = new Set(effects)
+            effectsToRun.forEach(effectFn => {
+                effectFn()
+            })
         }
         /* 
             上述构建数据结构的方式就是
@@ -145,13 +143,12 @@
         // 提供一个用来注册副作用函数的机制 来解决哪怕这个副作用函数名字更换或者它是一个匿名函数，也可以正确的被收集
         let activeEffect;
         function effect(fn) {
-            
+
             // 版本1：
             // 当调用effct注册副作用函数时，将副作用函数fn赋值给 全局变量activeEffect
             // activeEffect = fn
             // // 执行副作用函数
             // fn()
-           
 
             /* 
                 版本2：因为副作用函数内部可能存在 分支切换的情况，即三元表达式 当一个值发生改变，代码执行的分支也会跟着变化。
@@ -161,7 +158,7 @@
             */
             const effectFn = () => {
                 // 调用 cleanup 函数完成清除工作
-                // cleanup(effectFn)
+                cleanup(effectFn)
                 // 当effectFn执行时，将其设置为当前激活的副作用函数
                 activeEffect = effectFn
                 fn()
@@ -174,6 +171,7 @@
         }
 
         function cleanup(effectFn) {
+            // console.log("每次副作用函数执行时，我们可以先把它从所有与之关联的依赖集合中删除");
             // 遍历 effectFn.deps 数组
             for (let i = 0; i < effectFn.deps.length; i++) {
                 // deps 是依赖集合
@@ -188,7 +186,6 @@
 
         // 注册副作用函数
         effect(text1Change)
-        effect(text1Change2)
         effect(text2Change)
         effect(fenzhiqiehuanFn)
         console.log("bucket结构===>", bucket);
