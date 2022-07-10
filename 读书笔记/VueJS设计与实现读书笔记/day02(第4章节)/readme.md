@@ -67,10 +67,10 @@
     	})
     	temp1 = obj.foo // 在effectFn1中读取 obj.foo 属性
     })
-    //此时，我们希望修改data.foo时会触发effectFn1 执行。由于effectFn2嵌套在effectFn1里面，因此会间接触发effectFn2的执行，而当修改obj.bar时，只会触发effectFn2执行。但是实际打印情况却是：
+    //此时，我们希望修改data.foo时会触发effectFn1 执行。由于effectFn2嵌套在effectFn1里面，因此会间接触发effectFn2的执行，而当修改obj.bar时，只会触发effectFn2执行。但是当我们修改obj.foo的值会发现实际打印情况却是：
     'effectFn1 执行'
     'effectFn2 执行'
-    'effectFn2 执行'
+    'effectFn2 执行' // 前两步正常，第三步这里我们修改obj.foo，发现 effectFn1没有执行反而effectFn2却重新执行了
     ```
 
     问题出在我们实现的`effect`函数与`activeEffect`上，**因为我们用全局变量`activeEffect`来存储通过effect函数注册的副作用函数，因此同一时刻`activeEffect`存储的副作用函数只能有一个。**当其发生嵌套时，内层副作用函数执行就会覆盖`activeEffect`的值。这时如果再有响应式数据进行依赖收集，他们收集的副作用也都是内层副作用的函数。
