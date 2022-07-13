@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮点击效果css实现</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            position: relative;
+            margin: 50px;
+            --whiteColor: #ffffff;
+            --primaryColor: #42b983;
+            --dangerColor: #ff7875;
+        }
+
+        button {
+            background: none;
+            outline: 0;
+            border: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            user-select: none;
+            cursor: unset;
+        }
+
+        .btn {
+            width: 65px;
+            height: 34px;
+            border-radius: .25rem;
+        }
+
+        .primary {
+            color: var(--whiteColor);
+            background: var(--primaryColor);
+        }
+
+        .danger {
+            color: var(--whiteColor);
+            background: var(--dangerColor);
+            left: 120px;
+        }
+        /* 点击按钮的时候有个圈圈放大的效果，圈圈放大的中心点就是点击的位置。 */
+        .btn:not([disabled]):active::after {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: .3;
+            transition: 0s;
+        }
+
+        .btn::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: var(--x, 0);
+            top: var(--y, 0);
+            pointer-events: none;
+            background: radial-gradient(circle, currentColor 10%, transparent 10.01%) no-repeat 50%;
+            transform: translate(-50%, -50%) scale(10);
+            opacity: 0;
+            transition: transform .3s, opacity .8s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button class="btn primary" style="--x: 0px; --y: 0px">primary</button>
+        <button class="btn danger" style="--x: 0px; --y: 0px">danger</button>
+    </div>
+
+    <script>
+        document.addEventListener('click', (e) => {
+            if(e.target.className.includes('btn')){
+                const { offsetX, offsetY } = e
+                e.target.style.setProperty('--x', `${offsetX}px`)
+                e.target.style.setProperty('--y', `${offsetY}px`)
+            }
+        })
+    </script>
+</body>
+
+</html>
