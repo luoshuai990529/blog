@@ -3,7 +3,7 @@
  * @Date: 2022-07-14 10:08:00
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-07-14 15:52:38
+ * @LastEditTime: 2022-07-14 16:57:57
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -268,14 +268,33 @@
         document.addEventListener('click', (e) => {
             if (['backTop', 'backBottom'].includes(e.target.className)) {
                 if (e.target.className === 'backTop') {
-                    /* scrollIntoView的方式实现平滑滚动 */
+                    /* 
+                        腾讯IMWeb相关文章：https://mp.weixin.qq.com/s/EhD8YIh8yAGRgXcibeEFsw
+                        scrollIntoView的方式实现平滑滚动 
+                        问题：scrollIntoView可能导致页面的整体移动，一般出现在页面有iframe内容情况下，或者直接使用其默认参数的情况下
+
+                        解决方式：1-这些问题的关键在于 block: start，这个参数，用这个参数时祖先DOM元素也会被影响
+                        那么我们可以通过修改这个参数来换一个效果解决：如 block: 'nearest'
+                        2-或者用 scrollTop/scrollLeft 赋值是兼容性最好的滚动方式，我们可以利用它来代替默认的 scrollIntoView () 的表现
+
+                        补充：这些参数对齐的选项具体代表了什么含义？
+                        1.使用 {block: "start"}，元素在其祖先的顶部对齐。
+                        2.使用 {block: "center"}，元素在其祖先的中间对齐。
+                        3.使用 {block: "end"}，元素在其祖先的底部对齐。
+                        4.使用 {block: "nearest"}：
+                            - 如果您当前位于其祖先的下方，则元素在其祖先的顶部对齐。
+                            - 如果您当前位于其祖先之上，则元素在其祖先的底部对齐。
+                            - 如果它已经在视图中，保持原样。
+
+                    */
                     topAnchor.scrollIntoView({
-                        behavior: "smooth"
+                        behavior: "smooth", block: 'nearest', inline: 'start'
                     })
+
                 }
                 if (e.target.className === 'backBottom') {
                     bottomAnchor.scrollIntoView({
-                        behavior: "smooth"
+                        behavior: "smooth", block: 'nearest', inline: 'start'
                     })
                 }
             }
@@ -332,7 +351,7 @@
         })
 
 
-        /* 
+        /*
             小结：
                 这里了解到了实现平滑滚动的一些方案：
                     1.CSS的 scroll-behavior 属性：scroll-behavior:smooth写在滚动容器元素上，可以让容器（非鼠标手势触发）的滚动变得平滑。
