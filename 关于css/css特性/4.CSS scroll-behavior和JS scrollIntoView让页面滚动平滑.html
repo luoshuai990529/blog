@@ -1,0 +1,346 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-07-14 10:08:00
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-07-14 15:52:38
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS scroll-behavior和JS scrollIntoView让页面滚动平滑</title>
+    <style>
+        /* 
+            CSS方案：scroll-behavior: smooth;
+
+            注意：
+                1、在可滚动的容器上设置了 scroll-behavior: smooth 之后，其优先级是高于 JS 方法的。
+                   也就是说，在 JS 中指定 behavior: auto，想要恢复立即滚动到目标位置的效果，将不会生效。
+                2、在可滚动的容器上设置了 scroll-behavior: smooth 之后，还能够影响到浏览器 Ctrl+F 的表现，使其也呈现平滑滚动的效果。
+        */
+        html,
+        body {
+            /* scroll-behavior: smooth; */
+        }
+
+        .wrap {
+            display: flex;
+        }
+
+        .wrap>div {
+            margin-left: 20px;
+        }
+
+        .container1 {
+            width: 200px;
+            height: 400px;
+            border: 5px solid darkcyan;
+            overflow: auto;
+            /* css的方式实现平滑滚动 */
+            scroll-behavior: smooth;
+        }
+
+        .container2 {
+            width: 200px;
+            height: 400px;
+            border: 5px solid darkcyan;
+            overflow: auto;
+        }
+
+        .container3 {
+            width: 200px;
+            height: 400px;
+            border: 5px solid darkcyan;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="css-container">
+            <div class="container1">
+                <p id="top">顶部</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p id="bottom">底部</p>
+            </div>
+            <a href="#top">CSS方案回到顶部</a>
+            <a href="#bottom">CSS方案回到底部</a>
+        </div>
+
+        <div class="js-container">
+            <div class="container2">
+                <p class="top">顶部</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p class="bottom">底部</p>
+            </div>
+            <a href="javascript:void(0);" class="backTop">scrollIntoView回到顶部</a>
+            <a href="javascript:void(0);" class="backBottom">scrollIntoView回到底部</a>
+        </div>
+
+        <div class="js-container2">
+            <div class="container3">
+                <p class="top1">顶部</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p>index</p>
+                <p class="bottom1">底部</p>
+            </div>
+            <a href="javascript:void(0);" class="backTop1">回到顶部</a>
+            <a href="javascript:void(0);" class="backBottom1">回到底部</a>
+        </div>
+    </div>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <p>index</p>
+    <button class="backTopBtn">JS结合缓动算法滚动到顶部</button>
+
+    <script>
+        /* 
+            JS方案：利用scrollIntoView实现平滑滚动：会滚动元素的父容器，使被调用 scrollIntoView() 的元素对用户可见。
+
+            注意：如果我们的网页已经通过CSS设置了scroll-behavior:smooth声明，
+            则我们直接执行target.scrollIntoView()方法就会有平滑滚动，无需再额外设置behavior参数。
+        */
+        const topAnchor = document.querySelector('.top')
+        const bottomAnchor = document.querySelector('.bottom')
+        document.addEventListener('click', (e) => {
+            if (['backTop', 'backBottom'].includes(e.target.className)) {
+                if (e.target.className === 'backTop') {
+                    /* scrollIntoView的方式实现平滑滚动 */
+                    topAnchor.scrollIntoView({
+                        behavior: "smooth"
+                    })
+                }
+                if (e.target.className === 'backBottom') {
+                    bottomAnchor.scrollIntoView({
+                        behavior: "smooth"
+                    })
+                }
+            }
+        })
+
+        /**
+         * 另一种JS方案 用缓动动画实现
+          @description 页面垂直平滑滚动到指定滚动高度
+          @author zhangxinxu(.com)
+        */
+        const scrollSmoothTo = function (position, container) {
+            // requestAnimationFrame的兼容处理
+            if (!window.requestAnimationFrame) {
+                window.requestAnimationFrame = function (callback, element) {
+                    return setTimeout(callback, 17);
+                };
+            }
+            container = container || window
+            // 当前滚动高度
+            let scrollTop = container !== window ? container.scrollTop : (document.documentElement.scrollTop || document.body.scrollTop);
+            // 滚动step方法
+            const step = function () {
+                // 距离目标滚动距离
+                let distance = position - scrollTop;
+                // 目标滚动位置
+                scrollTop = scrollTop + distance / 5;
+                if (Math.abs(distance) < 1) {
+                    container.scrollTo(0, position);
+                } else {
+                    container.scrollTo(0, scrollTop);
+                    requestAnimationFrame(step);
+                }
+            };
+            step();
+        };
+
+        document.querySelector('.backTopBtn').addEventListener('click', () => {
+            scrollSmoothTo(0);
+        })
+
+        const topAnchor1 = document.querySelector('.top1')
+        const bottomAnchor1 = document.querySelector('.bottom1')
+        const container3 = document.querySelector('.container3')
+        document.addEventListener('click', (e) => {
+            if (['backTop1', 'backBottom1'].includes(e.target.className)) {
+                if (e.target.className === 'backTop1') {
+                    scrollSmoothTo(0, container3)
+                }
+                if (e.target.className === 'backBottom1') {
+                    const position = bottomAnchor1.getBoundingClientRect().top
+                    scrollSmoothTo(container3.scrollHeight, container3)
+                }
+            }
+        })
+
+
+        /* 
+            小结：
+                这里了解到了实现平滑滚动的一些方案：
+                    1.CSS的 scroll-behavior 属性：scroll-behavior:smooth写在滚动容器元素上，可以让容器（非鼠标手势触发）的滚动变得平滑。
+                    2.JS 的 scrollIntoView 可以接收对象参数，传值behavior: "smooth"
+                    3.最原始的JS实现平滑滚动：通过 requestAnimationFrame API 结合 缓动小算法即可实现
+            
+        */
+    </script>
+</body>
+
+</html>
