@@ -76,7 +76,7 @@
     问题出在我们实现的`effect`函数与`activeEffect`上，**因为我们用全局变量`activeEffect`来存储通过effect函数注册的副作用函数，因此同一时刻`activeEffect`存储的副作用函数只能有一个。**当其发生嵌套时，内层副作用函数执行就会覆盖`activeEffect`的值。这时如果再有响应式数据进行依赖收集，他们收集的副作用也都是内层副作用的函数。
     解决方式：需要用到一个**副作用函数栈effectStack**，在副作用执行时，将当前副作用函数压入栈中，待副作用函数执行完毕后将其从栈中弹出，并始终让`activeEffect`指向栈顶的副作用函数。如此一来响应式数据就只会收集直接读取其值得副作用函数作为依赖，从而避免发生错乱。
 
-
+![WeakMap和Map和Set的关系图](https://lewis-note.oss-cn-beijing.aliyuncs.com/github/reactive.png)
 
 
 
