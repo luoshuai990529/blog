@@ -138,5 +138,123 @@ function watch(source, cb, options = {}){
 }
 ```
 
-​		4.过期的副作用：这里作者提到了**竞态问题**，作为前端工程师可能比较少讨论，因为它通常出现在多进程或者多线程编程中。**举例：**当我们监听响应式数据`obj`对象的变化，每次变化我们都发送一个网络请求，等数据请求成功之后，将其结果赋值给`finalData`变量。这时如果连续修改了两次`obj`对象的不同字段，第一次修改发送请求A，在请求A结果返回之前，我们对`obj`的某个字段进行第二次修改，这会发送请求B。此时请求A和请求B都在进行中，那么哪一个请求会先返回结果我们是不确定的，如果请求B先于请求A返回，则会导致`finalData`的变量最终存储的是A请求的结果。而这不是我们所预期的，因为请求B是后发送的，我们认为请求B返回的数据才是“最新”的，而请求A则应该被视为“过期”的，因此`finalData`存储的值应该是有请求B返回的结果。
+​		4.过期的副作用：这里作者提到了**竞态问题**，作为前端工程师可能比较少讨论，因为它通常出现在多进程或者多线程编程中。
+
+>  **举例：**当我们监听响应式数据`obj`对象的变化，每次变化我们都发送一个网络请求，等数据请求成功之后，将其结果赋值给`finalData`变量。这时如果连续修改了两次`obj`对象的不同字段，第一次修改发送请求A，在请求A结果返回之前，我们对`obj`的某个字段进行第二次修改，这会发送请求B。此时请求A和请求B都在进行中，那么哪一个请求会先返回结果我们是不确定的，如果请求B先于请求A返回，则会导致`finalData`的变量最终存储的是A请求的结果。而这不是我们所预期的，因为请求B是后发送的，我们认为请求B返回的数据才是“最新”的，而请求A则应该被视为“过期”的，因此`finalData`存储的值应该是有请求B返回的结果。
+
 通过思考，我们需要的是一个让副作用过期的手段。作者这里为了让问题更加清晰，拿到了Vue.js中的watch函数来复线场景，在Vue.js中watch的回调函数接收第三个参数 **`onInvalidate`**, 它是一个函数，类似与事件监听器，我们可以用它来注册一个回调，这个回调函数会在当前副作用函数过期时执行：
+
+```javascript
+watch(obj, async(newValue, oldValue, onInvalidate) => {
+	// 定义一个标志，代表当前副作用函数是否过期，默认为false，代表没有过期
+	let expired = false
+	// 调用 onInvalidate() 函数注册一个过期回调
+	onInvalidate(() => {
+		// 当该副作用函数过期时，将 expired 设置为 true
+		expired = true
+	})
+	
+	// 发送网络请求
+	const res = await fetch('/path/to/request')
+	
+	//只有当该副作用函数的执行没有过期时，才会执行后续操作
+	if(!expired) {
+		finalData = res
+	}
+})
+```
+
+那么**`onInvalidate`**的原理是什么呢：**在watch内部每次检测到变更后,在副作用函数重新执行之前，会先调用我们通过 `onInvalidate` 函数注册的过期回调，仅此而已。** 代码：
+
+```javascript
+function watch(source, cb, options = {}) {
+	let getter;
+	if(typeof source === 'function') {
+		getter = source
+	}else{
+		getter = () => traverse(source)
+	}
+    
+    let oldValue, newValue;
+    
+    // cleanup 用来存储用户注册的过期回调
+    let cleanup
+    // 定义 onInvalidate 函数
+    function onInvalidate(fn) {
+        // 这里只需要将过期回调存储到 cleanup 中
+        cleanup = fn
+    }
+    
+    const job = () => {
+		newValue = effectFn()
+        // 关键点：再调用回调函数 cb 之前，先调用过期回调
+        if(cleanup) {
+        	cleanup()
+        }
+        // 将 onInvalidate 作为回调函数的第三个参数，以便用户使用
+		cb(newValue, oldValue, onInvalidate)
+		oldValue = newValue
+	}
+    
+    const effectFn = effect(
+    	// 执行 getter
+        () => getter(),
+        {
+			lazy: true,
+            scheduler: () => {
+				if(options.flush === 'post') { 
+                	const p = Promise.resolve()
+                    p.then(job)
+                }else{
+                	job()
+                }
+            }
+        }
+    )
+    
+    if(options.immediate){
+		job()
+    }else{
+    	oldValue = effectFn()
+    }
+    
+}
+```
+
+现在我们再来通过代码示例来看看如何避免过期的副作用函数带来影响：
+```javascript
+watch(obj, async(newValue, oldValue, onInvalidate) => {
+	let expired = false
+    onInvalidate(() => {
+    	expired = true
+    })
+    
+    const res = await fetch('/path/to/request')
+    
+    if(!expired) {
+    	finalData = res
+    }
+})
+// 第一次修改
+obj.foo ++;
+setTimeout(() => {
+    // 200ms 后做第二次修改
+	obj.foo ++
+})
+
+/**
+	第一次修改obj.foo 执行watch的回调，同时因为调用了onIncalidate 注册了一个过期回调，
+	然后发送请求A。
+	如果请求A需要1000ms返回结果，而我们在200ms后再次修改obj.foo，又会导致watch回调的重新执行。
+	此时由于第一次执行时我们注册了过期回调，因此在watch回调第二次执行之前，会优先执行之前注册的过期回调，这里会让第一次执行的副作用函数内闭包的变量expored的值变成true，即表示副作用函数的执行过期了。从而请求A的结果返回时，其结果将会被抛弃，从而避免过期的副作用带来的影响
+**/
+```
+
+
+
+
+
+
+
+
+
