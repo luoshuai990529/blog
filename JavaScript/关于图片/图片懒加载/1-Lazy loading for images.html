@@ -1,0 +1,58 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-08-05 17:03:39
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-08-05 17:27:45
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>loading attribute</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ul {
+            border: 1px solid darkgreen;
+            width: 200px;
+            height: 80vh;
+            padding: 10px;
+            overflow: auto;
+        }
+
+        ul li {
+            list-style: none;
+            line-height: 100px;
+            margin-top: 30px;
+        }
+        img{
+            vertical-align: top;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>img:<img loading="lazy" width="100" height="100" src="https://lewis-note.oss-cn-beijing.aliyuncs.com/images/qlz1.jpg" alt="" /></li>
+        <li>xxxxx</li>
+        <li>xxxxx</li>
+        <li>xxxxx</li>
+        <li>xxxxx</li>
+        <li>xxxxx</li>
+        <li>xxxxx</li>
+        <li>xxxxx</li>
+        <li>xxxxx</li>
+        <!-- 这张图片一开始在页面中不可见，只有当在页面中可见时才会加载 -->
+        <li>img:<img loading="lazy" width="100" height="100" src="https://lewis-note.oss-cn-beijing.aliyuncs.com/github/youxiangtu.png" alt="" /></li>
+    </ul>
+</body>
+
+</html>
