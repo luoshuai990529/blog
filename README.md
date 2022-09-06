@@ -1,8 +1,3 @@
-<!--
- * @Date: 2021-09-05 15:00
- * @LastEditors: luoshuai
- * @LastEditTime: 2022-08-22 18:56:01
-     -->
 # Lewis 的基础沉淀和学习产出 2021-09-05 15:00
 
 **2022的Flag：** 
@@ -35,10 +30,10 @@
 
     进度：
         vue2: https://github.com/luoshuai990529/Vue_realization
-        vue3:
+        vue3: reading notes VueJS设计与实现持续更新...
         react:
 ##### 4-累计跑步运动🏃‍♂️365km
 
     进度：
-        585km ✔
+        610km ✔
 
