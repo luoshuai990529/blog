@@ -1,0 +1,62 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-11-11 18:06:53
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-11-11 18:14:44
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background: #e0e0e0;
+        }
+
+        .blob {
+            height: 150px;
+            width: 150px;
+            border-radius: 58% 43% 33% 64% / 50% 38% 53% 50%;
+            background: transparent;
+            box-shadow: inset 6px 33px 20px 0 #c9c9c9,
+                inset 20px 80px 15px 0 #e0e0e0,
+                10px 20px 20px 0px #c9c9c9;
+        }
+
+        .blob::before {
+            content: '';
+            position: absolute;
+            border-radius: 37% 54% 46% 46%;
+            background: white;
+            width: 50px;
+            transform: rotate(-30deg);
+            height: 15px;
+            top: 28px;
+            left: 32px;
+        }
+
+        .blob::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            width: 10px;
+            height: 10px;
+            top: 60px;
+            left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blob">
+
+    </div>
+</body>
+
+</html>
