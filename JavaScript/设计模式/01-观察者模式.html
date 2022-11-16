@@ -1,0 +1,96 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2022-11-16 21:30:18
+ * @Author: luoshuai
+ * @LastEditors: luoshuai
+ * @LastEditTime: 2022-11-16 22:39:34
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        /* 
+            观察者模式：当对象之间存在一对多的依赖关系时，其中一个对象的状态发生改变，
+            所有依赖它的对象都会收到通知，这就是观察者模式。
+
+            目标对象Subject:
+                - 维护观察者列表 observerList 拥有订阅权限的弟子列表
+                - 定义添加观察者的方法————即提供弟子购买订阅权限的功能
+                - 当自身发生变化后，通过调用自己的notify方法依次通知每个观察者执行update方法，通知有订阅权限的弟子
+
+            观察者Observer：
+                - 需要实现update方法，供目标调用
+
+        */
+
+        class CustomerObserver {
+            constructor(name) {
+                this.name = name
+            }
+
+            update({ name, type, foodName }) {
+                if (name !== this.name) {
+                    return
+                }
+                if (type === 'waiting') {
+                    console.log(`${this.name} 的餐品还没好`);
+                    return
+                }
+                this.goToTakeFood(foodName)
+            }
+
+            goToTakeFood(foodName) {
+                console.log(`${this.name} 的 ${foodName} 好了，快来领取`);
+            }
+
+        }
+
+        class WaiterSubject {
+            constructor() {
+                this.observerList = [];
+            }
+
+            addObserver(observer) {
+                this.observerList.push(observer)
+            }
+
+            notify(task) {
+                console.log("餐品准备通知~")
+                this.observerList.forEach(observer => observer.update(task))
+            }
+        }
+
+        const waiter = new WaiterSubject()
+        const Jaky = new CustomerObserver('Jaky')
+        const Mark = new CustomerObserver('Mark')
+
+        waiter.addObserver(Jaky)
+        waiter.addObserver(Mark)
+
+        const JakyFoodStatus = {
+            name: 'Jaky',
+            type: 'waiting',
+            foodName: 'Chicken burger'
+        }
+        const MarkFoodStatus = {
+            name: 'Mark',
+            type: 'ready',
+            foodName: 'Coca Cola and Chips'
+        }
+
+        waiter.notify(JakyFoodStatus)
+        waiter.notify(MarkFoodStatus)
+    </script>
+</body>
+
+</html>
