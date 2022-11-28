@@ -3,7 +3,7 @@
  * @Date: 2022-05-05 16:41:18
  * @Author: luoshuai
  * @LastEditors: luoshuai
- * @LastEditTime: 2022-05-20 15:11:16
+ * @LastEditTime: 2022-11-29 01:36:07
  */
 
 /**
@@ -85,3 +85,14 @@ Function.prototype.after = function (afterfn) {
         return ret;
     }
 };
+
+
+/**
+ * @description: 支持maxCount最大请求数发出请求返回promise
+ * @param {*} url 请求地址
+ * @param {*} maxCount 最大重复请求数
+ * @return {*}
+ */
+function requestLoop(url, maxCount = 5) {
+    return fetch(url).catch(err => maxCount <= 0 ? Promise.reject(err) : requestLoop(url, maxCount - 1))
+}
