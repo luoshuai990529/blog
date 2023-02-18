@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        // 1.数组的深浅拷贝：利用 slice、concat返回一个新的数组
+        let arr = ['old', 1, true, null, undefined];
+        let new_arr1 = arr.concat();
+        let new_arr2 = arr.slice();
+        new_arr1[0] = 'new1';
+        new_arr2[0] = 'new2';
+        console.log(arr) // ["old", 1, true, null, undefined]
+        console.log(new_arr1) // ["new1", 1, true, null, undefined]
+        console.log(new_arr2) // ["new2", 1, true, null, undefined]
+        // 注意：这种方式如果数组中嵌套了对象或者数组，则concat克隆的并不彻底，因此concat和slice对深层的数据是浅拷贝
+
+        // 2.利用JSON.parse(JSON.stringify(arr)) 实现数组的深拷贝，但是 它不能拷贝函数
+        // 补充 :JSON.stringify(value,replacer?: function | array, space?: string)
+        // code...略
+
+        // 3.递归遍历实现深拷贝
+        const deepCopy = function (obj) {
+            if (typeof obj !== 'object') return;
+            var newObj = obj instanceof Array ? [] : {};
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    newObj[key] = typeof obj[key] === 'object' ? deepCopy(obj[key]) : obj[key];
+                }
+            }
+            return newObj;
+        }
+        // console.log("deepCopy=> ", deepCopy({ value: null }))
+
+        // 4.jQuery的extend方法：jQuery.extend(target [, object1 ] [, objectN])
+        // target:目标对象 后面的object参数都会传入对象内容都会复制到目标对象中
+
+        // 如何实现深拷贝？jQuery.extend 加入了第一个参数可以传一个boolean值代表是否深拷贝：jQuery.extend( [deep], target, object1 [, objectN ] )
+        // 实现：https://github.com/mqyqingfeng/Blog/issues/33
+    </script>
+</body>
+
+</html>
