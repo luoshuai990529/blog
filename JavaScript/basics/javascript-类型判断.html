@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        /* 
+            typeof: typeof是一种元操作符，放在其单个操作数的前面，操作数可以是任意类型。返回值为表示操作类型的一个字符串 —— 《Javascript权威指南》
+            注意判断ES6之前的 JS六种类型 undefind null boolean number string object的结果：
+            typeof Undefined => undefined
+            typeof Null => object
+            typeof Boolean => boolean
+            typeof Number => number
+            typeof String => string
+            typeof Object => object
+
+            除此之外
+            typeof function => function
+            typeof new Date() => object
+            typeof new Errow => object
+
+        */
+
+        // 更好的方法：Object.prototype.toString： 返回一个由 "[object " 和 class 和 "]" 组成的字符串
+        let number = 1;          // [object Number]
+        let string = '123';      // [object String]
+        let boolean = true;      // [object Boolean]
+        let und = undefined;     // [object Undefined]
+        let nul = null;          // [object Null]
+        let obj = { a: 1 }         // [object Object]
+        let array = [1, 2, 3];   // [object Array]
+        let date = new Date();   // [object Date]
+        let error = new Error(); // [object Error]
+        let reg = /a/g;          // [object RegExp]
+        let func = function a() { }; // [object Function]
+
+        function checkType() {
+            for (var i = 0; i < arguments.length; i++) {
+                console.log(Object.prototype.toString.call(arguments[i]))
+            }
+        }
+
+        checkType(number, string, boolean, und, nul, obj, array, date, error, reg, func)
+
+
+
+        // 结合以上我们可以封装type类型检测函数  下面逻辑是Jquery中源码的实现方法：https://github.com/jquery/jquery/blob/ac9e3016645078e1e42120822cfb2076151c8cbe/src/core.js#L269
+        // 注意：Jquery中判断数组如果有Array.isArray方法则会使用该方法来判断数组类型
+        const getJavascriptDateType = (function () {
+            var class2type = {};
+            // 生成class2type映射
+            "Boolean Number String Function Array Date RegExp Object Error".split(" ").map(function (item, index) {
+                class2type["[object " + item + "]"] = item.toLowerCase();
+            })
+            console.log(class2type);
+            /* 
+                [object Array]: "array"
+                [object Boolean]: "boolean"
+                [object Date]: "date"
+                [object Error]: "error"
+                [object Function]: "function"
+                [object Number]: "number"
+                [object Object]: "object"
+                [object RegExp]: "regexp"
+                [object String]: "string"
+            */
+            return (obj) => {
+                // 一箭双雕
+                if (obj == null) {
+                    return obj + "";
+                }
+                return typeof obj === "object" || typeof obj === "function" ?
+                    class2type[Object.prototype.toString.call(obj)] || "object" :
+                    typeof obj;
+            }
+        })();
+
+        function checkType2() {
+            for (var i = 0; i < arguments.length; i++) {
+                console.log(`getJavascriptDateType  =>`, getJavascriptDateType(arguments[i]))
+            }
+        }
+
+        checkType2(number, string, boolean, und, nul, obj, array, date, error, reg, func)
+
+        // 1.补充：如何判断window对象？利用window全局对象自身的window指向自生
+        function isWindow(obj) {
+            return obj != null && obj === obj.window
+        }
+
+        // 2.如何比较数组和类数组类型？ jQuery中的isArrayLike实现：
+        function isArrayLike(obj) {
+            // obj 必须有length属性
+            let length = !!obj && "length" in obj && obj.length
+            let typeRes = getJavascriptDateType(obj)
+
+            // 排除掉函数和Window对象
+            if (typeRes === "function" || isWindow(obj)) {
+                return false
+            }
+
+            /* 
+                isArrayLike 返回true满足三个条件之一：
+                    1.是数组
+                    2.长度为0
+                    3.lengths 属性是大于 0 的数字类型，并且obj[length - 1]必须存在
+            */
+            return typeRes === "array" || length === 0 ||
+                typeof length === "number" && length > 0 && (length - 1) in obj
+        }
+
+
+        // 问题：为什么长度为0就可以直接判断为true呢 isArrayLike({ length: 0 }) 也会为true
+        // console.log("isArrayLike() =>", isArrayLike({ length: 0 }))
+        function a() {
+            // 如果我们放过了 length===0这个判断，则arguments伪数组也会被判断为false  因此也会存在争议，所以保留这个判断
+            console.log("a isArrayLike() =>", arguments, isArrayLike(arguments))
+        }
+        a();
+
+
+        // 3.判断是否是DOM元素
+        function isElement(obj) {
+            return !!(obj && obj.nodeType === 1)
+        }
+    </script>
+</body>
+
+</html>

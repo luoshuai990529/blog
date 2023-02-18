@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        let array = [1, 1, '1', '1']
+
+        // include对数组去重 indexOf一样
+        function unique1(array) {
+            const res = []
+            for (let i = 0; i < array.length; i++) {
+                const element = array[i];
+                if (!res.includes(element)) {
+                    res.push(element)
+                }
+            }
+            return res
+        }
+
+        console.log("result => ", unique1(array))
+
+        // 对已排序的数组进行去重
+        function unique2(array, isSorted) {
+            const res = []
+            let previous;
+            for (let i = 0; i < array.length; i++) {
+                const element = array[i];
+                if (isSorted) {
+                    // 如果是第一个元素或者相邻的元素不相同
+                    if (!i || previous !== element) {
+                        res.push(value)
+                    }
+                    previous = element
+                } else if (!res.includes(element)) {
+                    res.push(element)
+                }
+            }
+            return res
+        }
+        console.log("isSorted Array =>", unique2([-6, -2, -2, 1, 1, 2, 2, 5, 7, 7, 9]))
+
+
+        // filter+indexOf方式去重
+        function unique3(array) {
+            const res = array.filter((item, index) => {
+                return array.indexOf(item) === index
+            })
+            return res
+        }
+        console.log("unique3 =>", unique3([-6, -2, -2, 1, 1, 2, 2, 5, 7, 7, 9]))
+
+        // Object键值对去重
+        function unique4(array) {
+            const obj = {}
+            return array.filter(value => {
+                // 问题1：因为 1 和 '1' 是不同的，但是这种方法会判断为同一个值，这是因为对象的键值只能是字符串，所以我们可以使用 typeof item + item 拼成字符串作为 key 值来避免这个问题
+                // 问题2：无法正确区分两个对象，我们可以使用Json.stringify将其序列化
+                // return obj[value] ? false : (obj[value] = true)
+                // console.log(typeof value+value);
+                const key = typeof value + JSON.stringify(value)
+                return obj[key] ? false : (obj[key] = true)
+
+                // if(obj[value]) {
+                //     // 存在了是重复的 
+                //     return false
+                // } else {
+                //     // 不存在
+                //     obj[value] = true 
+                //     return true
+                // }
+            })
+        }
+        // 注意：看似已经万无一失，但考虑到 JSON.stringify 任何一个正则表达式的结果都是 {}，所以这个方法并不适用于处理正则表达式去重。
+        console.log("Object键值对去重 unique4 =>", unique4([-6, -2, 1, '1', { name: 'Lewis' }, { name: 'Buu' }, 1, -2, 2, 2, 5, 7, 7, 9]))
+
+        // 使用ES6的Set和Map数据结构
+        function unique5(array) {
+            return Array.from(new Set(array));
+        }
+
+        function unique6(arr) {
+            const seen = new Map()
+            return arr.filter((a) => !seen.has(a) && seen.set(a, 1))
+        }
+        console.log("unique5 =>", unique5([-6, -2, 1, '1', { name: 'Lewis' }, { name: 'Buu' }, 1, -2, 2, 2, 5, 7, 7, 9])); 
+        console.log("unique6 =>", unique6([-6, -2, 1, '1', { name: 'Lewis' }, { name: 'Buu' }, 1, -2, 2, 2, 5, 7, 7, 9])); 
+
+        // 对于含有null undefine /a/ /a/ NaN NaN数据去重结果：
+
+        // Map和Set方法： 对象不去重 NaN去重
+        console.log("Set unique5 =>", unique5([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN ])); 
+        console.log("Map unique6 =>", unique6([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN ])); 
+        // 优化后的键值对方式
+        console.log("Object键值对去重 unique4 =>", unique4([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN ]))
+
+    </script>
+</body>
+
+</html>
