@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+        作用域：指程序源代码中定义变量的区域；
+        JavaScript采用词法作用域，也就是静态作用域，函数的作用域在函数定义的时候就决定了。
+        而和词法作用域相对的动态作用域则是，函数的作用域在函数调用的时候才决定。
+
+        ES5只有全局作用域和函数作用域，没有块级作用域，因此带来了很多不合理场景如内层的变量可能会覆盖外层的变量...
+        ES6中新增了块级作用域，let声明变量实际上就是为js新增了块级作用域，块级作用域的出现也让广泛使用的IIFE不再必要
+     -->
+
+    <script>
+
+        //  《javascript权威指南》的例子：
+        /* var scope = "global scope";
+        function checkscope() {
+            var scope = "local scope";
+            function f() {
+                return scope;
+            }
+            return f();
+        }
+        checkscope(); */
+
+        /* var scope = "global scope";
+        function checkscope() {
+            var scope = "local scope";
+            function f() {
+                return scope;
+            }
+            return f;
+        }
+        checkscope()(); */
+
+        // 以上两段代码都会打印 `local scope`,因为JavaScript采用的是词法作用域，函数的作用域基于函数创建的位置。
+        
+        /* 
+            深入作用域链
+
+            前言：当javascript代码执行一段可执行代码时，会创建对应的执行上下文。
+            对于每个执行上下文，都有三个重要属性：
+                1.变量对象
+                2.作用域链
+                3.this
+
+            概念：当查找变量的时候，会先从当前上下文的变量对象中查找，如果没有找到就会从父级执行上下文的变量对象中查找，
+            一直找到全局上下文的变量对象，也就是全局对象。这样由多个执行上下文的变量构成的链表就叫作用域链
+        
+            例：函数创建(函数的作用域在函数定义的时候就决定了)
+            这是因为函数有一个内部属性 [[scope]]，当函数创建的时候，就会保存所有父变量对象到其中，你可以理解 [[scope]] 就是所有父变量对象的层级链，但是注意：[[scope]] 并不代表完整的作用域链！
+        
+            function foo() {
+                function bar() {
+                    ...
+                }
+            }
+
+            上述函数创建时，各自的[[scope]]为：
+
+            foo.[[scope]] = [
+                globalContext.VO
+            ];
+
+            bar.[[scope]] = [
+                fooContext.AO,
+                globalContext.VO
+            ];
+        
+            */
+
+    
+    
+    </script>
+</body>
+
+</html>
