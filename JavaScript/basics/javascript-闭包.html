@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        /* 
+            MDN定义：闭包（closure）是一个函数以及其捆绑的周边环境状态（lexical environment，词法环境）的引用的组合。
+            换句话说：闭包让开发者可以从内部函数访问外部函数的作用域。在 JavaScript 中，闭包会随着函数的创建而被同时创建。
+
+            《javascript权威指南》中讲到：从技术的角度，所有的Javascript函数都是闭包。
+            《红宝书》：闭包指的是那些引用了另一个函数作用域中变量的函数，通常是嵌套函数中实现的。
+            《你不知道的JavaScript》：闭包是基于词法作用域写代码时所产生的自然结果，我们不需要为了利用它而有意识的创建闭包。闭包的创建在代码中随处可见。
+                                    小结：当函数可以记住并访问所在的词法作用域，即使函数是在当前词法作用域之外执行，这时就产生了闭包
+
+            本质上无论何时何地，如果将函数当做第一级的值类型并到处传递，就会看到闭包在这些函数中的应用。
+            定时器、事件监听器、Ajax请求、WebWorkers等等，只要使用了回调函数，实际上就是在使用闭包~
+
+            例：高阶函数（一个函数中return了另一个函数）、IIFE(尽管本身不是观察闭包的恰当例子但是它的确创建了闭包)
+        
+            */
+
+
+        // 经典示例1：
+        var a = [];
+        for (var i = 0; i < 6; i++) {
+            a[i] = function () {
+                console.log(i);
+            };
+        }
+        a[0]() // 6
+
+        // 闭包改造：
+        var b = [];
+        for (var i = 0; i < 6; i++) {
+            b[i] = (function (i) {
+                return () => {
+                    console.log(i);
+                }
+            })(i)
+        }
+        b[0]() // 0
+        b[1]() // 1
+
+        /* 
+            补充：用let声明变量也可以解决上述问题，因为let声明的变量仅在块级作用域内有效，上述声明的i变量只在本次循环有效，
+            因此每一次都是一个新的变量，那么如果每次都是新的变量那么它如何知道上一轮循环的值，从而计算出本轮循环的值呢？
+            因为javascript引擎内部会记住上一轮循环的值，初始化变量i时就在上一轮循环的基础上进行计算了。
+            而var是全局范围内 因此都指向i最后一轮的值：6
+        */
+
+
+        // 利用IIFE提升性能：
+        /**
+         * @description: 区分浏览器和node环境去执行对应的请求代码
+         * @return {*}
+         */
+        function request(options) {
+            if (typeof window !== 'undefined') {
+                // 浏览器环境 code...
+            } else {
+                // node环境 code...
+            }
+        }
+
+        // 改造后：解决了每次调用函数走if else判断分支的步骤
+        let request = (() => {
+            if (typeof window !== 'undefined') {
+                // 浏览器环境 code...
+                return (options) => {
+                    // 浏览器 ajax
+                }
+            } else {
+                // node环境 code...
+                return (options) => {
+                    // node ajax
+                }
+            }
+        })()
+
+
+        /**
+         * @description: 替换字符串的空格
+         * @param {*} str
+         * @return {*}
+         */
+        function removeSpace(str) {
+            // 每次调用函数都会调用正则对象和空字符串都会占用内存空间，如果调用多了则会造成内存忽上忽下
+            return str.replace(/\s/g, "")
+        }
+
+        // 改造后 改成一个高阶函数：
+        let createRemoveSpace = () => {
+            const reg = /\s/g, spaceStr = ""
+            return (str) => str.replace(reg, spaceStr)
+        }
+
+        // 这样之后调用内存就不会忽上忽下
+        let removeSpace = createRemoveSpace()
+        removeSpace('abc def gll')
+        removeSpace('abc def gll')
+        removeSpace('abc def gll')
+        // 调用完成后 所创建的reg spaceStr都会被垃圾回收机制回收掉
+    </script>
+</body>
+
+</html>
