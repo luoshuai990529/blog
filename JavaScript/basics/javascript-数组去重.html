@@ -14,6 +14,22 @@
 
     <script>
         let array = [1, 1, '1', '1']
+        // 双层for循环去重 兼容性好
+        function unique(array) {
+            const res = [...array]
+            for (let i = 0; i < array.length; i++) {
+                // res.push(array[i])
+                for (let j = i + 1; j < res.length; j++) {
+                    if (res[i] === res[j]) {
+                        res.splice(j, 1)
+                        j--
+                    }
+
+                }
+            }
+            return res
+        }
+        console.log("unique => ", unique(array));
 
         // include对数组去重 indexOf一样
         function unique1(array) {
@@ -92,17 +108,77 @@
             const seen = new Map()
             return arr.filter((a) => !seen.has(a) && seen.set(a, 1))
         }
-        console.log("unique5 =>", unique5([-6, -2, 1, '1', { name: 'Lewis' }, { name: 'Buu' }, 1, -2, 2, 2, 5, 7, 7, 9])); 
-        console.log("unique6 =>", unique6([-6, -2, 1, '1', { name: 'Lewis' }, { name: 'Buu' }, 1, -2, 2, 2, 5, 7, 7, 9])); 
+        console.log("unique5 =>", unique5([-6, -2, 1, '1', { name: 'Lewis' }, { name: 'Buu' }, 1, -2, 2, 2, 5, 7, 7, 9]));
+        console.log("unique6 =>", unique6([-6, -2, 1, '1', { name: 'Lewis' }, { name: 'Buu' }, 1, -2, 2, 2, 5, 7, 7, 9]));
 
         // 对于含有null undefine /a/ /a/ NaN NaN数据去重结果：
 
         // Map和Set方法： 对象不去重 NaN去重
-        console.log("Set unique5 =>", unique5([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN ])); 
-        console.log("Map unique6 =>", unique6([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN ])); 
+        console.log("Set unique5 =>", unique5([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN]));
+        console.log("Map unique6 =>", unique6([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN]));
         // 优化后的键值对方式
-        console.log("Object键值对去重 unique4 =>", unique4([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN ]))
+        console.log("Object键值对去重 unique4 =>", unique4([1, '1', new String('1'), new String('1'), /a/, /a/, NaN, NaN]))
 
+
+
+
+        // 面试题：去重下面数组，只要对象属性名和属性值一样则认为他们是相同需要去重
+        const list = [
+            { a: 1, b: 2 },
+            { b: 2, a: 1 },
+            { a: 1, b: 2, c: { a: 1, b: 2 } },
+            { b: 2, a: 1, c: { b: 2, a: 1 } }
+        ]
+        /* 
+            预期结果：
+                [
+                    { b: 2, a: 1 },
+                    { a: 1, b: 2, c: { a: 1, b: 2 } }
+                ]
+        */
+        // 改写一下双重for循环的去重方式 对比重复的方式 由我们自己实现
+        const isObject = (val) => typeof val === 'object' && val !== null;
+        function equals(val1, val2) {
+            if (isObject(val1) && isObject(val2)) {
+                const keys1 = Object.keys(val1)
+                const keys2 = Object.keys(val2)
+                if (keys1.length !== keys2.length) {
+                    return false
+                }
+                for (const key of keys1) {
+                    // 属性名是否存在另一个对象 不存在返回false
+                    if (!keys2.includes(key)) {
+                        return false
+                    }
+
+                    // 递归比较属性值
+                    if (!equals(val1[key], val2[key])) {
+                        return false
+                    }
+                }
+                return true
+            } else {
+                // 不是对象则正常方式对比
+                return val1 === val2
+            }
+        }
+
+        function uniqueObject(array) {
+            const res = [...array]
+            for (let i = 0; i < array.length; i++) {
+                // res.push(array[i])
+                for (let j = i + 1; j < res.length; j++) {
+                    if (equals(res[i], res[j])) {
+                        res.splice(j, 1)
+                        j--
+                    }
+
+                }
+            }
+            return res
+        }
+
+        console.log("uniqueObject(list) =>", uniqueObject(list));
     </script>
 </body>
 
