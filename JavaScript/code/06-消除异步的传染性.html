@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+            async function getUser() {
+                return await fetch('https://my-json-server.typicode.com/typicode/demo/profile')
+            }
+
+            async function m1() {
+                // other code...
+                return await getUser()
+            }
+
+            async function m2() {
+                // other code...
+                return await m1();
+            }
+
+            async function m3() {
+                // other code...
+                return await m2();
+            }
+
+            async function main() {
+                const user = await m3();
+                console.log("user =>", user);
+            }
+
+            最后目标：消除异步 去除函数的副作用 将其函数都编程同步形式
+        */
+
+        function getUser() {
+            return fetch('https://my-json-server.typicode.com/typicode/demo/profile')
+        }
+
+        function m1() {
+            // other code...
+            return getUser()
+        }
+
+        function m2() {
+            // other code...
+            return m1();
+        }
+
+        function m3() {
+            // other code...
+            return m2();
+        }
+
+        function main() {
+            const user = m3();
+            console.log("user =>", user);
+        }
+
+        function run(fn) {
+            const cache = []; // 可能有多个异步操作 因此需要数组来存储结果
+            const _oringinFetch = fetch
+            window.fetch = (...args) => {
+                let i = 0;
+                console.log("缓存判断：", cache[i]);
+                if (cache[i]) {
+                    // 如果有缓存则判断缓存是否成功
+                    if (cache[i].status === 'fulfilled') {
+                        return cache[i].data
+                    }
+                    else if (cache[i].status === 'rejected') {
+                        throw cache[i].err
+                    }
+                }
+
+                const result = {
+                    status: 'pending',
+                    err: null,
+                    data: null
+                }
+                cache[i++] = result
+
+                // 1.发送请求进行缓存
+                const prom = _oringinFetch(...args).then((res) => res.json()).then((data) => {
+                    console.log("请求cg=>", data);
+                    result.status = 'fulfilled'
+                    result.data = data
+                }, (err) => {
+                    result.status = 'rejected',
+                        result.err = err
+                })
+                // 2.抛出错误 让代码同步
+                throw prom
+            }
+
+            // 捕获错误
+            try {
+                fn()
+            } catch (err) {
+                if (err instanceof Promise) {
+                    // 如果错误是promise则重新运行 fn，第二次运行fn就会取缓存中的内容了
+                    const reRun = () => {
+                        i = 0
+                        fn()
+                    }
+                    console.log("捕获错误", err);
+                    err.then(reRun, reRun)
+                }
+            }
+        }
+        run(main)
+
+
+        /*
+            框架中的应用场景： React 的 Suspense 组件，下面之所以可以同步的形式使用异步状态的组件B， 原理和上面一样的
+
+            function A(){
+                return <Suspense fallback={<h1>loading ...</h1>}>
+                    </ B>
+                </ Suspense>
+            }
+
+            function B(){
+                console.log('B render') // 这里打印两次 
+                const user = fetch(...) // 异步请求
+                return <span>{user.name}</span>
+            }
+
+        */
+    </script>
+</body>
+
+</html>
