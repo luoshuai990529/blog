@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="task-container">
+        <button class="start-btn">开始</button>
+        <button class="pause-btn">暂停</button>
+    </div>
+
+    <script>
+        /**
+         * @description: 依次顺序执行一系列异步任务，所有任务完成后可以得到每个任务对应的执行结果，
+         *  start用于开始任务，pause用于暂停任务
+         * 每个任务具有原子性不可中断，只能在两个任务之间中断
+         * @param {array} tasks 每个任务无参、异步
+         * @return {start: () => void, pause: () => void} 
+         */
+        function precessTask(tasks) {
+            const result = [];
+            let i = 0; // 当前执行任务的下标
+            let isRunning = false; // 是否运行任务
+            let prom = null;
+
+            function start() {
+                return new Promise(async (resolve, reject) => {
+                    if (isRunning) {
+                        // 当正在运行时不要重复运行
+                        return
+                    }
+
+                    console.log("prom =>", prom);
+                    if (prom) {
+                        // 所有结果已经完成
+                        prom.then(resolve, reject)
+                        return
+                    }
+                    isRunning = true;
+
+                    while (i < tasks.length) {
+                        console.log("任务 " + tasks[i].name + " 开始....");
+                        try {
+                            result.push(await tasks[i]())
+                            console.log("任务 " + tasks[i].name + " 执行完毕....");
+                        } catch (error) {
+                            console.log("异常捕获 =>", error);
+                            reject(error)
+                            prom = Promise.reject(error)
+                            isRunning = false
+                            return
+                        }
+                        i++
+                        if (!isRunning && i < tasks.length) {
+                            console.log("----- 执行被中断 -----");
+                            return
+                        }
+                    }
+
+                    // 所有任务执行完毕
+                    isRunning = false
+                    resolve(result)
+                    prom = Promise.resolve(result)
+                })
+            }
+
+            function pause() {
+                isRunning = false
+            }
+
+
+            return {
+                start,
+                pause,
+            }
+        }
+
+        function fn1() {
+            return new Promise((resolve, rejected) => {
+                setTimeout(() => {
+                    resolve('任务1 执行结果')
+                }, 1000)
+            })
+        }
+        function fn2() {
+            return new Promise((resolve, rejected) => {
+                setTimeout(() => {
+                    resolve('任务2 执行结果')
+                }, 3000)
+            })
+        }
+        function fn3() {
+            return new Promise((resolve, rejected) => {
+                setTimeout(() => {
+                    rejected('任务3 执行失败')
+                }, 2000)
+            })
+        }
+
+        function fn4() {
+            return new Promise((resolve, rejected) => {
+                setTimeout(() => {
+                    resolve('任务4 执行结果')
+                }, 3000)
+            })
+        }
+
+        const tasks = [fn1, fn2, fn3, fn4]
+        const { start, pause } = precessTask(tasks)
+
+
+        const startBtn = document.querySelector('.start-btn');
+        const pauseBtn = document.querySelector('.pause-btn');
+        startBtn.addEventListener('click', async () => {
+            const result = await start()
+            console.log("result  =>", result);
+        });
+        pauseBtn.addEventListener('click', pause);
+    </script>
+</body>
+
+</html>
