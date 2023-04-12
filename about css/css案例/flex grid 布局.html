@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css">
+
+    <style>
+        body {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .container {
+            width: 400px;
+            height: 260px;
+            border: 1px solid black;
+        }
+
+        .box {
+            width: 100px;
+            height: 60px;
+            border: 5px solid rgb(179, 137, 2);
+            border-radius: 6px;
+            background: rgb(235, 194, 90);
+            text-align: center;
+            color: #fff;
+        }
+
+
+        .example1 {
+            display: flex;
+            /*row row-reverse column-reverse  column*/
+            /* flex-direction: row; */
+            /* flex-wrap: wrap; */
+            /*合并上述两个属性 flex-flow: <flex-direction> || <flex-wrap>;*/
+            flex-flow: row wrap;
+            /* align-content: flex-start | flex-end | center | space-between | space-around | stretch（默认值） */
+            align-content: flex-start;
+            /*  flex-start | flex-end | center | space-between | space-around; */
+            /* justify-content: center; */
+            /*  flex-start | flex-end | center | baseline | stretch */
+            /* align-items: stretch; */
+        }
+
+        .example2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .example2 .box:nth-of-type(2n-1) {
+            height: 40px;
+        }
+
+        .example3 {
+            display: flex;
+        }
+
+        .example3 .box:nth-of-type(2) {
+            /* flex-grow 定义放大比例，默认为0，0意味着即使存在空间也不放大 */
+            flex-grow: 1;
+        }
+
+        .example4 {
+            display: flex;
+        }
+
+        .example4 .box:nth-of-type(2) {
+            /* default 1 */
+            flex-shrink: 0;
+        }
+
+        .example5 {
+            display: flex;
+        }
+
+        .example5 .box:nth-of-type(2n-1) {
+            /* default auto 默认项目的本来大小 */
+            /* basis属性定义了在分配多余空间之前，项目占据的主轴空间 */
+            flex-basis: 20px;
+
+            /* 允许单个项目有与其他项目不一样的对齐方式 可覆盖align-items属性 align-self: auto | flex-start | flex-end | center | baseline | stretch; */
+            align-self: flex-end;
+        }
+
+        .example6 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+
+        .example6>div {
+            display: flex;
+            padding: 10px;
+            width: 100px;
+            height: 100px;
+            background: #e7e7e7;
+            border-radius: 5px;
+        }
+
+        .example6>div .item {
+            box-sizing: border-box;
+            width: 26px;
+            height: 26px;
+            padding-top: 3px;
+            border-radius: 50%;
+            text-align: center;
+            background-color: #333;
+        }
+
+        .example6>.sieve1 {
+            justify-content: space-between;
+        }
+
+        .example6>.sieve1 .item:nth-of-type(2) {
+            align-self: center;
+        }
+
+        .example6>.sieve1 .item:nth-of-type(3) {
+            align-self: flex-end;
+        }
+
+        .example6>.sieve2 {
+            flex-wrap: wrap;
+            gap: 10px;
+            /* justify-content: space-between; */
+            justify-content: flex-end;
+            /* align-items: self-end; */
+            /* justify-content: flex-end; */
+            /* align-content: space-between; */
+        }
+
+        .example6>.sieve2 .item:nth-of-type(4) {
+            align-self: flex-end;
+            justify-self: flex-end;
+        }
+
+        .example6>.sieve3 {
+            flex-wrap: wrap;
+            align-content: space-between;
+        }
+
+        .example6>.sieve3 .column {
+            flex-basis: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .example6>.sieve4 {
+            gap: 10px;
+            flex-wrap: wrap;
+            flex-direction: column;
+            align-content: space-between;
+        }
+
+        .example7 {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .example7 .item {
+            flex: 0 0 33.33%;
+            background-color: aquamarine;
+            border: 1px solid black;
+            margin: -1px;
+        }
+
+        .example8 {
+            display: grid;
+            /* 定义列宽 */
+            /* grid-template-columns: 80px 80px 80px; */
+            /* grid-template-columns: 33.33% 33.33% 33.33%; */
+            grid-template-columns: repeat(3, 33.33%);
+            /* 定义行高 */
+            /* grid-template-rows: 80px 80px 80px; */
+            /* grid-template-rows: 33.33% 33.33% 33.33%; */
+            /* grid-template-rows: 33.33% 33.33% 33.33%; */
+            grid-template-columns: repeat(3, 33.33%);
+
+            /* 
+                可以利用repeat函数简化重复的值 repeat(count, args...) 
+                第一个参数是重复的次数，第二个参数是重复的值
+            
+            */
+        }
+
+        .example8 .item {
+            /* width: 80px;
+            height: 80px; */
+            text-align: center;
+        }
+
+        .example9 {
+            display: grid;
+            /* 项目大小固定 而容器大小不固定 利用auto-fill自动填充 直到容器放不下则换行 */
+            grid-template-columns: repeat(auto-fill, 75px);
+        }
+
+        .example10 {
+            display: grid;
+            /* fr 片段关键字  2fr 意味着宽度是 1fr 的两倍*/
+            /* grid-template-columns: 1fr 2fr; */
+
+            /* auto 关键字 表示由浏览器自己决定长度 */
+            /* grid-template-columns: 100px auto 100px ; */
+
+            /* 也可以搭配绝对宽度使用 */
+            grid-template-columns: 20px 1fr 2fr;
+
+            /* 
+                minmax(maxVal, minVal) 产生一个长度范围，表示长度就在这个范围之中。接收两个参数 最大值 和 最小值
+
+            */
+        }
+
+        .example11 {
+            display: grid;
+            /* 使用方括号，指定每一根网格线的名字，方便以后的引用 
+               下面三行三列，一共八根线，中括号的内容即线的名称 一根线也能有多个名字 如：[fifth-line row-5]
+            */
+            grid-template-columns: [c1] 100px [c2] 100px [c3] auto [c4];
+            grid-template-rows: [r1] 100px [r2] 100px [r3] auto [r4];
+
+            /* 设置行间隔 和 列间隔 */
+            grid-row-gap: 20px;
+            grid-column-gap: 20px;
+
+
+        }
+
+        .example12 {
+            display: grid;
+            grid-template-columns: 60px 60px 60px;
+            grid-template-rows: 60px 60px 60px;
+            /* grid-auto-flow 顺序排列，默认是 row “先行后列”
+               其他值：当某些项目指定位置以后，剩下的项目如何自动放置
+                row dense 先行 后列 尽量填满
+                column dense 先列 后行 尽量填满
+            */
+            grid-auto-flow: column dense;
+        }
+
+        .example12 .item:nth-of-type(1),
+        .example12 .item:nth-of-type(2) {
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+
+        .example13 {
+            display: grid;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .example13 .item {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container example1 ">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+    </div>
+
+
+    <div class="container example2 ">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+    </div>
+
+    <div class="container example3 ">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+    </div>
+
+    <div class="container example4 ">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+    </div>
+
+    <div class="container example5 ">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+    </div>
+
+    <div class="container example6">
+        <div class="sieve1">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+        </div>
+
+        <div class="sieve2">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+        </div>
+
+        <div class="sieve3">
+            <div class="column">
+                <div class="item">1</div>
+                <div class="item">2</div>
+            </div>
+            <div class="column">
+                <div class="item">3</div>
+                <div class="item">4</div>
+            </div>
+        </div>
+
+        <div class="sieve4">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+
+    </div>
+
+    <div class="container example7">
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+    </div>
+
+
+    <div class="container example8">
+        <div class="item" style="background-color: aqua;">0</div>
+        <div class="item" style="background-color: rgb(70, 20, 206);">1</div>
+        <div class="item" style="background-color: rgb(35, 194, 3);">2</div>
+        <div class="item" style="background-color: rgb(202, 124, 22);">3</div>
+        <div class="item" style="background-color: rgb(247, 52, 3);">4</div>
+        <div class="item" style="background-color: rgb(159, 22, 187);">5</div>
+        <div class="item" style="background-color: rgb(42, 30, 212);">6</div>
+        <div class="item" style="background-color: rgb(75, 184, 138);">7</div>
+        <div class="item" style="background-color: rgb(184, 236, 39);">8</div>
+    </div>
+
+    <div class="container example9">
+        <div class="item" style="background-color: aqua;">0</div>
+        <div class="item" style="background-color: rgb(70, 20, 206);">1</div>
+        <div class="item" style="background-color: rgb(35, 194, 3);">2</div>
+        <div class="item" style="background-color: rgb(202, 124, 22);">3</div>
+        <div class="item" style="background-color: rgb(247, 52, 3);">4</div>
+        <div class="item" style="background-color: rgb(159, 22, 187);">5</div>
+        <div class="item" style="background-color: rgb(42, 30, 212);">6</div>
+        <div class="item" style="background-color: rgb(75, 184, 138);">7</div>
+        <div class="item" style="background-color: rgb(184, 236, 39);">8</div>
+    </div>
+
+    <div class="container example10">
+        <div class="item" style="background-color: aqua;">0</div>
+        <div class="item" style="background-color: rgb(70, 20, 206);">1</div>
+        <div class="item" style="background-color: rgb(35, 194, 3);">2</div>
+        <div class="item" style="background-color: rgb(202, 124, 22);">3</div>
+        <div class="item" style="background-color: rgb(247, 52, 3);">4</div>
+        <div class="item" style="background-color: rgb(159, 22, 187);">5</div>
+        <div class="item" style="background-color: rgb(42, 30, 212);">6</div>
+        <div class="item" style="background-color: rgb(75, 184, 138);">7</div>
+        <div class="item" style="background-color: rgb(184, 236, 39);">8</div>
+    </div>
+
+
+    <div class="container example11">
+        <div class="item" style="background-color: aqua;">0</div>
+        <div class="item" style="background-color: rgb(70, 20, 206);">1</div>
+        <div class="item" style="background-color: rgb(35, 194, 3);">2</div>
+        <div class="item" style="background-color: rgb(202, 124, 22);">3</div>
+        <div class="item" style="background-color: rgb(247, 52, 3);">4</div>
+        <div class="item" style="background-color: rgb(159, 22, 187);">5</div>
+        <div class="item" style="background-color: rgb(42, 30, 212);">6</div>
+        <div class="item" style="background-color: rgb(75, 184, 138);">7</div>
+        <div class="item" style="background-color: rgb(184, 236, 39);">8</div>
+    </div>
+
+    <div class="container example12">
+        <div class="item" style="background-color: aqua;">0</div>
+        <div class="item" style="background-color: rgb(70, 20, 206);">1</div>
+        <div class="item" style="background-color: rgb(35, 194, 3);">2</div>
+        <div class="item" style="background-color: rgb(202, 124, 22);">3</div>
+        <div class="item" style="background-color: rgb(247, 52, 3);">4</div>
+        <div class="item" style="background-color: rgb(159, 22, 187);">5</div>
+        <div class="item" style="background-color: rgb(42, 30, 212);">6</div>
+        <div class="item" style="background-color: rgb(75, 184, 138);">7</div>
+        <div class="item" style="background-color: rgb(184, 236, 39);">8</div>
+    </div>
+
+    <div class="container example13">
+        <div class="item" style="background-color: rgb(70, 20, 206);">1</div>
+    </div>
+</body>
+
+</html>
