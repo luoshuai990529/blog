@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LiberSum99：和 AI 一起向上攀登。">
+  <title>LiberSum99 · 向上攀登</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fira+Code:wght@400;500&family=Fraunces:opsz,wght@700;900&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <section class="boot" data-intro aria-label="开场动画">
+    <div class="boot__log boot__log--initial" aria-live="polite">
+      <p class="boot__label">LIBERSUM99 / SYSTEM BOOT</p>
+      <p>&gt; collecting curiosities...</p>
+      <p>&gt; connecting knowledge nodes...</p>
+      <p>&gt; drawing a new route...</p>
+      <p>&gt; <span class="boot__loading">route ready.</span><span class="boot__cursor" aria-hidden="true"></span></p>
+    </div>
+    <div class="boot__log boot__log--about" data-intro-about aria-live="polite">
+      <p class="boot__label">LIBERSUM99 / ABOUT ME</p>
+      <p>&gt; whoami</p>
+      <p>LiberSum99，和 AI 一起探索。</p>
+      <p>&gt; press Enter to return<span class="boot__cursor" aria-hidden="true"></span></p>
+      <button class="boot__enter" type="button" data-enter-home>ENTER ↵</button>
+    </div>
+    <button class="boot__skip" type="button" data-skip-intro>跳过开场</button>
+  </section>
+
+  <main class="site" data-site>
+    <header class="site-brand"><span></span><strong>LiberSum99</strong><small>still exploring</small></header>
+    <div class="web-grid" aria-hidden="true"></div>
+
+    <section class="stage" aria-live="polite">
+      <article class="stage-panel is-active" data-panel="about">
+        <div class="stage-panel__copy">
+          <p class="eyebrow">PERSONAL IP / 001</p>
+          <h1>和 AI 一起<br><em>向上攀登。</em></h1>
+          <p class="one-line">探索、记录、持续前进。</p>
+        </div>
+        <div class="portrait-zone">
+          <span class="orbit orbit--blue"></span><span class="orbit orbit--red"></span>
+          <img class="portrait" src="../assets/avatar.png" alt="LiberSum99 的手绘头像">
+          <img class="chip-mark" src="../assets/chip-spider.svg" alt="">
+        </div>
+      </article>
+
+      <article class="stage-panel stage-panel--articles" data-panel="articles" aria-hidden="true">
+        <div class="articles-head">
+          <div>
+            <p class="eyebrow">WRITING LOG / 002</p>
+            <h2>Notes</h2>
+          </div>
+          <p>把走过的路留下来。</p>
+        </div>
+        <div class="article-filters" data-article-filters aria-label="文章分类"></div>
+        <div class="article-list-shell">
+          <div class="article-list" data-article-list aria-live="polite"></div>
+          <div class="article-scroll-tip" data-scroll-tip hidden>向下滚动，继续探索 <span aria-hidden="true">↓</span></div>
+        </div>
+      </article>
+    </section>
+
+    <button class="hanging-spider" type="button" data-spider aria-label="一只悬挂的小蜘蛛">
+      <span class="hanging-spider__thread" aria-hidden="true"></span>
+      <span class="hanging-spider__anchor" aria-hidden="true"></span>
+      <span class="spider" aria-hidden="true">
+        <i class="spider__abdomen"></i><i class="spider__head"><b></b><b></b></i>
+        <i class="spider__leg spider__leg--1"><b></b></i><i class="spider__leg spider__leg--2"><b></b></i><i class="spider__leg spider__leg--3"><b></b></i><i class="spider__leg spider__leg--4"><b></b></i>
+        <i class="spider__leg spider__leg--5"><b></b></i><i class="spider__leg spider__leg--6"><b></b></i><i class="spider__leg spider__leg--7"><b></b></i><i class="spider__leg spider__leg--8"><b></b></i>
+      </span>
+    </button>
+
+    <nav class="dock" aria-label="页面入口">
+      <button type="button" data-target="about" aria-pressed="true"><span>01</span><small>about me</small></button>
+      <button type="button" data-target="articles" aria-pressed="false"><span>02</span><small>notes</small></button>
+    </nav>
+    <footer>© 2026 LIBERSUM99 · CC BY-NC-SA 4.0</footer>
+  </main>
+  <script src="articles-data.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>
