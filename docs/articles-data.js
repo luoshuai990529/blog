@@ -10,6 +10,7 @@ window.articleIndex = [
   { category: 'LLM', title: 'LLM LoRA 参数高效微调与垂直领域适配', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/LLM/LLM LoRA 参数高效微调与垂直领域适配实践.md' },
   { category: 'LLM', title: 'LLM 关键实体关注与生成控制', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/LLM/LLM 关键实体关注与生成控制实践.md' },
   { category: 'LLM', title: 'Transformer 注意力机制原理与 Agent 工程理解', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/LLM/Transformer 注意力机制原理与 Agent 工程理解.md' },
+  { category: '大模型训练', title: 'LLM 训练术语扫盲', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/大模型训练/LLM 训练术语扫盲：SFT、RL、MoE、RLHF、DPO、RFT 与 Agent 研发理解.md' },
   { category: 'Prompt 工程', title: 'Prompt 提示词工程小结', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Prompt 工程/Prompt 提示词工程小结.md' },
   { category: 'RAG', title: 'RAG HNSW 索引调优与量化压缩', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/RAG/RAG HNSW 索引调优与量化压缩实践.md' },
   { category: 'RAG', title: 'RAG OCR 识别、LLM 纠错与图像问答', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/RAG/RAG OCR 文本识别、LLM 纠错与图像文档问答实践.md' },
