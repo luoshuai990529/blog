@@ -7,10 +7,14 @@ tags:
   - 向量检索
   - 混合检索
   - Rerank
+  - GraphRAG
+  - LightRAG
+  - Neo4j
 aliases:
   - RAG 小结
   - RAG 技术总览
   - 检索增强生成小结
+  - GraphRAG 与 LightRAG
 ---
 
 # RAG 技术小结
@@ -195,6 +199,127 @@ Modular RAG 不是一种单独算法，而是一种工程架构。
 
 Modular RAG 的价值是让系统从“固定 pipeline”变成“可编排检索系统”。
 
+### 4. Advanced RAG、Modular RAG、GraphRAG 与 LightRAG 的关系
+
+这几个概念不在同一个层级，不能简单理解为四种互相竞争的 RAG 框架。
+
+| 概念 | 所在层级 | 核心含义 | 典型关注点 |
+| --- | --- | --- | --- |
+| Advanced RAG | 方法演进 | 在基础 RAG 前后增加增强环节 | Query 改写、多路召回、Rerank、上下文压缩 |
+| Modular RAG | 工程架构 | 把 RAG 拆成可组合、可替换的模块 | 根据业务组合解析、索引、召回和评测模块 |
+| GraphRAG | 检索方法 / 系统形态 | 用实体、关系、社区摘要组织知识 | 多跳关系、跨文档关联、全局主题总结 |
+| LightRAG | 具体的图增强 RAG 方法 | 用图结构结合向量或关键词做轻量双层检索 | Local/Global 信息兼顾、增量更新、降低图检索成本 |
+
+可以用下面的关系理解：
+
+```text
+Advanced RAG
+  └── Modular RAG
+        ├── 向量检索模块
+        ├── 全文检索模块
+        ├── GraphRAG 模块
+        └── LightRAG 模块
+```
+
+GraphRAG 和 LightRAG 都属于 Modular RAG 可以组合的图增强检索模块，但两者通常不需要同时完整部署：
+
+- GraphRAG 更强调实体关系、社区发现、社区摘要，以及 Local Search / Global Search。
+- LightRAG 更强调图结构与向量、关键词检索结合，并通过低层和高层检索兼顾具体事实与抽象主题。
+- Native RAG 仍然适合作为简单事实问答的低成本默认路径。
+
+因此，生产系统通常不是所有问题都执行图检索，而是由意图识别或 Query Router 选择路径：
+
+```text
+用户问题
+  → 问题分类 / 实体识别
+  ├── 条款、定义、单点事实 → Native RAG
+  ├── 实体关系、多跳查询 → GraphRAG 或 LightRAG
+  ├── 全局主题、趋势总结 → GraphRAG Global Search
+  └── 无法判断 → 多路召回 + 融合排序
+```
+
+### 5. GraphRAG 的适用场景
+
+GraphRAG 不应该作为普通向量 RAG 的默认升级版。它的价值在于问题本身包含“关系”或“全局理解”需求。
+
+适合使用图增强检索的问题：
+
+- “公司 A 和公司 B 之间有哪些合作关系？”
+- “项目 X 依赖哪些系统，这些系统又由哪些团队负责？”
+- “多个文档共同反映了哪些风险主题？”
+- “某个政策变化会影响哪些产品和流程？”
+
+不适合优先使用 GraphRAG 的问题：
+
+- “合同的付款期限是多少？”
+- “某个接口的参数定义是什么？”
+- “这篇文档对某个术语是如何解释的？”
+
+这类问题通常使用 BM25、向量检索和 Rerank 就足够。图索引需要额外的实体关系抽取、实体去重、图维护和查询逻辑，只有当关系推理收益超过维护成本时才值得引入。
+
+### 6. GraphRAG 的最小工程依赖
+
+GraphRAG 可以拆成以下几层，不需要一开始把所有库都引入。
+
+| 工程环节 | 解决的问题 | 推荐依赖 | 说明 |
+| --- | --- | --- | --- |
+| 文档解析 | PDF、Word、表格、OCR、版面结构 | Docling、PyMuPDF、Unstructured | 把复杂文档转成稳定的文本和结构化内容 |
+| 结构化抽取 | 从文本抽取实体、关系、属性 | LLM + Pydantic、Instructor | 用 Schema 约束模型输出，避免随意 JSON |
+| 图存储和查询 | 保存节点、边、属性并执行多跳查询 | Neo4j + `neo4j` Python Driver | 使用 Cypher 查询实体、关系和路径 |
+| 向量检索 | 检索原文块、实体描述和关系描述 | Qdrant、Milvus、pgvector | 图检索通常仍需要原文或向量检索配合 |
+| 图检索封装 | 减少手写索引和查询代码 | Microsoft GraphRAG、LlamaIndex Property Graph | 适合快速验证或构建可配置流程 |
+| API 服务 | 对外暴露查询能力 | FastAPI、Pydantic | 将索引任务和在线查询分成不同服务 |
+| 评测和观测 | 判断召回、引用和答案质量 | Ragas、LangSmith、Langfuse | 记录检索上下文、图路径和最终答案 |
+
+其中，Neo4j 不是 GraphRAG 框架，而是图数据库。它负责保存和查询图数据，GraphRAG 的实体抽取、社区摘要和上下文组织仍然需要由上层程序完成。
+
+一个最小的图数据模型可以是：
+
+```text
+(:Company {name: "公司 A"})
+  -[:INVESTED_IN {year: 2023, source_chunk_id: "chunk-001"}]->
+(:Project {name: "项目 X"})
+```
+
+对应的 Cypher 查询：
+
+```cypher
+MATCH (company:Company)-[relation:INVESTED_IN]->(project:Project)
+WHERE company.name = $company_name
+RETURN company, relation, project
+```
+
+实际项目还需要在关系上保存来源 Chunk、文档 ID、页码、抽取模型、置信度和有效时间，否则无法回答“这条关系来自哪里”和“这条关系是否已经过期”。
+
+### 7. 推荐的最小落地组合
+
+如果目标是理解完整链路，建议先采用下面的组合：
+
+```text
+Docling
+  → 文档解析
+Pydantic
+  → Entity / Relation Schema
+Neo4j
+  → 图存储与 Cypher 查询
+Qdrant
+  → 原文块和实体描述的向量检索
+FastAPI
+  → 查询服务
+Ragas 或 LangSmith
+  → 评测与 Trace
+```
+
+我自己感觉的最佳理解顺序是：
+
+1. 先手写一版 Native RAG，理解切片、向量检索、BM25、Rerank 和引用。
+2. 再用 Pydantic 约束 LLM 抽取 Entity 和 Relation，并写入 Neo4j。
+3. 使用 Cypher 完成一跳、两跳和条件过滤查询。
+4. 将图查询结果和原始文本召回结果融合后交给 LLM。
+5. 最后再使用 Microsoft GraphRAG 或 LlamaIndex Property Graph 对比框架封装带来的收益。
+
+这样既能理解 GraphRAG 的本质，也能知道成熟框架替你封装了哪些步骤。
+
 ## 五、索引构建：RAG 质量的上限
 
 索引阶段决定召回上限。
@@ -355,30 +480,15 @@ Embedding 能捕捉语义相似，但对强字面匹配场景仍不如倒排索�
 - 人名、组织名。
 - 行业术语。
 
-### 4. GraphRAG 的适用边界
+### 4. 图检索作为一路召回
 
-GraphRAG 适合回答全局型、关系型、多跳型问题。
+图检索属于多路召回中的一条路径，不需要替代所有向量检索。
 
-它通常包括：
+- Local 检索：围绕具体实体、节点和邻居扩展，适合关系查询。
+- Global 检索：围绕主题社区和摘要检索，适合全局总结。
+- 普通事实查询：仍然优先使用向量检索、BM25 和 Rerank。
 
-```text
-文档分块
-  → 实体抽取
-  → 关系抽取
-  → 图构建
-  → 社区检测
-  → 社区摘要
-  → Local / Global 检索
-```
-
-图检索可以区分：
-
-- Local：围绕具体实体、节点和邻居扩展。
-- Global：围绕抽象概念、主题社区和摘要检索。
-
-但 GraphRAG 成本高，不应默认上。
-
-它更适合高价值知识库，尤其是需要跨文档总结和实体关系推理的场景。
+GraphRAG 的完整索引和依赖选型见前面的“GraphRAG 的最小工程依赖”小节。
 
 ## 七、Rerank 与结果融合
 
