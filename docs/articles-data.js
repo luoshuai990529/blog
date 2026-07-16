@@ -1,10 +1,12 @@
 window.articleIndex = [
   { category: 'AI Coding', title: 'AI Coding 上手方法与实践场景', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/AI Coding/AI Coding 上手方法与实践场景.md' },
   { category: 'AI 搜索与内容可见性', title: 'GEO：AI 搜索可见性工程实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/AI 搜索与内容可见性/GEO：AI 搜索可见性工程实践.md' },
-  { category: 'Agent 工程', title: 'Agent 开发框架技术概览', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Agent 开发框架技术概览：LangChain、LangGraph、DeepAgents、LlamaIndex 与 LangSmith.md' },
   { category: 'Agent 工程', title: 'Agent 系统架构与工程化实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Agent 系统架构与工程化实践.md' },
   { category: 'Agent 工程', title: 'Claude Code Agent 工程治理实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Claude Code Agent 工程治理实践.md' },
   { category: 'Agent 工程', title: 'Superpowers Agent 协同框架与工程纪律', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Superpowers Agent 协同框架与工程纪律.md' },
+  { category: 'Agent 工程', title: '从 Claude Code 源码学习 Agent 安全治理', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/从 Claude Code 源码学习 Agent 安全治理：权限策略、命令解析与沙箱边界.md' },
+  { category: 'Agent 工程', title: '从 Claude Code 源码学习 Agent 工具运行时', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/从 Claude Code 源码学习 Agent 工具运行时：并发、上下文更新与失败处理.md' },
+  { category: 'Agent 工程', title: '从 Claude Code 源码学习 Multi-Agent 工程', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/从 Claude Code 源码学习 Multi-Agent 工程：子 Agent、Teammate、Coordinator 与任务协议.md' },
   { category: 'Agent 工程', title: '从 ClaudeCode 源码学习 Agent 工程状态治理', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/从 ClaudeCode 源码学习 Agent 工程状态治理：记忆管理、上下文压缩与会话恢复.md' },
   { category: 'Agent 工程', title: '从 Harness Engineering 到 Loop Engineering', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/从 Harness Engineering 到 Loop Engineering 都在谈论什么.md' },
   { category: 'LLM', title: 'LLM LoRA 参数高效微调与垂直领域适配', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/LLM/LLM LoRA 参数高效微调与垂直领域适配实践.md' },
