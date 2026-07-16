@@ -41,6 +41,12 @@ RAG（Retrieval-Augmented Generation，检索增强生成）是大模型业务�
 - 生成阶段没有忠实约束。
 - 缺少可量化评测。
 
+
+
+#### RAG全链路图解
+
+![RAG 全链路图解](/Users/buu99y/workspace/github/blog/AI/assets/RAG 全链路图解.png)
+
 ## 二、核心结论
 
 RAG 的工程质量不是由“有没有向量库”决定的，而是由完整链路共同决定的：
