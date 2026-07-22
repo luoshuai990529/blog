@@ -1,5 +1,6 @@
 ---
 title: RAG 技术小结
+stage: architecture
 tags:
   - AI
   - RAG

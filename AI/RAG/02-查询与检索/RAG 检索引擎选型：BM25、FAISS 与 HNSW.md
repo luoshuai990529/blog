@@ -1,5 +1,6 @@
 ---
 title: RAG 检索引擎选型：BM25、FAISS 与 HNSW
+stage: retrieval
 tags:
   - AI
   - RAG

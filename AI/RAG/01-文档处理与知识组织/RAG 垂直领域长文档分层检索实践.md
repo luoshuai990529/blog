@@ -1,5 +1,6 @@
 ---
 title: RAG 垂直领域长文档分层检索实践
+stage: knowledge-organization
 tags:
   - AI
   - RAG

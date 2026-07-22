@@ -1,5 +1,6 @@
 ---
 title: RAG 领域术语词库构建与检索一致性优化实践
+stage: knowledge-organization
 tags:
   - AI
   - RAG

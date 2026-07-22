@@ -1,3 +1,17 @@
+---
+title: PDF 跨页表格解析、对齐合并与结构化输出实践
+stage: document-processing
+tags:
+  - AI
+  - RAG
+  - PDF
+  - 文档解析
+  - 表格解析
+aliases:
+  - RAG PDF 跨页表格解析
+  - 跨页表格对齐与合并
+---
+
 # PDF 跨页表格解析、对齐合并与结构化输出实践
 
 ## 核心结论

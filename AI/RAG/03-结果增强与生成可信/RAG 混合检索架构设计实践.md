@@ -1,5 +1,6 @@
 ---
 title: RAG 混合检索架构设计实践
+stage: retrieval
 tags:
   - AI
   - RAG

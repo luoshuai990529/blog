@@ -1,5 +1,6 @@
 ---
 title: RAG 多路召回结果融合与重排序实践
+stage: ranking
 tags:
   - AI
   - RAG

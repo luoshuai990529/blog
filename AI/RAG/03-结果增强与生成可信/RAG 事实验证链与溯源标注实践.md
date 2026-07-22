@@ -1,5 +1,6 @@
 ---
 title: RAG 事实验证链与溯源标注实践
+stage: generation-governance
 tags:
   - AI
   - RAG

@@ -65,8 +65,8 @@ grep -q '.github-node:hover' "$ROOT/site.css"
 grep -q '.github-node:focus-visible' "$ROOT/site.css"
 grep -q '.github-node { width:100%' "$ROOT/site.css"
 ! grep -q '.portrait-zone { display:none' "$ROOT/site.css"
-test "$(grep -c 'title:' "$ROOT/articles-data.js")" -eq 31
-test "$(grep -c 'https://github.com/luoshuai990529/blog/blob/main/AI/' "$ROOT/articles-data.js")" -eq 31
+test "$(grep -c "^  { category:" "$ROOT/articles-data.js")" -eq 34
+test "$(grep -c "href: 'https://github.com/luoshuai990529/blog/blob/main/AI/" "$ROOT/articles-data.js")" -eq 34
 ! grep -q '../../blog/AI/' "$ROOT/articles-data.js"
 grep -q 'class="portrait"' "$ROOT/index.html"
 grep -q 'alt="LiberSum99 的手绘头像"' "$ROOT/index.html"

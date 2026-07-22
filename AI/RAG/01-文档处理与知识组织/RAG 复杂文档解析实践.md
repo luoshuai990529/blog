@@ -1,3 +1,17 @@
+---
+title: RAG 流程中复杂文档内容提取解析实践和沉淀
+stage: document-processing
+tags:
+  - AI
+  - RAG
+  - 文档解析
+  - 数据预处理
+  - 知识工程
+aliases:
+  - RAG 复杂文档解析
+  - RAG 文档内容提取
+---
+
 # RAG 流程中复杂文档内容提取解析实践和沉淀
 
 ## 核心结论

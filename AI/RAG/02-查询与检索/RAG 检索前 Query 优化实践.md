@@ -1,5 +1,6 @@
 ---
 title: RAG 检索前 Query 优化实践
+stage: query-understanding
 tags:
   - AI
   - RAG

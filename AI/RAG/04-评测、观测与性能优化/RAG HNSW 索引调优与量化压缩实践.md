@@ -1,5 +1,6 @@
 ---
 title: RAG HNSW 索引调优与量化压缩实践
+stage: performance-optimization
 tags:
   - AI
   - RAG

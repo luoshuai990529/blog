@@ -1,5 +1,6 @@
 ---
 title: RAG 切片语义割裂解决方案与最佳实践
+stage: knowledge-organization
 tags:
   - AI
   - RAG

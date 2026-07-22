@@ -1,5 +1,6 @@
 ---
 title: RAG 复杂图片文档解析实践
+stage: document-processing
 tags:
   - AI
   - RAG

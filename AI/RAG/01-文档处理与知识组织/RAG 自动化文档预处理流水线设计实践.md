@@ -1,5 +1,6 @@
 ---
 title: RAG 自动化文档预处理流水线设计实践
+stage: knowledge-organization
 tags:
   - AI
   - RAG

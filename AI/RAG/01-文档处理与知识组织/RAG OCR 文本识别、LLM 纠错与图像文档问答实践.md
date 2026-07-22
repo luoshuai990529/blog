@@ -1,5 +1,6 @@
 ---
 title: RAG OCR 文本识别、LLM 纠错与图像文档问答实践
+stage: document-processing
 tags:
   - AI
   - RAG

@@ -1,5 +1,6 @@
 ---
 title: RAG 自动化评估与参数调优实践
+stage: evaluation
 tags:
   - AI
   - RAG
