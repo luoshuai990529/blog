@@ -2,6 +2,7 @@ window.articleIndex = [
   { category: 'AI Coding', title: 'AI Coding 上手方法与实践场景', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/AI Coding/AI Coding 上手方法与实践场景.md' },
   { category: 'AI 搜索与内容可见性', title: 'GEO：AI 搜索可见性工程实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/AI 搜索与内容可见性/GEO：AI 搜索可见性工程实践.md' },
   { category: 'Agent 工程', title: 'Agent 系统架构与工程化实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Agent 系统架构与工程化实践.md' },
+  { category: 'Agent 工程', title: '从 MCP 到 CLI，作为开发者应该如何选择？', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/从 MCP 到 CLI，作为开发者应该如何选择？.md' },
   { category: 'Agent 工程', title: 'Claude Code Agent 工程治理实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Claude Code Agent 工程治理实践.md' },
   { category: 'Agent 工程', title: 'Superpowers Agent 协同框架与工程纪律', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Superpowers Agent 协同框架与工程纪律.md' },
   { category: 'Agent 工程', title: '从 Claude Code 源码学习 Agent 安全治理', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/从 Claude Code 源码学习 Agent 安全治理：权限策略、命令解析与沙箱边界.md' },
