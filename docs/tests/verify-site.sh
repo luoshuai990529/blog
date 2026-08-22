@@ -28,6 +28,14 @@ grep -q '@luoshuai990529' "$ROOT/index.html"
 ! grep -q 'data-panel="works"' "$ROOT/index.html"
 ! grep -q 'data-target="works"' "$ROOT/index.html"
 ! grep -q '靠近蜘蛛' "$ROOT/index.html"
+grep -q 'class="portrait"' "$ROOT/index.html"
+test -f "$ROOT/assets/avatar.png"
+grep -q 'class="portrait" src="assets/avatar.png"' "$ROOT/index.html"
+if grep -q 'supabase.co/storage/v1/object' "$ROOT/index.html"; then
+  echo "index.html must not depend on Supabase storage assets" >&2
+  exit 1
+fi
+grep -q 'alt="LiberSum99 的手绘头像"' "$ROOT/index.html"
 grep -q 'prefers-reduced-motion' "$ROOT/site.css"
 grep -q '@keyframes leg-crawl' "$ROOT/site.css"
 grep -q '@keyframes spider-breathe' "$ROOT/site.css"
@@ -65,11 +73,9 @@ grep -q '.github-node:hover' "$ROOT/site.css"
 grep -q '.github-node:focus-visible' "$ROOT/site.css"
 grep -q '.github-node { width:100%' "$ROOT/site.css"
 ! grep -q '.portrait-zone { display:none' "$ROOT/site.css"
-test "$(grep -c "^  { category:" "$ROOT/articles-data.js")" -eq 34
-test "$(grep -c "href: 'https://github.com/luoshuai990529/blog/blob/main/AI/" "$ROOT/articles-data.js")" -eq 34
+test "$(grep -c "^  { category:" "$ROOT/articles-data.js")" -eq 35
+test "$(grep -c "href: 'https://github.com/luoshuai990529/blog/blob/main/AI/" "$ROOT/articles-data.js")" -eq 35
 ! grep -q '../../blog/AI/' "$ROOT/articles-data.js"
-grep -q 'class="portrait"' "$ROOT/index.html"
-grep -q 'alt="LiberSum99 的手绘头像"' "$ROOT/index.html"
 grep -q 'site.css' "$ROOT/index.html"
 grep -q 'site.js' "$ROOT/index.html"
 grep -q 'articles-data.js' "$ROOT/index.html"
