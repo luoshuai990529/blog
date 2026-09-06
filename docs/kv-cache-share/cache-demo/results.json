@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "kind": "measured",
+  "recorded_at": null,
+  "model": "deepseek-v4-flash",
+  "model_source": "依据原始 notebook 配置；用户日志未单独列出模型版本",
+  "source": "用户提供的 notebook 实际运行输出",
+  "method": "2 次预热 → 5 次稳定前缀 → 5 次改首前缀；固定分组顺序；首个非空 content 增量计时",
+  "reference_repeats": 6000,
+  "thinking": "disabled",
+  "max_tokens": 16,
+  "samples": [
+    {
+      "group": "warmup",
+      "sample": 1,
+      "ttft_ms": 3905.1,
+      "prompt_tokens": 96036,
+      "hit_tokens": 0,
+      "miss_tokens": 96036
+    },
+    {
+      "group": "warmup",
+      "sample": 2,
+      "ttft_ms": 1321.3,
+      "prompt_tokens": 96036,
+      "hit_tokens": 96000,
+      "miss_tokens": 36
+    },
+    {
+      "group": "stable",
+      "sample": 1,
+      "ttft_ms": 1187.6,
+      "prompt_tokens": 96036,
+      "hit_tokens": 96000,
+      "miss_tokens": 36
+    },
+    {
+      "group": "stable",
+      "sample": 2,
+      "ttft_ms": 1113.0,
+      "prompt_tokens": 96036,
+      "hit_tokens": 96000,
+      "miss_tokens": 36
+    },
+    {
+      "group": "stable",
+      "sample": 3,
+      "ttft_ms": 1218.3,
+      "prompt_tokens": 96036,
+      "hit_tokens": 96000,
+      "miss_tokens": 36
+    },
+    {
+      "group": "stable",
+      "sample": 4,
+      "ttft_ms": 1223.0,
+      "prompt_tokens": 96036,
+      "hit_tokens": 96000,
+      "miss_tokens": 36
+    },
+    {
+      "group": "stable",
+      "sample": 5,
+      "ttft_ms": 1790.1,
+      "prompt_tokens": 96036,
+      "hit_tokens": 96000,
+      "miss_tokens": 36
+    },
+    {
+      "group": "changed",
+      "sample": 1,
+      "ttft_ms": 3078.8,
+      "prompt_tokens": 96052,
+      "hit_tokens": 0,
+      "miss_tokens": 96052
+    },
+    {
+      "group": "changed",
+      "sample": 2,
+      "ttft_ms": 3179.0,
+      "prompt_tokens": 96051,
+      "hit_tokens": 0,
+      "miss_tokens": 96051
+    },
+    {
+      "group": "changed",
+      "sample": 3,
+      "ttft_ms": 3351.1,
+      "prompt_tokens": 96049,
+      "hit_tokens": 0,
+      "miss_tokens": 96049
+    },
+    {
+      "group": "changed",
+      "sample": 4,
+      "ttft_ms": 1214.7,
+      "prompt_tokens": 96053,
+      "hit_tokens": 0,
+      "miss_tokens": 96053
+    },
+    {
+      "group": "changed",
+      "sample": 5,
+      "ttft_ms": 3983.0,
+      "prompt_tokens": 96052,
+      "hit_tokens": 0,
+      "miss_tokens": 96052
+    }
+  ]
+}

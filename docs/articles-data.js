@@ -1,4 +1,5 @@
 window.articleIndex = [
+  { category: 'Agent 工程', title: '如何设计 KV Cache 友好的上下文工程 · 分享稿', href: '/kv-cache-share/' },
   { category: 'AI Coding', title: 'AI Coding 上手方法与实践场景', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/AI Coding/AI Coding 上手方法与实践场景.md' },
   { category: 'AI 搜索与内容可见性', title: 'GEO：AI 搜索可见性工程实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/AI 搜索与内容可见性/GEO：AI 搜索可见性工程实践.md' },
   { category: 'Agent 工程', title: 'Agent 系统架构与工程化实践', href: 'https://github.com/luoshuai990529/blog/blob/main/AI/Agent 工程/Agent 系统架构与工程化实践.md' },

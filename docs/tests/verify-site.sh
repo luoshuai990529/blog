@@ -73,7 +73,7 @@ grep -q '.github-node:hover' "$ROOT/site.css"
 grep -q '.github-node:focus-visible' "$ROOT/site.css"
 grep -q '.github-node { width:100%' "$ROOT/site.css"
 ! grep -q '.portrait-zone { display:none' "$ROOT/site.css"
-test "$(grep -c "^  { category:" "$ROOT/articles-data.js")" -eq 35
+test "$(grep -c "^  { category:" "$ROOT/articles-data.js")" -eq 36
 test "$(grep -c "href: 'https://github.com/luoshuai990529/blog/blob/main/AI/" "$ROOT/articles-data.js")" -eq 35
 ! grep -q '../../blog/AI/' "$ROOT/articles-data.js"
 grep -q 'site.css' "$ROOT/index.html"
@@ -87,4 +87,6 @@ grep -q '<span>02</span><small>notes</small>' "$ROOT/index.html"
 grep -q '&gt; whoami' "$ROOT/index.html"
 ! grep -q '&gt; who am i' "$ROOT/index.html"
 
+test -f "$ROOT/kv-cache-share/index.html"
+grep -q "href: '/kv-cache-share/'" "$ROOT/articles-data.js"
 echo "person-site checks: PASS"
