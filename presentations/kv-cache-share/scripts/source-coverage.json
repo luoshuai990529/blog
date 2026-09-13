@@ -1,0 +1,99 @@
+{
+  "source": "../如何设计 KV Cache 友好的上下文.md",
+  "slides": [
+    {
+      "page": 1,
+      "title": "如何设计 KV Cache友好的上下文",
+      "sourceLines": [
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "page": 2,
+      "title": "KV Cache 的机制",
+      "sourceLines": [
+        [
+          5,
+          12
+        ]
+      ]
+    },
+    {
+      "page": 3,
+      "title": "注意力机制可视化",
+      "sourceLines": [],
+      "noteSource": "用户提供的 Query、Key、Value 定义"
+    },
+    {
+      "page": 4,
+      "title": "注意力的两个步骤",
+      "sourceLines": [],
+      "noteSource": "用户指定的句子示例与两步注意力讲解"
+    },
+    {
+      "page": 5,
+      "title": "整句注意力热力图与全／稀疏注意力对比",
+      "sourceLines": [
+        [
+          47,
+          60
+        ]
+      ]
+    },
+    {
+      "page": 6,
+      "title": "理解 Chat Template：从 API 消息到模型 Token",
+      "sourceLines": [],
+      "noteSource": "用户提供的 Chat Template 讲稿，结合官方文档核对字段与缓存边界"
+    },
+    {
+      "page": 7,
+      "title": "KV Cache 与 Prompt Cache：两个层级的缓存",
+      "sourceLines": [
+        [
+          135,
+          146
+        ]
+      ]
+    },
+    {
+      "page": 8,
+      "title": "如何设计上下文工程",
+      "sourceLines": [],
+      "noteSource": "用户提供的上下文工程三个方向讲稿"
+    },
+    {
+      "page": 9,
+      "title": "提示词工程设计",
+      "sourceLines": [],
+      "noteSource": "用户提供的 Few-shot 示例与工程决策讲稿"
+    },
+    {
+      "page": 10,
+      "title": "工具定义的设计和 Skill 的实现方式和权衡",
+      "sourceLines": [],
+      "noteSource": "用户提供的工具与 Skill 文稿及轨迹图，结合官方资料核对实现边界"
+    },
+    {
+      "page": 11,
+      "title": "Agent 状态栏设计",
+      "sourceLines": [],
+      "noteSource": "用户提供的 Agent 状态栏讲稿和消息列表示意图"
+    },
+    {
+      "page": 12,
+      "title": "上下文压缩",
+      "sourceLines": [],
+      "noteSource": "P1–P2 保留原稿；P3–P8 基于三个 Agent 的上下文压缩设计文档中 ClaudeCode a371abb 分析"
+    },
+    {
+      "page": 13,
+      "title": "核心总结",
+      "sourceLines": [],
+      "noteSource": "用户提供的核心结论文稿，补充缓存复用的适用条件"
+    }
+  ]
+}

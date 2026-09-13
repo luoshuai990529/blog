@@ -1,0 +1,395 @@
+:root{--bg:#101719;--panel:#172225;--ink:#edf3ef;--muted:#a7b7b4;--line:#354548;--stable:#84d9b7;--fresh:#e8bd76;--changed:#f49b92;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+.slidev-layout{padding:0!important;background:var(--bg);color:var(--ink);font-family:'PingFang SC','Microsoft YaHei',sans-serif}
+.deck-page{height:100%;position:relative;padding:42px 52px 44px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;background:radial-gradient(ellipse at 100% 0%,#1c333333,transparent 60%)}
+.deck-page h1{font-size:34px!important;font-weight:650;line-height:1.3!important;letter-spacing:-.035em;color:var(--ink);margin:0 0 30px!important}
+.deck-page h2{font-size:24px;font-weight:600;line-height:1.35;color:var(--ink);margin:0 0 16px}
+.deck-page p{font-size:21px;line-height:1.65;margin:0;color:var(--muted)}
+.eyebrow{font-size:13px;color:var(--stable);letter-spacing:.12em;margin-bottom:14px}
+.page-no{position:absolute;bottom:19px;right:30px;font:12px var(--mono);color:var(--muted)}
+.cover{justify-content:center}
+.cover h1{font-size:53px!important;line-height:1.25!important;margin-bottom:22px!important}
+.cover .cover-sub{font-size:22px;margin-bottom:38px}
+.cover .rail{max-width:760px}
+.rail-label{font-size:14px;line-height:1.4;color:var(--muted);margin:0 0 9px}
+.rail{display:flex;gap:3px;min-height:60px;margin-bottom:22px}
+.segment{display:flex;justify-content:center;align-items:center;text-align:center;flex:1;padding:12px 8px;font-size:18px;line-height:1.45;border-bottom:3px solid var(--line);background:var(--panel)}
+.stable{color:var(--stable);background:#1b3430;border-color:var(--stable)}
+.fresh{color:var(--fresh);background:#352e22;border-color:var(--fresh)}
+.changed{color:var(--changed);background:#392928;border-color:var(--changed)}
+.neutral{color:var(--ink)}
+.takeaway{margin-top:auto;padding-top:19px;border-top:1px solid var(--line);font-size:23px;font-weight:550;line-height:1.5;color:var(--stable)}
+.columns{display:flex;gap:35px;margin:10px 0 28px}
+.columns section{flex:1;min-width:0;border-top:2px solid var(--stable);padding-top:20px}
+.columns section:nth-child(2){border-color:var(--fresh)}
+.columns section:nth-child(3){border-color:var(--muted)}
+.rows{display:flex;flex-direction:column;margin:0 0 24px}
+.rows>div{display:grid;grid-template-columns:220px 1fr;gap:25px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center;font-size:20px;line-height:1.4}
+.rows>div:first-child{padding-top:4px}
+.rows b{font-weight:550;color:var(--stable)}
+.rows span{color:var(--ink)}
+.quote{font-size:25px;padding:5px 0 24px}
+.accent{color:var(--stable)}
+.quote .accent{padding:2px 9px;background:#25493c;margin:0 4px}
+.matrix{display:grid;grid-template-columns:130px repeat(5,90px);gap:5px;align-self:center;align-items:center;text-align:center;margin:0 auto 15px;font-size:15px}
+.matrix>b{font-weight:500;padding:6px;color:var(--muted)}
+.cell{padding:10px 0}
+.seen{background:#347963;color:#fff}
+.masked{background:#1a2427;color:#84918f}
+.legend{display:flex;justify-content:center;gap:24px;font-size:14px;color:var(--muted);margin-top:10px}
+.down{font-size:17px;text-align:center;color:var(--muted);margin:-9px 0 17px}
+.deck-page pre{background:#172225!important;border:0!important;box-shadow:none!important;border-left:2px solid var(--line)!important;border-radius:0!important;color:var(--ink)!important;padding:14px 18px!important;line-height:1.55!important;font:18px var(--mono)!important;white-space:pre-wrap;overflow-wrap:anywhere}
+.wide-code{margin:0!important;max-width:720px}
+.steps{display:flex;align-items:center;gap:23px;margin:40px 0 30px}
+.steps>div{flex:1;border-top:1px solid var(--line);padding-top:17px}
+.steps b{font:32px var(--mono);color:var(--stable);display:block;margin-bottom:20px}
+.steps i,.status-demo i{font-style:normal;color:var(--muted);font-size:27px}
+.steps p{font-size:18px}
+.steps h2{margin-bottom:12px}
+.status-demo{display:grid;grid-template-columns:1fr 50px 1fr;align-items:center;gap:18px;margin:20px 0 35px}
+.status-demo span{font-size:15px;display:block;margin-bottom:18px}
+.muted{color:var(--muted)}
+.status-demo pre{font-size:19px!important;line-height:1.8!important}
+.balance{display:flex;gap:75px;align-items:center;justify-content:center;margin:25px 0 35px}
+.balance>div{min-width:225px}
+.balance span{font-size:17px;color:var(--muted)}
+.balance h2{font-size:35px;line-height:1.65;margin-top:15px}
+.balance .balance-vs{font-size:40px;color:var(--stable)}
+.branch{text-align:center;align-self:center;width:660px;margin:-7px 0 12px;font-size:18px;line-height:1.45}
+.parent{border:1px solid var(--stable);padding:12px;background:#1b3430;color:var(--stable)}
+.branch-arrow{font-size:14px;padding:6px;color:var(--muted)}
+.children{display:flex;gap:24px}
+.children>span{flex:1;border:1px solid var(--line);padding:11px;background:var(--panel)}
+.research-label{font-size:14px!important;color:var(--fresh)!important;margin-top:10px!important}
+.closing{display:flex;flex-direction:column;gap:25px;margin:18px 0 35px}
+.closing>div{display:flex;align-items:center;gap:24px;font-size:30px}
+.closing b{font:30px var(--mono);color:var(--stable)}
+.references{border-left:2px solid var(--stable);padding-left:26px;margin-top:4px}
+.references p{margin-bottom:24px;font-size:21px}
+.references b{color:var(--ink);font-weight:550}
+
+/* Slide 4: illustrative attention weights and Value aggregation. */
+.attention-example h1{margin-bottom:18px!important}
+.attention-example .quote{padding-bottom:12px}
+.attention-example .columns{margin:0;gap:42px}
+.attention-example .columns section{padding-top:14px}
+.attention-example h2{font-size:23px;margin-bottom:12px}
+.attention-example .example-caption{font-size:15px;line-height:1.5;margin-bottom:7px}
+.weight-row{display:grid;grid-template-columns:76px 1fr 44px;gap:12px;align-items:center;font-size:16px;margin-top:13px;color:var(--muted)}
+.weight-row b{font:16px var(--mono);text-align:right;font-weight:400}
+.weight-track{height:12px;background:#243337}
+.weight-track i{display:block;height:100%;background:#94aaa4}
+.weight-row.emphasis{color:var(--stable)}
+.weight-row.emphasis i{background:var(--stable)}
+.value-emphasis{font-size:21px;margin-top:18px;color:var(--ink)}
+.value-emphasis b{font-weight:550;color:var(--stable);margin-left:18px}
+.value-emphasis.muted,.value-emphasis.muted b{color:var(--muted)}
+.value-result{border-top:1px solid var(--line);padding-top:15px;margin-top:22px;font-size:19px;line-height:1.5}
+.value-result span{color:var(--muted)}
+.value-result strong{color:var(--stable);font-weight:550}
+.attention-example .example-footnote{font-size:13px;margin-top:auto;color:var(--muted);line-height:1.4}
+
+/* Slide 5: two views occupying the same canvas, advanced manually. */
+.attention-views .attention-view{position:absolute;inset:36px 52px 44px;display:flex;flex-direction:column}
+.attention-views h1{font-size:32px!important;margin-bottom:12px!important}
+.attention-views .heat-sentence{font-size:20px;margin-bottom:12px;line-height:1.5}
+.heat-sentence span{color:var(--fresh);font-weight:600}
+.heatmap-layout{display:grid;grid-template-columns:574px 1fr;gap:30px;align-items:start}
+.sentence-heatmap{display:grid;grid-template-columns:68px repeat(11,44px);grid-auto-rows:23px;gap:2px;align-items:stretch;text-align:center}
+.heat-word{font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.heat-word.focus-word{color:var(--fresh);font-weight:650}
+.heat-corner{font-size:10px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.heat-cell{font:10px var(--mono);display:flex;align-items:center;justify-content:center}
+.heat-mask{background:#1a2427;color:#738482}
+.heat-focus-row{box-shadow:inset 0 1px #e8bd7690,inset 0 -1px #e8bd7690}
+.heat-focus-cell{outline:2px solid var(--fresh);outline-offset:-2px;font-weight:700}
+.heatmap-guide{padding-top:5px}
+.heatmap-guide h2{font-size:23px;color:var(--fresh);margin-bottom:14px}
+.attention-views .heatmap-guide p{font-size:17px;line-height:1.65}
+.heat-reading{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:19px;margin:22px 0}
+.heat-reading b{font-weight:500}
+.heat-reading span{font-family:var(--mono)}
+.attention-views .heatmap-guide .heat-rule{font-size:15px;border-top:1px solid var(--line);padding-top:16px}
+.heat-legend{display:flex;align-items:center;gap:22px;font-size:12px;color:var(--muted);margin-top:16px}
+.heat-legend>span:first-child{display:flex;align-items:center;gap:8px}
+.heat-legend i{width:80px;height:10px;background:linear-gradient(90deg,#16282a,#84d9b7)}
+.attention-views .sparse-subtitle{font-size:19px;margin-bottom:20px}
+.sparse-reference-window{width:100%;aspect-ratio:1508/448;overflow:hidden;background:#f8f8fa;flex-shrink:0}
+.sparse-reference-window img{display:block;width:100%;max-width:none!important;height:auto!important;margin:0!important}
+.sparse-descriptions{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px;text-align:center}
+.sparse-descriptions h2{font-size:20px;margin:0 0 8px}
+.attention-views .sparse-descriptions p{font-size:17px}
+.attention-views .sparse-caption{font-size:13px;color:var(--muted);margin-top:auto}
+.attention-views .heat-sentence,.attention-views .sparse-subtitle{opacity:1!important}
+
+/* Slide 6: Chat Template, four presenter-controlled views. */
+.chat-template-lesson{padding-top:32px}
+.chat-template-lesson>h1{font-size:31px!important;line-height:1.25!important;margin:0!important}
+.chat-template-lesson>h1 span{font-size:24px;font-weight:500;color:var(--muted)}
+.ct-panel{position:absolute;inset:126px 52px 44px;display:flex;flex-direction:column}
+.ct-stage{height:100%;display:flex;flex-direction:column}
+.ct-kicker{color:var(--stable);font-size:16px;margin-bottom:16px}
+.ct-flow{display:grid;grid-template-columns:1fr 20px 1fr 20px 1fr 20px .9fr;align-items:center;gap:8px;margin-top:18px}
+.ct-flow>div{padding:19px 8px;border-top:2px solid var(--stable);background:var(--panel);text-align:center}
+.ct-flow b{font-size:19px;font-weight:550}
+.chat-template-lesson .ct-flow p{font-size:15px;margin-top:13px}
+.ct-flow>span{color:var(--muted);text-align:center}
+.ct-foundation{display:flex;justify-content:space-around;border-top:1px solid var(--line);padding-top:28px;margin-top:38px;font-size:21px;color:var(--muted)}
+.ct-takeaway{border-top:1px solid var(--line);padding-top:15px;margin-top:auto;color:var(--stable);font-size:21px;line-height:1.4}
+.ct-code-pair{display:grid;grid-template-columns:1fr 24px 1fr;gap:14px;align-items:start}
+.ct-code-pair section{min-width:0}
+.ct-code-pair h2{font-size:18px;margin:0 0 10px}
+.chat-template-lesson .ct-code-pair pre{font-size:14px!important;line-height:1.5!important;padding:11px 12px!important;white-space:pre-wrap;overflow-wrap:anywhere;margin:0!important}
+.ct-arrow{padding-top:92px;text-align:center;color:var(--muted);font-size:22px}
+.chat-template-lesson .ct-code-caption{font-size:12px;color:var(--muted);margin-top:12px;opacity:1}
+.chat-template-lesson .rows>div{font-size:19px;padding:14px 0;grid-template-columns:232px 1fr;gap:20px}
+.ct-contracts .ct-kicker{margin-bottom:5px}
+.ct-contracts .rows{margin-bottom:10px}
+
+/* Slide 6, subsection 4: layer computation and its own KV cache. */
+.ct-contracts .ct-token-order{font-size:20px;line-height:1.5;margin-top:13px;color:var(--ink)}
+.ct-contracts .ct-token-order span{color:var(--muted);margin:0 14px}
+.ct-contracts .ct-layer-chain{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;gap:14px;align-items:center;margin-top:20px}
+.ct-contracts .ct-layer-chain section{border-top:2px solid var(--stable);padding:14px 12px 0;background:var(--panel);text-align:center}
+.ct-contracts .ct-layer-chain h2{font-size:22px;margin:0 0 6px}
+.ct-contracts .ct-layer-chain p{font-size:16px;line-height:1.4;margin:0 0 12px;opacity:1}
+.ct-contracts .ct-layer-chain section div{border-top:1px solid var(--line);padding:9px 0;color:var(--stable);font-size:16px}
+.ct-contracts .ct-layer-chain>span{text-align:center;color:var(--muted);font-size:24px}
+.chat-template-lesson .ct-contracts .ct-layer-caption{text-align:center;color:var(--muted);font-size:14px;margin-top:10px;opacity:1}
+.ct-contracts .ct-change-chain{font-size:21px;margin-top:24px;color:var(--fresh);line-height:1.4}
+.ct-contracts .ct-change-chain span{margin:0 14px;color:var(--muted)}
+
+/* Slide 7: source-only comparison of the two cache levels. */
+.cache-levels h1{font-size:32px!important;margin-bottom:17px!important}
+.cache-levels .columns{margin:0 0 22px;gap:38px}
+.cache-levels .columns section{display:flex;flex-direction:column;padding-top:16px}
+.cache-levels .columns h2{margin-bottom:10px}
+.cache-levels .columns p{font-size:19px;line-height:1.65}
+.cache-levels .columns .cache-level{color:var(--ink);font-size:22px;margin-bottom:15px;opacity:1}
+.cache-levels .columns .cache-purpose{border-top:1px solid var(--line);padding-top:14px;margin-top:auto;color:var(--stable);font-size:18px}
+.cache-levels .columns section>p:not(.cache-level):not(.cache-purpose){margin-bottom:17px}
+
+/* Slide 8: context engineering directions. */
+.context-directions{display:flex;flex-direction:column;gap:24px;margin-top:10px}
+.context-directions section{display:grid;grid-template-columns:42px 1fr;gap:20px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.context-directions section>span{font:24px var(--mono);color:var(--stable);padding-top:3px}
+.context-directions h2{font-size:24px;margin:0 0 10px}
+.context-directions p{font-size:19px;line-height:1.6}
+
+/* Slide 9: Few-shot design decisions. */
+.prompt-design h1{margin-bottom:22px!important}
+.prompt-design .few-shot-intro h2{color:var(--stable);margin-bottom:6px}
+.prompt-design .few-shot-intro p{font-size:20px;line-height:1.5}
+.prompt-design .few-shot-intro .few-shot-cases{font-size:16px;margin-top:6px}
+.prompt-design .columns{margin:23px 0 20px;gap:38px}
+.prompt-design .columns section{padding-top:14px}
+.prompt-design .columns h2{font-size:22px;margin-bottom:12px}
+.prompt-design .columns p{font-size:18px;line-height:1.55;margin-bottom:12px}
+.prompt-design strong{font-weight:550;color:var(--ink)}
+.prompt-design .takeaway{font-size:21px;padding-top:14px}
+
+/* Slide 10: five manually advanced sections. */
+.tools-skills-lesson>h1{font-size:29px!important;margin-bottom:0!important}
+.tools-skills-lesson .ts-panel{position:absolute;inset:103px 52px 43px}
+.tools-skills-lesson .ts-stage{height:100%;display:flex;flex-direction:column}
+.tools-skills-lesson .ts-heading{font-size:24px;color:var(--stable);margin:0 0 20px}
+.tools-skills-lesson p{font-size:19px;line-height:1.6}
+.tools-skills-lesson .columns{margin:16px 0 20px;gap:28px}
+.tools-skills-lesson .columns section{padding-top:14px}
+.tools-skills-lesson .columns h2{font-size:22px;margin-bottom:12px}
+.tools-skills-lesson .columns p+p{margin-top:12px}
+.tools-skills-lesson .takeaway{font-size:20px;padding-top:13px}
+.tools-skills-lesson .rail{min-height:51px;margin-bottom:16px}
+.tools-skills-lesson .segment{font-size:17px;padding:10px 7px}
+.ts-route{display:flex;align-items:center;gap:20px;padding:10px 0}
+.ts-route section{flex:1;border-top:2px solid var(--stable);padding-top:15px}
+.ts-route h2{font-size:22px;margin-bottom:10px}
+.ts-route>span{color:var(--muted);font-size:25px}
+.ts-table{width:100%;border-collapse:collapse;margin:10px 0 20px;font-size:18px;line-height:1.6}
+.ts-table th,.ts-table td{text-align:left;padding:17px 12px;border-bottom:1px solid var(--line)}
+.ts-table th{color:var(--muted);font-weight:500}
+.ts-table td:first-child{color:var(--stable);width:27%}
+.ts-timeline{margin-top:2px}
+.tools-skills-lesson .ts-panel:has(.ts-timeline) .columns{margin:8px 0 10px}
+.tools-skills-lesson .ts-panel:has(.ts-timeline) .columns section{padding-top:8px}
+.tools-skills-lesson .ts-panel:has(.ts-timeline) .columns h2{margin-bottom:6px}
+.tools-skills-lesson .ts-timeline .rail{min-height:43px;margin-bottom:10px}
+.tools-skills-lesson .ts-timeline .segment{padding:7px}
+
+/* Slide 10 section 3: original YAML examples. */
+.skill-yaml-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px;min-height:0;flex:1}
+.skill-yaml-columns section{min-width:0;display:flex;flex-direction:column;border-top:2px solid var(--stable);padding-top:10px}
+.skill-yaml-columns section:nth-child(2){border-color:var(--fresh)}
+.skill-yaml-columns h3{font-size:20px;margin:0 0 8px;color:var(--ink)}
+.tools-skills-lesson .skill-yaml-columns pre{font-size:12px!important;line-height:1.45!important;padding:10px 12px!important;margin:0!important;white-space:pre-wrap;overflow-wrap:anywhere;flex:1}
+.skill-file-body{font-size:14px;line-height:1.6;color:var(--ink);padding-top:10px}
+.skill-file-body span{color:var(--muted);font-size:13px}
+
+/* Slide 10 section 6: message-list implementation example. */
+.tools-skills-lesson .skill-message-stage .ts-heading{margin-bottom:10px}
+.skill-message-list{display:flex;flex-direction:column;gap:4px}
+.sml-row{display:grid;grid-template-columns:650px 1fr;gap:18px;align-items:center}
+.sml-row code{display:block;background:var(--panel);border-left:3px solid var(--line);padding:5px 10px;font:12px/1.4 var(--mono);color:var(--ink)}
+.sml-row code b{font-weight:600;color:var(--muted)}
+.sml-row aside{font-size:13px;line-height:1.45;color:var(--muted)}
+.sml-row aside small{font-size:11px}
+.sml-fixed code{background:#263331;border-color:var(--stable)}
+.sml-listing code{background:#352e22;border-color:var(--fresh)}
+.sml-listing aside{color:var(--fresh)}
+.sml-content code{background:#392928;border-color:var(--changed)}
+.sml-content aside{color:var(--changed)}
+.sml-call code{background:#1b302b}
+.sml-footer{margin-top:auto;padding-top:9px;border-top:1px solid var(--line);font-size:14px;color:var(--stable);line-height:1.5}
+.sml-footer span{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.sml-row code{padding:3px 10px;font-size:12px;line-height:1.3}
+.skill-message-list{gap:3px}
+.tools-skills-lesson .sml-row code{font:13px/1.35 var(--mono)!important;padding:4px 10px!important;background:var(--panel)!important}
+.tools-skills-lesson .sml-fixed code{background:#263331!important}
+.tools-skills-lesson .sml-listing code{background:#352e22!important}
+.tools-skills-lesson .sml-content code{background:#392928!important}
+.tools-skills-lesson .sml-call code{background:#1b302b!important}
+.tools-skills-lesson .sml-row code{font:12px/1.3 var(--mono)!important;padding:2px 10px!important}
+
+/* Chapter 11: Agent status, five sections. */
+.agent-status-lesson .as-panel{position:absolute;inset:103px 52px 43px}
+.agent-status-lesson .as-stage{height:100%;display:flex;flex-direction:column}
+.agent-status-lesson .as-heading{font-size:24px;color:var(--stable);margin:0 0 20px}
+.agent-status-lesson p{font-size:20px;line-height:1.6}
+.agent-status-lesson .takeaway{font-size:20px;padding-top:12px}
+.status-principle{font-size:24px;line-height:1.5}
+.status-distill{display:flex;align-items:center;gap:28px;margin:22px 0;font-size:21px}
+.status-distill>div{flex:1;border-left:3px solid var(--stable);padding-left:16px}
+.status-distill span{font-size:17px;color:var(--muted)}
+.agent-status-lesson .status-code{font:14px/1.6 var(--mono)!important;margin:0 0 15px!important;padding:12px!important}
+.status-fields{display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;margin-top:15px}
+.status-fields section{border-top:2px solid var(--stable);padding-top:17px}
+.status-fields h2{font-size:23px;margin-bottom:12px}
+.status-messages{display:flex;flex-direction:column;gap:6px}
+.status-message{display:grid;grid-template-columns:650px 1fr;gap:20px;align-items:center}
+.status-message code{font:14px/1.45 var(--mono)!important;background:var(--panel)!important;padding:6px 10px!important;border-left:3px solid var(--line);display:block}
+.status-message.status-prefix code{background:#263331!important;border-color:var(--stable)}
+.status-message.injected code{background:#352e22!important;border-color:var(--fresh)}
+.status-message aside{font-size:15px;color:var(--muted);line-height:1.5}
+.status-message aside small{font-size:12px}
+.status-message.injected aside{color:var(--fresh)}
+.status-history{font-size:14px;color:var(--muted);text-align:center;width:650px}
+.status-update{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:12px}
+.status-update h2{font-size:23px;margin-bottom:24px}
+.status-strip{display:flex;gap:3px;margin-bottom:12px}
+.status-strip>*{flex:1;padding:12px 5px;background:var(--panel);font-size:14px;text-align:center;font-style:normal;font-weight:400}
+.status-strip i{color:var(--stable);background:#263331}
+.status-strip em{color:var(--changed);text-decoration:line-through}
+.status-strip strong{color:var(--changed);background:#392928}
+.status-strip b{color:var(--fresh);background:#352e22}
+.status-update p{margin-top:22px;font-size:19px}
+.status-legend{font-size:13px;color:var(--muted);margin-top:23px}
+.agent-status-lesson .columns{margin-top:20px}
+.agent-status-lesson .columns p+p{margin-top:23px}
+.status-message code{font:13px/1.35 var(--mono)!important;padding:4px 10px!important}
+.status-messages{gap:4px}
+
+/* Chapter 12: context compression. */
+.compression-flow{display:flex;align-items:center;gap:18px;margin:28px 0 5px}
+.compression-flow section{flex:1;border-top:2px solid var(--stable);padding-top:16px}
+.compression-flow h2{font-size:22px;margin-bottom:10px}
+.compression-flow p{font-size:18px}
+.compression-flow>span{font-size:25px;color:var(--muted)}
+.compression-lesson .columns{margin:18px 0 20px}
+.compression-lesson .columns h2{font-size:23px}
+.compression-layers{display:flex;flex-direction:column;gap:20px;margin:2px 0 18px}
+.compression-layers section{display:flex;gap:24px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.compression-layers b{font:26px var(--mono);color:var(--stable)}
+.compression-layers h2{font-size:22px;margin-bottom:7px}
+.compression-layers p{font-size:19px;line-height:1.5}
+.compression-archive{display:flex;flex-direction:column;gap:5px;margin:20px 0 12px}
+.compression-archive span{background:var(--panel);border-left:3px solid var(--stable);padding:8px 12px;font-size:17px}
+.compression-fallback{background:var(--panel);padding:19px;margin:20px 0 12px;font-size:21px;line-height:1.5;color:var(--fresh)}
+.compression-fallback span{font-size:15px;color:var(--muted)}
+.compression-lesson .columns .compression-small{font-size:16px;margin-top:10px}
+.compression-lesson .as-heading{margin-bottom:14px}
+.compression-lesson .columns{margin:10px 0 12px}
+.compression-lesson .columns section{padding-top:12px}
+.compression-lesson .columns h2{margin-bottom:10px}
+.compression-lesson .columns p{font-size:19px;line-height:1.5}
+.compression-lesson .rail{min-height:48px;margin-bottom:14px}
+.compression-lesson .segment{padding:9px 8px}
+.compression-lesson .compression-flow{margin:20px 0 5px}
+.compression-lesson .compression-layers{gap:14px;margin-bottom:12px}
+.compression-lesson .compression-layers section{padding-bottom:12px}
+.compression-lesson .compression-archive{margin:14px 0 8px}
+.compression-lesson .compression-archive span{padding:6px 12px}
+.compression-lesson .compression-fallback{margin:14px 0 8px;padding:14px}
+
+/* Chapter 12 P3 onwards: source-based ClaudeCode strategies. */
+.cc-split{display:grid;grid-template-columns:1.1fr 1fr;gap:25px;margin:6px 0 15px}
+.compression-lesson .cc-code{font:13px/1.65 var(--mono)!important;padding:14px!important;margin:0!important;white-space:pre-wrap}
+.cc-explain p{font-size:17px;line-height:1.45;margin-bottom:14px}
+.cc-explain b{font-weight:550;color:var(--ink)}
+.compression-lesson .cc-explain p{font-size:17px;line-height:1.45}
+.cc-source{font-size:10px;color:var(--muted);margin-top:7px}
+.compression-lesson .cc-strategy .takeaway{font-size:18px;padding-top:10px}
+.cc-result h2{font-size:22px;margin:8px 0 12px}
+.cc-result p{font-size:17px!important;margin:0 0 18px;line-height:1.5!important}
+.cc-result .rail{min-height:44px}
+.compression-lesson .cc-result h2{margin:3px 0 9px}
+.compression-lesson .cc-result p{margin-bottom:12px;font-size:16px!important}
+.compression-lesson .cc-result .rail{margin-bottom:9px;min-height:40px}
+.compression-lesson .cc-result .segment{padding:7px 8px;font-size:17px}
+
+/* Chapter 12 P5: assemble and switch post-compaction messages. */
+.apply-summary-columns{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:9px 0 18px}
+.apply-summary-columns section{min-width:0;border-top:2px solid var(--stable);padding-top:13px}
+.apply-summary-columns section:nth-child(2){border-color:var(--fresh)}
+.apply-summary-columns h3{font-size:18px;margin:0 0 10px;color:var(--ink)}
+.compression-lesson .apply-summary-columns p{font-size:16px;line-height:1.5;margin:0 0 16px}
+.compression-lesson .apply-summary-columns .cc-code{font-size:11.5px!important;padding:10px!important;line-height:1.8!important}
+.compression-lesson .apply-summary-columns .cc-code{line-height:1.5!important}
+.apply-summary-columns{margin:4px 0 12px}
+.compression-lesson .apply-summary-columns p{margin-bottom:10px}
+
+/* Chapter 12 P8: manually selected summary boundary. */
+.compression-lesson .selection-summary .as-heading{margin-bottom:10px}
+.compression-lesson .selection-intro{font-size:18px;line-height:1.4;margin-bottom:14px}
+.selection-example{display:grid;grid-template-columns:1fr 1.15fr;gap:22px}
+.selection-example section{border-left:3px solid var(--stable);padding-left:12px}
+.selection-example section:nth-child(2){border-color:var(--fresh)}
+.selection-example h3{font-size:18px;margin:0 0 7px}
+.compression-lesson .selection-example p{font-size:15px;line-height:1.6}
+.selection-after{display:flex;align-items:center;gap:5px;margin:17px 0 10px;font-size:15px}
+.selection-after>span{color:var(--muted);padding-right:10px}
+.selection-after i,.selection-after b{font-style:normal;font-weight:400;padding:9px 12px;background:#263331;color:var(--stable)}
+.selection-after b{background:#352e22;color:var(--fresh);flex:1}
+.selection-table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.5}
+.selection-table th,.selection-table td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
+.selection-table th{color:var(--muted);font-weight:400}
+.selection-table td:first-child{color:var(--stable)}
+.compression-lesson .selection-limit{font-size:13px;color:var(--fresh);margin-top:9px}
+.compression-lesson .selection-summary .takeaway{font-size:17px}
+.compression-lesson .selection-table th,.compression-lesson .selection-table td{padding:6px 8px}
+.compression-lesson .selection-intro{margin-bottom:10px}
+.selection-after{margin:10px 0 5px}
+.selection-example h3{margin-bottom:4px}
+.compression-lesson .selection-example p{line-height:1.4}
+
+/* Chapter 13: core conclusions and architectural consequences. */
+.conclusion-points{display:flex;flex-direction:column;gap:23px;margin:10px 0 18px}
+.conclusion-points section{display:flex;gap:22px;border-bottom:1px solid var(--line);padding-bottom:17px}
+.conclusion-points section>b{font:26px var(--mono);color:var(--stable)}
+.conclusion-points h2{font-size:23px;margin:0 0 9px}
+.core-conclusions .conclusion-points p{font-size:18px;line-height:1.5}
+.core-conclusions .takeaway{font-size:21px}
+.conclusion-errors{display:flex;flex-direction:column;margin:8px 0 20px}
+.conclusion-errors>div{display:grid;grid-template-columns:270px 1fr;gap:20px;padding:17px 0;border-bottom:1px solid var(--line);font-size:19px;line-height:1.5}
+.conclusion-errors b{font-weight:550;color:var(--fresh)}
+.conclusion-errors span{color:var(--muted)}
+.core-conclusions .as-heading{margin-bottom:12px}
+.conclusion-points{gap:16px;margin:4px 0 12px}
+.conclusion-points section{padding-bottom:12px}
+.conclusion-errors{margin:0 0 12px}
+.conclusion-errors>div{padding:12px 0;font-size:18px}
+
+/* Chapter 13 P4: reading references. */
+.reference-list{display:flex;flex-direction:column;gap:0;margin-top:12px}
+.reference-list>div{display:flex;gap:24px;align-items:baseline;border-bottom:1px solid var(--line);padding:20px 0}
+.reference-list>div>span{font:22px var(--mono);color:var(--stable)}
+.core-conclusions .reference-list p{font-size:21px;line-height:1.5;color:var(--ink)}
+.reference-list a{font-size:16px;color:var(--stable);text-decoration:underline;text-underline-offset:4px}
